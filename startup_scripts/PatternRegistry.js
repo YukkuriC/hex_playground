@@ -15,6 +15,11 @@ Args.prototype = {
     get(i) {
         return this.data[i]
     },
+    brainsweep_target(i) {
+        let entity = this.entity(i)
+        if (Brainsweeping.isValidTarget(entity)) return entity
+        throw MishapInvalidIota(this.data[i], this.data.length - i - 1, 'entity.brainsweep_target')
+    },
 }
 for (let pair of ['double', 'entity', 'list', 'pattern', 'vec3/vector', 'bool/boolean']) {
     let [key, keyMishap] = pair.split('/')
@@ -69,6 +74,26 @@ global.PatternOperateMap = {
         }
 
         return OperationResult(continuation, stack, ravenmind, sideEffects)
+    },
+    brain_merge(c, stack, r, ctx) {
+        let args = new Args(stack, 2)
+        let victim = args.brainsweep_target(0)
+        /**@type {Internal.Villager}*/
+        let inject = args.brainsweep_target(1)
+        // TODO 异常处理
+        let sideEffects = []
+
+        // 前额叶移植
+        let oldData = inject.getVillagerData()
+        if (oldData.level < 5 && oldData.profession.name() !== 'none') {
+            // TODO 处理交易经验
+            inject.setVillagerData(oldData.setLevel(oldData.getLevel() + 1))
+            // TODO 刷新交易
+
+            Brainsweeping.brainsweep(victim) // 天生万物以养人
+        }
+
+        return OperationResult(c, stack, r, sideEffects)
     },
 
     // 代码执行相关
@@ -127,6 +152,7 @@ global.loadCustomPatterns = () => {
     registerPatternWrap('aaqawawaeadaadadadaadadadaada', HexDir.EAST, 'floodfill', 1)
     registerPatternWrap('wwaqqqqqedwdwwwaw', HexDir.EAST, 'charge_media', 1)
     registerPatternWrap('aaddwdwdqdwd', HexDir.NORTH_WEST, 'punch_entity')
+    registerPatternWrap('wqqwqwqaeqeeedqqeaqadedaqaedeqqeqedeqeaqeqaqedeadeaqwqwqaeda', HexDir.EAST, 'brain_merge')
 
     registerPatternWrap('wewewewewewweeqeeqeeqeeqeeqee', HexDir.WEST, 'refresh_depth', 1)
     registerPatternWrap('waawweeeeedd', HexDir.SOUTH_WEST, 'push_to_mind_stack')
