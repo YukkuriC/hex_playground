@@ -17,7 +17,7 @@ def linkFolder(link: str, src: str):
 
 SRC_ROOT = os.path.dirname(__file__)
 SRC_TARGETS = ['server_scripts', 'startup_scripts', 'client_scripts']
-SRC_TARGETS_SEP = ['data/hexcasting']
+SRC_TARGETS_SEP = ['assets/hexcasting', 'data/hexcasting']
 TYPE_TARGETS = ['probe']
 MC_ROOT = r'C:/Minecraft/.minecraft/versions'
 BASE_DIR = sys.argv[1] if len(sys.argv) > 1 else 'Hex'
