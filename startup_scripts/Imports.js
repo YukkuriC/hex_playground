@@ -32,6 +32,12 @@
         ])
         .build()
     _('java.lang.Integer').build()
+    _('at.petrak.hexcasting')
+        .add([
+            //
+            'xplat.IXplatAbstractions',
+        ])
+        .build()
     _('at.petrak.hexcasting.api')
         .add([
             'PatternRegistry',

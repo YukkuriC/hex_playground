@@ -11,14 +11,19 @@ let _buildGetter = (key, keyMishap) => {
         return res
     }
 }
-Args.prototype = {}
+Args.prototype = {
+    get(i) {
+        return this.data[i]
+    },
+}
 for (let pair of ['double', 'entity', 'list', 'pattern', 'vec3/vector', 'bool/boolean']) {
     let [key, keyMishap] = pair.split('/')
     Args.prototype[key] = _buildGetter(key, keyMishap)
 }
 
 global.PatternOperateMap = {
-    floodfill(continuation, stack, ravenmind, ctx) {
+    // 世界交互相关
+    floodfill(c, stack, r, ctx) {
         let pos = new Args(stack, 1).vec3(0)
         ctx['assertVecInRange(net.minecraft.world.phys.Vec3)'](pos)
 
@@ -44,7 +49,7 @@ global.PatternOperateMap = {
             )
         stack.push(ListIota(targets))
     },
-    charge_media(a1, a2, a3, ctx) {
+    charge_media(c, s, r, ctx) {
         let stack = ctx.caster.getItemInHand(ctx.castingHand)
         let item = stack.item
         if (item.setMedia && item.getMaxMedia) {
@@ -65,8 +70,22 @@ global.PatternOperateMap = {
 
         return OperationResult(continuation, stack, ravenmind, sideEffects)
     },
+
+    // 代码执行相关
     refresh_depth(c, s, r, ctx) {
         global.setField(ctx, 'depth', Integer('-114514'))
+    },
+    push_to_mind_stack(c, stack, r, ctx) {
+        let args = new Args(stack, 1)
+        let harness = IXplatAbstractions.INSTANCE.getHarness(ctx.caster, ctx.castingHand)
+        harness.stack.push(args.get(0))
+        IXplatAbstractions.INSTANCE.setHarness(ctx.caster, harness)
+    },
+    pop_from_mind_stack(c, stack, r, ctx) {
+        let harness = IXplatAbstractions.INSTANCE.getHarness(ctx.caster, ctx.castingHand)
+        if (harness.stack.length < 1) throw MishapNotEnoughArgs(1, 0)
+        stack.push(harness.stack.pop())
+        IXplatAbstractions.INSTANCE.setHarness(ctx.caster, harness)
     },
 }
 
@@ -108,6 +127,9 @@ global.loadCustomPatterns = () => {
     registerPatternWrap('aaqawawaeadaadadadaadadadaada', HexDir.EAST, 'floodfill', 1)
     registerPatternWrap('wwaqqqqqedwdwwwaw', HexDir.EAST, 'charge_media', 1)
     registerPatternWrap('aaddwdwdqdwd', HexDir.NORTH_WEST, 'punch_entity')
+
     registerPatternWrap('wewewewewewweeqeeqeeqeeqeeqee', HexDir.WEST, 'refresh_depth', 1)
+    registerPatternWrap('waawweeeeedd', HexDir.SOUTH_WEST, 'push_to_mind_stack')
+    registerPatternWrap('wqaqwweeeee', HexDir.SOUTH_WEST, 'pop_from_mind_stack')
 }
 StartupEvents.postInit(global.loadCustomPatterns)
