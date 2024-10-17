@@ -3,6 +3,8 @@
     let PRClass = Java.loadClass(PatternRegistryPath)
     let PRRaw = global.loadRawClass(PatternRegistryPath)
     let Double = Java.loadClass('java.lang.Double')
+    let HexIotaTypes = Java.loadClass('at.petrak.hexcasting.common.lib.hex.HexIotaTypes')
+    let Registry = Java.loadClass('net.minecraft.core.Registry')
 
     let mapStartDir = {}
     let mapLineDir = {}
@@ -20,6 +22,8 @@
             .join(',')}],"hexcasting:type":"hexcasting:vec3"}`
     let toPattern = (seq, startDir) =>
         `{"hexcasting:data":{angles:[B;${seq2bytes(seq)}],start_dir:${mapStartDir[startDir]}},"hexcasting:type":"hexcasting:pattern"}`
+    let toType = type => `{"hexcasting:data":"${type}","hexcasting:type":"hexal:iota_type"}`
+    let toEntityType = type => `{"hexcasting:data":"${type}","hexcasting:type":"hexal:entity_type"}`
 
     let specialPatternSeq = {
         qqqaw: '\\\\',
@@ -97,6 +101,17 @@
                 stack[0].push(toVec(nums))
             }
 
+            // type literal
+            else if (kw.startsWith('type_')) {
+                let type = kw.substring(kw.indexOf('_') + 1)
+                if (type.indexOf(':') < 0) type = 'hexcasting:' + type
+                stack[0].push(toType(type))
+            } else if (kw.startsWith('type/entity_')) {
+                let type = kw.substring(kw.indexOf('_') + 1)
+                if (type.indexOf(':') < 0) type = 'minecraft:' + type
+                stack[0].push(toEntityType(type))
+            }
+
             // custom pattern
             else if (kw.match(/^_[wedsaq]*/)) {
                 stack[0].push(toPattern(kw.substring(1), 'EAST'))
@@ -133,6 +148,14 @@
             }
             while (axes.length > 0 && axes[axes.length - 1] == 0) axes.pop()
             return 'vec' + axes.map(x => `_${x}`).join('')
+        } else if (i.iotaType) {
+            let key = HexIotaTypes.REGISTRY.getKey(i.iotaType)
+            if (key.namespace === 'hexcasting') key = key.path
+            return 'type_' + key
+        } else if (i.entityType) {
+            let key = Registry.ENTITY_TYPE.getKey(i.entityType)
+            if (key.namespace === 'minecraft') key = key.path
+            return 'type/entity_' + key
         }
 
         return 'UNKNOWN'
