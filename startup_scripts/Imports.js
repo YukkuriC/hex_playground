@@ -61,6 +61,8 @@
                     // 'Iota',
                     'Vec3Iota',
                     'ListIota',
+                    'DoubleIota',
+                    'PatternIota',
                 ]),
             ]),
         ])

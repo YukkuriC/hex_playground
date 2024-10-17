@@ -112,6 +112,18 @@ global.PatternOperateMap = {
         stack.push(harness.stack.pop())
         IXplatAbstractions.INSTANCE.setHarness(ctx.caster, harness)
     },
+    mind_stack_size(c, stack, r, ctx) {
+        let harness = IXplatAbstractions.INSTANCE.getHarness(ctx.caster, ctx.castingHand)
+        stack.push(DoubleIota(harness.stack.length))
+    },
+    mind_patterns(c, stack, r, ctx) {
+        let patterns = IXplatAbstractions.INSTANCE.getPatterns(ctx.caster)
+        stack.push(ListIota(patterns.map(x => PatternIota(x.pattern))))
+    },
+    clear_mind_patterns(c, s, r, ctx) {
+        ctx.caster.server.scheduleInTicks(1, () => IXplatAbstractions.INSTANCE.setPatterns(ctx.caster, []))
+        // TODO 自动重开画布
+    },
 }
 
 function ActionJS(id, isGreat) {
@@ -157,5 +169,8 @@ global.loadCustomPatterns = () => {
     registerPatternWrap('wewewewewewweeqeeqeeqeeqeeqee', HexDir.WEST, 'refresh_depth', 1)
     registerPatternWrap('waawweeeeedd', HexDir.SOUTH_WEST, 'push_to_mind_stack')
     registerPatternWrap('wqaqwweeeee', HexDir.SOUTH_WEST, 'pop_from_mind_stack')
+    registerPatternWrap('waawweeeeewaa', HexDir.SOUTH_WEST, 'mind_stack_size')
+    registerPatternWrap('waawweeeeaaeaeaeaeaw', HexDir.SOUTH_WEST, 'mind_patterns')
+    registerPatternWrap('waawweeeeewdewqa', HexDir.SOUTH_WEST, 'clear_mind_patterns')
 }
 StartupEvents.postInit(global.loadCustomPatterns)
