@@ -1,2 +1,2 @@
-# kubejs_playground
-你是一个一个一个KubeJS——
+# hex_playground
+咒法学 & KubeJS试验田 ~~爆改新生魔艺~~

@@ -4,10 +4,11 @@ function Args(stack, n, keep) {
 }
 let _buildGetter = (key, keyMishap) => {
     keyMishap = keyMishap || key
+    keyMishap = 'class.' + keyMishap
     return function (i) {
         let iota = this.data[i]
         let res = iota[key]
-        if (res === undefined) throw MishapInvalidIota(iota, this.data.length - i - 1, keyMishap)
+        if (res === undefined) throw MishapInvalidIota.of(iota, this.data.length - i - 1, keyMishap)
         return res
     }
 }
@@ -21,7 +22,7 @@ Args.prototype = {
             if (Brainsweeping.isValidTarget(entity)) return entity
             if (entity instanceof AbstractVillager) return entity
         }
-        throw MishapInvalidIota(this.data[i], this.data.length - i - 1, 'entity.brainsweep_target')
+        throw MishapInvalidIota.of(this.data[i], this.data.length - i - 1, 'class.entity.brainsweep_target')
     },
 }
 for (let pair of ['double', 'entity', 'list', 'pattern', 'vec3/vector', 'bool/boolean']) {
@@ -31,7 +32,7 @@ for (let pair of ['double', 'entity', 'list', 'pattern', 'vec3/vector', 'bool/bo
 
 global.PatternOperateMap = {
     // 世界交互相关
-    floodfill(c, stack, r, ctx) {
+    floodfill: (c, stack, r, ctx) => {
         let pos = new Args(stack, 1).vec3(0)
         ctx['assertVecInRange(net.minecraft.world.phys.Vec3)'](pos)
 
@@ -57,14 +58,14 @@ global.PatternOperateMap = {
             )
         stack.push(ListIota(targets))
     },
-    charge_media(c, s, r, ctx) {
+    charge_media: (c, s, r, ctx) => {
         let stack = ctx.caster.getItemInHand(ctx.castingHand)
         let item = stack.item
         if (item.setMedia && item.getMaxMedia) {
             item.setMedia(stack, item.getMaxMedia(stack))
         }
     },
-    punch_entity(continuation, stack, ravenmind, ctx) {
+    punch_entity: (continuation, stack, ravenmind, ctx) => {
         let args = new Args(stack, 2)
         let victim = args.entity(0)
         let damage = args.double(1)
@@ -78,7 +79,7 @@ global.PatternOperateMap = {
 
         return OperationResult(continuation, stack, ravenmind, sideEffects)
     },
-    brain_merge(c, stack, r, ctx) {
+    brain_merge: (c, stack, r, ctx) => {
         let args = new Args(stack, 2)
         let victim = args.brainsweep_target(0)
         /**@type {Internal.Villager}*/
@@ -100,30 +101,30 @@ global.PatternOperateMap = {
     },
 
     // 代码执行相关
-    refresh_depth(c, s, r, ctx) {
+    refresh_depth: (c, s, r, ctx) => {
         global.setField(ctx, 'depth', Integer('-114514'))
     },
-    push_to_mind_stack(c, stack, r, ctx) {
+    'mind_stack/push': (c, stack, r, ctx) => {
         let args = new Args(stack, 1)
         let harness = IXplatAbstractions.INSTANCE.getHarness(ctx.caster, ctx.castingHand)
         harness.stack.push(args.get(0))
         IXplatAbstractions.INSTANCE.setHarness(ctx.caster, harness)
     },
-    pop_from_mind_stack(c, stack, r, ctx) {
+    'mind_stack/pop': (c, stack, r, ctx) => {
         let harness = IXplatAbstractions.INSTANCE.getHarness(ctx.caster, ctx.castingHand)
         if (harness.stack.length < 1) throw MishapNotEnoughArgs(1, 0)
         stack.push(harness.stack.pop())
         IXplatAbstractions.INSTANCE.setHarness(ctx.caster, harness)
     },
-    mind_stack_size(c, stack, r, ctx) {
+    'mind_stack/size': (c, stack, r, ctx) => {
         let harness = IXplatAbstractions.INSTANCE.getHarness(ctx.caster, ctx.castingHand)
         stack.push(DoubleIota(harness.stack.length))
     },
-    mind_patterns(c, stack, r, ctx) {
+    mind_patterns: (c, stack, r, ctx) => {
         let patterns = IXplatAbstractions.INSTANCE.getPatterns(ctx.caster)
         stack.push(ListIota(patterns.map(x => PatternIota(x.pattern))))
     },
-    clear_mind_patterns(c, s, r, ctx) {
+    'mind_patterns/clear': (c, s, r, ctx) => {
         ctx.caster.server.scheduleInTicks(1, () => IXplatAbstractions.INSTANCE.setPatterns(ctx.caster, []))
         // TODO 自动重开画布
     },
@@ -146,7 +147,7 @@ function ActionJS(id, isGreat) {
     this.isGreat = isGreat ? () => true : () => false
 
     // TODO displayName by lang
-    let _displayName = Text.of(id.toUpperCase()).gold()
+    let _displayName = Text.translate(`hexcasting.spell.yc:${id}`).gold()
     this.getDisplayName = this.displayName = () => _displayName
 }
 ActionJS.prototype = {
@@ -170,10 +171,10 @@ global.loadCustomPatterns = () => {
     registerPatternWrap('wqqwqwqaeqeeedqqeaqadedaqaedeqqeqedeqeaqeqaqedeadeaqwqwqaeda', HexDir.EAST, 'brain_merge')
 
     registerPatternWrap('wewewewewewweeqeeqeeqeeqeeqee', HexDir.WEST, 'refresh_depth', 1)
-    registerPatternWrap('waawweeeeedd', HexDir.SOUTH_WEST, 'push_to_mind_stack')
-    registerPatternWrap('wqaqwweeeee', HexDir.SOUTH_WEST, 'pop_from_mind_stack')
-    registerPatternWrap('waawweeeeewaa', HexDir.SOUTH_WEST, 'mind_stack_size')
+    registerPatternWrap('waawweeeeedd', HexDir.SOUTH_WEST, 'mind_stack/push')
+    registerPatternWrap('wqaqwweeeee', HexDir.SOUTH_WEST, 'mind_stack/pop')
+    registerPatternWrap('waawweeeeewaa', HexDir.SOUTH_WEST, 'mind_stack/size')
     registerPatternWrap('waawweeeeaaeaeaeaeaw', HexDir.SOUTH_WEST, 'mind_patterns')
-    registerPatternWrap('waawweeeeewdewqa', HexDir.SOUTH_WEST, 'clear_mind_patterns')
+    registerPatternWrap('waawweeeeewdewqa', HexDir.SOUTH_WEST, 'mind_patterns/clear')
 }
 StartupEvents.postInit(global.loadCustomPatterns)
