@@ -136,9 +136,8 @@ function ActionJS(id, isGreat) {
         try {
             return global.PatternOperateMap[id](c, s, r, ct) || OperationResult(c, s, r, [])
         } catch (e) {
-            if (String(e).indexOf('Mishap') >= 0) {
+            if (e instanceof Mishap)
                 return OperationResult(c, s, r, [OperatorSideEffect.DoMishap(e, Mishap.Context(HexPattern(HexDir.WEST, []), null))])
-            }
             throw e
         }
     }
