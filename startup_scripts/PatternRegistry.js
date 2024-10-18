@@ -17,7 +17,10 @@ Args.prototype = {
     },
     brainsweep_target(i) {
         let entity = this.entity(i)
-        if (Brainsweeping.isValidTarget(entity)) return entity
+        if (entity instanceof Mob) {
+            if (Brainsweeping.isValidTarget(entity)) return entity
+            if (entity instanceof AbstractVillager) return entity
+        }
         throw MishapInvalidIota(this.data[i], this.data.length - i - 1, 'entity.brainsweep_target')
     },
 }

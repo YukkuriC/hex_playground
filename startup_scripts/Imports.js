@@ -23,7 +23,11 @@
 
     _('net.minecraft.world')
         .add([
-            // TODO villagers
+            _('entity').add([
+                'Mob',
+                //
+                'npc.AbstractVillager',
+            ]),
             _('level.block').add([
                 // legacy
                 'CocoaBlock',
@@ -36,6 +40,10 @@
         .add([
             //
             'xplat.IXplatAbstractions',
+            _('common').add([
+                //
+                'misc.Brainsweeping',
+            ]),
         ])
         .build()
     _('at.petrak.hexcasting.api')
