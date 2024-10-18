@@ -26,7 +26,7 @@
     let toEntityType = type => `{"hexcasting:data":"${type}","hexcasting:type":"hexal:entity_type"}`
 
     let specialPatternSeq = {
-        qqqaw: '\\\\',
+        qqqaw: '\\',
         qqq: '(',
         eee: ')',
     }
@@ -125,10 +125,11 @@
 
         return toList(stack[0])
     }
-    let iota2str = (i, level) => {
+    let iota2str = (i, level, root) => {
         if (i.list) {
             let inner = i.list.list.map(x => iota2str(x, level))
-            return `[${inner.join(',')}]`
+            inner = inner.join(',')
+            return root ? inner : `[${inner}]`
         } else if (i.pattern) {
             let angleSeq = i.pattern.anglesSignature()
             try {
@@ -204,6 +205,13 @@
             player.sendData('hexParse/clipboard/pull', payload)
             return 1919810
         }
+        let readHandIota = (ctx, then) => {
+            let target = player2focus(ctx.source.entity)
+            if (!target) return 0
+            let iotaRoot = target.item.readIota(target, ctx.source.level)
+            then(iotaRoot)
+            return 1919810
+        }
 
         e.register(
             cmd
@@ -215,15 +223,29 @@
                         .then(cmd.argument('rename', arg.STRING.create(e)).executes(clipboardSendData)),
                 )
                 .then(
-                    cmd.literal('read').executes(ctx => {
-                        let target = player2focus(ctx.source.entity)
-                        if (!target) return 0
-                        let iotaRoot = target.item.readIota(target, ctx.source.level)
-                        let toStr = iota2str(iotaRoot, ctx.source.level)
-                        ctx.source.entity.tell(Text.gold('Result: ').append(Text.white(toStr)).clickCopy(toStr))
-
-                        return 1919810
-                    }),
+                    cmd.literal('read').executes(ctx =>
+                        readHandIota(ctx, iota => {
+                            let toStr = iota2str(iota, ctx.source.level, 1)
+                            ctx.source.entity.sendSystemMessage(
+                                Text.gold('Result: ').append(Text.white(toStr)).clickCopy(toStr).hover('click to copy'),
+                            )
+                        }),
+                    ),
+                )
+                .then(
+                    cmd.literal('share').executes(ctx =>
+                        readHandIota(ctx, iota => {
+                            let toStr = iota2str(iota, ctx.source.level, 1)
+                            // Client.player.tell(toStr)
+                            ctx.source.server.tell(
+                                Text.gold(ctx.source.entity.name)
+                                    .append(Text.white(' shares: '))
+                                    .append(iota.display())
+                                    .append(' ')
+                                    .append(Text.white('CLICK_COPY').underlined().clickCopy(toStr).hover('click to copy')),
+                            )
+                        }),
+                    ),
                 )
                 .then(
                     cmd
