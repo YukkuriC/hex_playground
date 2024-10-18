@@ -125,8 +125,16 @@ global.PatternOperateMap = {
         stack.push(ListIota(patterns.map(x => PatternIota(x.pattern))))
     },
     'mind_patterns/clear': (c, s, r, ctx) => {
-        ctx.caster.server.scheduleInTicks(1, () => IXplatAbstractions.INSTANCE.setPatterns(ctx.caster, []))
-        // TODO 自动重开画布
+        // 自动重开画布
+        let itemStack = ctx.caster.getItemInHand(ctx.castingHand)
+        let item = itemStack?.item
+        if (item?.class.name === 'at.petrak.hexcasting.common.items.ItemStaff') {
+            item.use(ctx.world, ctx.caster, ctx.castingHand)
+        } else item = null
+        ctx.caster.server.scheduleInTicks(1, () => {
+            IXplatAbstractions.INSTANCE.setPatterns(ctx.caster, [])
+            if (item) item.use(ctx.world, ctx.caster, ctx.castingHand)
+        })
     },
 }
 
