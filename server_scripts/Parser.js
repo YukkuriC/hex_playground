@@ -64,8 +64,9 @@
 
     // 把正反解析函数挪一块
     let str2nbt = raw => {
+        raw = String(raw).replace(/\/\/.*/g, ' ')
         let code = []
-        String(raw).replace(/\\|\(|\)|\[|\]|[\w\.\/\-\:]+/g, match => (code.push(match), ''))
+        raw.replace(/\\|\(|\)|\[|\]|[\w\.\/\-\:]+/g, match => (code.push(match), ''))
 
         let stack = [[]]
         for (let kw of code) {
