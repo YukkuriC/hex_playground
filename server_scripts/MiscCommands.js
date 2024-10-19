@@ -5,8 +5,8 @@ ServerEvents.commandRegistry(e => {
             cmd.literal('reloadCustomPatterns').executes(ctx => {
                 let server = ctx.source.server
                 server.runCommand('kjs reload startup_scripts')
-                server.runCommand('hexcasting recalcPatterns')
                 global.loadCustomPatterns()
+                server.runCommand('hexcasting recalcPatterns')
                 server.runCommand('reload')
                 return 114514
             }),
