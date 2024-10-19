@@ -30,6 +30,9 @@ ServerEvents.recipes(e => {
                     convertDataToList(item.nbt)
                     item.nbt.data['hexcasting:data'].push(offItem.nbt.data['hexcasting:data'])
                 }
+            } else if (offItem.nbt?.patterns?.length > 0) {
+                convertDataToList(item.nbt)
+                for (let obj of offItem.nbt.patterns) item.nbt.data['hexcasting:data'].push(obj)
             } else {
                 convertDataToList(item.nbt)
                 for (let obj of HEX_API.INSTANCE.getPatterns(player).map(x => x.serializeToNBT()))
@@ -42,4 +45,12 @@ ServerEvents.recipes(e => {
 
         return item
     })
+    for (let target of [
+        //
+        'hexcasting:cypher',
+        'hexcasting:trinket',
+        'hexcasting:artifact',
+        'hexgloop:gloopifact',
+    ])
+        e.shapeless(Item.of(target, 2), [target, target])
 })
