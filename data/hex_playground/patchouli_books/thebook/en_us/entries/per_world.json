@@ -7,7 +7,7 @@
             "type": "hexcasting:pattern",
             "op_id": "yc:brain_merge",
             "anchor": "yc:brain_merge",
-            "input": "",
+            "input": "entity, entity",
             "output": "",
             "text": "book.descrip.yc:brain_merge"
         },
@@ -23,8 +23,8 @@
             "type": "hexcasting:pattern",
             "op_id": "yc:floodfill",
             "anchor": "yc:floodfill",
-            "input": "",
-            "output": "",
+            "input": "vector",
+            "output": "list",
             "text": "book.descrip.yc:floodfill"
         },
         {
