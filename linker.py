@@ -2,6 +2,7 @@ import os, subprocess, sys
 
 
 def linkFolder(link: str, src: str):
+    print(link, src)
     if not os.path.isdir(src) or os.path.isdir(link):
         return
     os.makedirs(os.path.dirname(link), exist_ok=True)
@@ -18,6 +19,13 @@ def linkFolder(link: str, src: str):
 SRC_ROOT = os.path.dirname(__file__)
 SRC_TARGETS = ['server_scripts', 'startup_scripts', 'client_scripts']
 SRC_TARGETS_SEP = ['assets/hex_playground', 'data/hex_playground']
+CUSTOM_LINKS = [
+    # hex patchouli
+    [
+        '../patchouli_books/thebook',
+        'data/hex_playground/patchouli_books/thebook'
+    ]
+]
 TYPE_TARGETS = ['probe']
 MC_ROOT = r'C:/Minecraft/.minecraft/versions'
 BASE_DIR = sys.argv[1] if len(sys.argv) > 1 else 'Hex'
@@ -41,5 +49,10 @@ for sub in ['Hex']:
     for t in SRC_TARGETS_SEP:
         linkFolder(
             os.path.join(kjsPath, t),
+            os.path.join(SRC_ROOT, t),
+        )
+    for [f, t] in CUSTOM_LINKS:
+        linkFolder(
+            os.path.join(kjsPath, f),
             os.path.join(SRC_ROOT, t),
         )

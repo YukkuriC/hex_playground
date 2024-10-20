@@ -1,4 +1,6 @@
 {
+    "yc.hex.book.entry.normal": "自定义普通图案",
+    "yc.hex.book.entry.per_world": "自定义卓越图案",
     "hexcasting.spell.yc:floodfill": "泛洪之精思",
     "hexcasting.spell.yc:charge_media": "充能手中道具",
     "hexcasting.spell.yc:punch_entity": "直接伤害",
