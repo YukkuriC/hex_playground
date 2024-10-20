@@ -36,16 +36,25 @@ global.operateMap = {
         // 因为要锤人，确保被锤的有受击方法，对应方法似乎1.20还是1.21改名成hurt了
         if (entity?.attack === undefined) throw MishapInvalidIota.of(iotaEntity, 1, 'class.entity')
 
-        // TODO 真的锤
-        ctx.caster.tell(`将要锤 ${entity.name.string} ${damage} 伤害`)
-        return OperationResult(continuation, stack, ravenmind, [])
-
-        // 开锤
-        let src = DamageSource.playerAttack(ctx.caster)
-        victim.attack(src, damage)
-
-        //
-        let sideEffects = [OperatorSideEffect.Particles(ParticleSpray.burst(victim.position(), damage / 20, damage * 2))]
+        // 真的锤
+        let sideEffects = [
+            // 先扣钱
+            OperatorSideEffect.ConsumeMedia(Math.ceil(damage * 100)),
+            // 再施法
+            OperatorSideEffect.AttemptSpell(
+                {
+                    cast: () => {
+                        ctx.caster.tell(`锤 ${entity.name.string} ${damage} 伤害`)
+                        entity.attack(DamageSource.playerAttack(ctx.caster), damage)
+                    },
+                },
+                true,
+                true,
+            ),
+            // 施法成功再放粒子
+            OperatorSideEffect.Particles(ParticleSpray.burst(entity.position(), damage / 20, damage * 2)),
+        ]
+        return OperationResult(continuation, stack, ravenmind, sideEffects)
     },
 }
 function lazyMapPattern(pattern, id, isGreat) {
