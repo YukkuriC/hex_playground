@@ -11,5 +11,15 @@
     "hexcasting.spell.yc:mind_stack/size": "脑深之精思",
     "hexcasting.spell.yc:mind_patterns": "象形之精思",
     "hexcasting.spell.yc:mind_patterns/clear": "无形之策略",
-    "hexcasting.mishap.invalid_value.class.entity.brainsweep_target": "一个可洗脑目标"
+    "hexcasting.mishap.invalid_value.class.entity.brainsweep_target": "一个可洗脑目标",
+    "book.descrip.yc:brain_merge": "TODO book.descrip.yc:brain_merge",
+    "book.descrip.yc:charge_media": "TODO book.descrip.yc:charge_media",
+    "book.descrip.yc:floodfill": "TODO book.descrip.yc:floodfill",
+    "book.descrip.yc:mind_patterns": "TODO book.descrip.yc:mind_patterns",
+    "book.descrip.yc:mind_patterns/clear": "TODO book.descrip.yc:mind_patterns/clear",
+    "book.descrip.yc:mind_stack/pop": "TODO book.descrip.yc:mind_stack/pop",
+    "book.descrip.yc:mind_stack/push": "TODO book.descrip.yc:mind_stack/push",
+    "book.descrip.yc:mind_stack/size": "TODO book.descrip.yc:mind_stack/size",
+    "book.descrip.yc:punch_entity": "TODO book.descrip.yc:punch_entity",
+    "book.descrip.yc:refresh_depth": "TODO book.descrip.yc:refresh_depth"
 }
