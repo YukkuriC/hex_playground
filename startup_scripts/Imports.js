@@ -21,24 +21,30 @@
     }
     let _ = path => new _cls(path)
 
-    _('net.minecraft.world')
+    _('net.minecraft')
         .add([
-            _('entity').add([
-                'Mob',
-                //
-                'npc.AbstractVillager',
-            ]),
-            _('level.block').add([
-                // legacy
-                'CocoaBlock',
-                'state.properties.IntegerProperty',
+            _('sounds').add(['SoundEvents', 'SoundSource']),
+            _('world').add([
+                _('entity').add([
+                    'Mob',
+                    _('npc').add([
+                        //
+                        'AbstractVillager',
+                        'Villager',
+                        'VillagerTrades',
+                    ]),
+                ]),
+                _('level.block').add([
+                    // legacy
+                    'CocoaBlock',
+                    'state.properties.IntegerProperty',
+                ]),
             ]),
         ])
         .build()
     _('java.lang.Integer').build()
     _('at.petrak.hexcasting')
         .add([
-            //
             'xplat.IXplatAbstractions',
             _('common').add([
                 //
@@ -64,6 +70,7 @@
                     'Mishap',
                     'MishapNotEnoughArgs',
                     'MishapInvalidIota',
+                    'MishapAlreadyBrainswept',
                 ]),
                 _('iota').add([
                     // 'Iota',

@@ -59,3 +59,14 @@ global.CanHarvest = (block, state) => {
     }
     return false
 }
+
+global.shuffleList = list => {
+    for (let f = list.length - 1; f > 0; f--) {
+        let t = Math.floor((1 + f) * Math.random())
+        if (f !== t) {
+            let swap = list[f]
+            list[f] = list[t]
+            list[t] = swap
+        }
+    }
+}

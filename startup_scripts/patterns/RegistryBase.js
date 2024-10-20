@@ -24,6 +24,11 @@ Args.prototype = {
             if (Brainsweeping.isValidTarget(entity)) return entity
             if (entity instanceof AbstractVillager) return entity
         }
+        throw MishapInvalidIota.of(this.data[i], this.data.length - i - 1, 'class.entity.villager')
+    },
+    villager(i) {
+        let entity = this.entity(i)
+        if (entity instanceof Villager) return entity
         throw MishapInvalidIota.of(this.data[i], this.data.length - i - 1, 'class.entity.brainsweep_target')
     },
 }

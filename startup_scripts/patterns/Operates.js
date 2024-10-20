@@ -51,18 +51,45 @@ global.PatternOperateMap = {
         let args = new Args(stack, 2)
         let victim = args.brainsweep_target(0)
         /**@type {Internal.Villager}*/
-        let inject = args.brainsweep_target(1)
-        // TODO 异常处理
+        let inject = args.villager(1)
+        // 异常处理
+        for (let target of [victim, inject]) if (Brainsweeping.isBrainswept(target)) throw MishapAlreadyBrainswept(target)
         let sideEffects = []
 
         // 前额叶移植
-        let oldData = inject.getVillagerData()
+        let oldData = inject.getVillagerData && inject.getVillagerData()
         if (oldData.level < 5 && oldData.profession.name() !== 'none') {
-            // TODO 处理交易经验
-            inject.setVillagerData(oldData.setLevel(oldData.getLevel() + 1))
-            // TODO 刷新交易
+            let newLevel = oldData.getLevel() + 1
+            inject.setVillagerData(oldData.setLevel(newLevel))
+            inject.setVillagerXp([10, 70, 150, 250][newLevel - 2]) // VillagerData.NEXT_LEVEL_XP_THRESHOLDS
+            inject.potionEffects.add('regeneration', 40, 0)
+            let newOffers = inject.offers
+            newOffers.clear()
+            // 刷新交易
+            let tradeMap = VillagerTrades.TRADES.get(oldData.profession)
+            for (let i = 1; i <= newLevel; i++) {
+                // 抓两个对应等级交易
+                let curLevelTrades = tradeMap[i]
+                global.shuffleList(curLevelTrades)
+                for (let j = 0; j < 2 && j < curLevelTrades.length; j++) {
+                    // let tradeType = curLevelTrades.pop() 这倒霉的array pop之后不删的
+                    let tradeType = curLevelTrades[j]
+                    // ctx.caster.tell(`test ${tradeType} 0:${curLevelTrades[0]} 1:${curLevelTrades[1]}`)
+                    if (!tradeType) break
+                    let trade = tradeType.getOffer(inject, inject.random)
+                    newOffers.push(trade)
+                }
+            }
+            inject.setOffers(newOffers)
 
             Brainsweeping.brainsweep(victim) // 天生万物以养人
+            sideEffects.push(
+                OperatorSideEffect.Particles(ParticleSpray.cloud(victim.eyePosition, 1, 20)),
+                OperatorSideEffect.Particles(ParticleSpray.burst(inject.eyePosition, 0.3, 100)),
+            )
+            let posStr = `${victim.x} ${victim.y} ${victim.z}`
+            ctx.world.runCommandSilent(`playsound minecraft:entity.villager.death ambient @a ${posStr} 0.8 1`)
+            ctx.world.runCommandSilent(`playsound minecraft:entity.player.levelup ambient @a ${posStr} 0.5 0.8`)
         }
 
         return OperationResult(c, stack, r, sideEffects)
