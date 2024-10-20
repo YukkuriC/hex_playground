@@ -6,6 +6,8 @@ global.loadCustomPatterns = () => {
         let resourceKey = ResourceLocation('yc', id)
         if (actionLookup.containsKey(resourceKey)) actionLookup.remove(resourceKey)
         PatternRegistry.mapPattern(HexPattern.fromAngles(seq, dir), resourceKey, new ActionJS(id, isGreat), isGreat)
+        // patchouli entry
+        global.HexPatchouliGen.add(resourceKey, isGreat)
     }
 
     registerPatternWrap('aaqawawaeadaadadadaadadadaada', HexDir.EAST, 'floodfill', 1)

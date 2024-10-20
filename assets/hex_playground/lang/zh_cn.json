@@ -1,4 +1,6 @@
 {
+    "yc.hex.book.entry.normal": "自定义普通图案",
+    "yc.hex.book.entry.per_world": "自定义卓越图案",
     "hexcasting.spell.yc:floodfill": "泛洪之精思",
     "hexcasting.spell.yc:charge_media": "充能手中道具",
     "hexcasting.spell.yc:punch_entity": "直接伤害",
@@ -9,5 +11,15 @@
     "hexcasting.spell.yc:mind_stack/size": "脑深之精思",
     "hexcasting.spell.yc:mind_patterns": "象形之精思",
     "hexcasting.spell.yc:mind_patterns/clear": "无形之策略",
-    "hexcasting.mishap.invalid_value.class.entity.brainsweep_target": "一个可洗脑目标"
+    "hexcasting.mishap.invalid_value.class.entity.brainsweep_target": "一个可洗脑目标",
+    "book.descrip.yc:brain_merge": "在升级栈顶$(item)村民$()交易等级可升级时，对栈顶往下第二实体进行意识剥离$(br)被剥离意识的实体也可以是$(item)掠夺者$()、$(item)流浪栓绳$()等",
+    "book.descrip.yc:charge_media": "充能施法道具，若使用法杖则无效果",
+    "book.descrip.yc:floodfill": "BFS搜索栈顶坐标相连所有相同类型方块，返回其坐标列表",
+    "book.descrip.yc:mind_patterns": "获取当前法杖画布内所有图案列表，按绘制先后顺序返回",
+    "book.descrip.yc:mind_patterns/clear": "清除法杖画布内所有图案",
+    "book.descrip.yc:mind_stack/pop": "弹出玩家法杖空间栈顶的元素，放入当前栈顶",
+    "book.descrip.yc:mind_stack/push": "弹出当前栈顶的元素，放入玩家法杖空间栈顶",
+    "book.descrip.yc:mind_stack/size": "获取玩家法杖空间栈的元素总数",
+    "book.descrip.yc:punch_entity": "对输入实体造成指定数目的玩家攻击伤害",
+    "book.descrip.yc:refresh_depth": "重置当前法术栈深计数$(br)$(bold)小 心 死 循 环"
 }
