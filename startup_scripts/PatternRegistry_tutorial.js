@@ -57,10 +57,25 @@ global.operateMap = {
         return OperationResult(continuation, stack, ravenmind, sideEffects)
     },
 }
-function lazyMapPattern(pattern, id, isGreat) {
-    // 删去执行函数输入
-    PatternRegistry.mapPattern(pattern, ResourceLocation('kubejs', id), new MyActionClass(isGreat, id), isGreat)
+global.loadCustomPatterns_tutorial = () => {
+    let actionLookup = global.getField(PatternRegistry, 'actionLookup', 1) // 反射拿字典
+    function registerPatternWrap(seq, dir, id, isGreat) {
+        isGreat = !!isGreat
+        if (!id in global.PatternOperateMap) throw new Error('missing operate: ' + id)
+        let resourceKey = ResourceLocation('kubejs', id)
+        if (actionLookup.containsKey(resourceKey))
+            // 忽有狂徒夜磨刀
+            actionLookup.remove(resourceKey)
+        PatternRegistry.mapPattern(
+            //
+            HexPattern.fromAngles(seq, dir),
+            ResourceLocation('kubejs', id),
+            new MyActionClass(isGreat, id),
+            isGreat,
+        )
+    }
+
+    // 以下为实际注册自定义法术位置
+    registerPatternWrap('wwawawwdeeeee', HexDir.SOUTH_WEST, 'do_punch', false)
 }
-StartupEvents.postInit(() => {
-    lazyMapPattern(HexPattern.fromAngles('wwawawwdeeeee', HexDir.SOUTH_WEST), 'do_punch', false)
-})
+StartupEvents.postInit(global.loadCustomPatterns_tutorial)
