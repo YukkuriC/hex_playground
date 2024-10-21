@@ -66,7 +66,8 @@
     let str2nbt = raw => {
         raw = String(raw)
             .replace(/\/\/.*/g, ' ')
-            .replace(/\/\*.*?\*\//gs, ' ')
+            .replace(/[\r\n]/g, ' ')
+            .replace(/\/\*.*?\*\//g, ' ')
         let code = []
         raw.replace(/\\|\(|\)|\[|\]|[\w\.\/\-\:]+/g, match => (code.push(match), ''))
 
