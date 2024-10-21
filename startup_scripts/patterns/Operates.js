@@ -49,6 +49,7 @@ global.PatternOperateMap = {
     },
     brain_merge: (c, stack, r, ctx) => {
         let args = new Args(stack, 2)
+        /**@type {Internal.AbstractVillager}*/
         let victim = args.brainsweep_target(0)
         /**@type {Internal.Villager}*/
         let inject = args.villager(1)
@@ -64,12 +65,11 @@ global.PatternOperateMap = {
             inject.setVillagerXp([10, 70, 150, 250][newLevel - 2]) // VillagerData.NEXT_LEVEL_XP_THRESHOLDS
             inject.potionEffects.add('regeneration', 40, 0)
             let newOffers = inject.offers
-            newOffers.clear()
-            // 刷新交易
             let tradeMap = VillagerTrades.TRADES.get(oldData.profession)
-            for (let i = 1; i <= newLevel; i++) {
+            // 其实不用删之前的交易
+            {
                 // 抓两个对应等级交易
-                let curLevelTrades = tradeMap[i]
+                let curLevelTrades = tradeMap[newLevel]
                 global.shuffleList(curLevelTrades)
                 for (let j = 0; j < 2 && j < curLevelTrades.length; j++) {
                     // let tradeType = curLevelTrades.pop() 这倒霉的array pop之后不删的
@@ -79,6 +79,16 @@ global.PatternOperateMap = {
                     let trade = tradeType.getOffer(inject, inject.random)
                     newOffers.push(trade)
                 }
+            }
+            // 再毛一个受害者的交易（若有）
+            if (victim instanceof AbstractVillager) {
+                let extOffers = victim.offers
+                if (extOffers.length > 0) {
+                    newOffers.push(extOffers[Math.floor(Math.random() * extOffers.length)])
+                }
+                extOffers.clear()
+                victim.setOffers(extOffers)
+                victim.nbt.merge({ NoAI: 1 }) // 流浪栓绳你抗洗脑是吧
             }
             inject.setOffers(newOffers)
 
