@@ -64,7 +64,9 @@
 
     // 把正反解析函数挪一块
     let str2nbt = raw => {
-        raw = String(raw).replace(/\/\/.*/g, ' ')
+        raw = String(raw)
+            .replace(/\/\/.*/g, ' ')
+            .replace(/\/\*.*?\*\//gs, ' ')
         let code = []
         raw.replace(/\\|\(|\)|\[|\]|[\w\.\/\-\:]+/g, match => (code.push(match), ''))
 
