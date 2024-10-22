@@ -28,24 +28,47 @@ global.HexPatchouliGen = {
     write(key, obj) {
         JsonIO.write(this.paths[key], obj)
     },
-    genAll() {
+    tryAddLang(langMap, key) {
+        if (!(key in langMap)) {
+            langMap[key] = 'TODO ' + key
+            return true
+        }
+    },
+    genAll(reorder) {
         let entryNormal = this.read('normal')
         let entryPerWorld = this.read('perWorld')
-        entryNormal.pages = []
-        entryPerWorld.pages = []
+        let pagesExist = {}
+        for (let p of entryNormal.pages) pagesExist[p.op_id] = p
+        for (let p of entryPerWorld.pages) pagesExist[p.op_id] = p
+        if (reorder) {
+            entryNormal.pages = []
+            entryPerWorld.pages = []
+        }
         let langMap = this.read('lang')
+        let normapDocDirty = false,
+            perWorldDocDirty = false,
+            langMapDirty = false
 
         // fill missing data
         let keySeq = Array.from(this.overallMap).sort()
         for (let id of keySeq) {
-            let page = this.genPage(id)
-            if (!(id in langMap)) langMap[page.text] = 'TODO ' + page.text
-            ;(this.normalMap.has(id) ? entryNormal : entryPerWorld).pages.push(page)
+            let page = pagesExist[id] ?? this.genPage(id)
+            langMapDirty |= this.tryAddLang(langMap, 'hexcasting.spell.' + id)
+            langMapDirty |= this.tryAddLang(langMap, page.text)
+            if (reorder || !(id in pagesExist)) {
+                if (this.normalMap.has(id)) {
+                    entryNormal.pages.push(page)
+                    normapDocDirty = true
+                } else {
+                    entryPerWorld.pages.push(page)
+                    perWorldDocDirty = true
+                }
+            }
         }
 
         // save data
-        this.write('normal', entryNormal)
-        this.write('perWorld', entryPerWorld)
-        this.write('lang', langMap)
+        if (normapDocDirty) this.write('normal', entryNormal)
+        if (perWorldDocDirty) this.write('perWorld', entryPerWorld)
+        if (langMapDirty) this.write('lang', langMap)
     },
 }
