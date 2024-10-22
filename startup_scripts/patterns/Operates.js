@@ -141,4 +141,17 @@ global.PatternOperateMap = {
             if (item) item.use(ctx.world, ctx.caster, ctx.castingHand)
         })
     },
+    nested_modify: (c, stack, r, ctx) => {
+        let args = new Args(stack, 3)
+        let list_nbt = HexIotaTypes.serialize(args.get(0))
+        let idx_list = args.list(1).list
+        let n = idx_list.length
+        let setter = list_nbt
+        for (let i = 0; i < n; i++) {
+            let idx = Math.round(idx_list[i].double)
+            if (i === n - 1) setter['hexcasting:data'][idx] = HexIotaTypes.serialize(args.get(2))
+            else setter = setter['hexcasting:data'][idx]
+        }
+        stack.push(HexIotaTypes.deserialize(list_nbt, ctx.world))
+    },
 }

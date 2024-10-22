@@ -48,6 +48,7 @@
             'xplat.IXplatAbstractions',
             _('common').add([
                 //
+                'lib.hex.HexIotaTypes',
                 'misc.Brainsweeping',
             ]),
         ])

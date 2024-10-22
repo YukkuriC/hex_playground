@@ -1,55 +1,63 @@
 {
-    "name": "yc.hex.book.entry.normal",
-    "category": "hexcasting:patterns",
-    "icon": "minecraft:command_block",
-    "pages": [
-        {
-            "type": "hexcasting:pattern",
-            "op_id": "yc:mind_patterns",
-            "anchor": "yc:mind_patterns",
-            "input": "",
-            "output": "list",
-            "text": "book.descrip.yc:mind_patterns"
-        },
-        {
-            "type": "hexcasting:pattern",
-            "op_id": "yc:mind_patterns/clear",
-            "anchor": "yc:mind_patterns/clear",
-            "input": "",
-            "output": "",
-            "text": "book.descrip.yc:mind_patterns/clear"
-        },
-        {
-            "type": "hexcasting:pattern",
-            "op_id": "yc:mind_stack/pop",
-            "anchor": "yc:mind_stack/pop",
-            "input": "",
-            "output": "any",
-            "text": "book.descrip.yc:mind_stack/pop"
-        },
-        {
-            "type": "hexcasting:pattern",
-            "op_id": "yc:mind_stack/push",
-            "anchor": "yc:mind_stack/push",
-            "input": "any",
-            "output": "",
-            "text": "book.descrip.yc:mind_stack/push"
-        },
-        {
-            "type": "hexcasting:pattern",
-            "op_id": "yc:mind_stack/size",
-            "anchor": "yc:mind_stack/size",
-            "input": "",
-            "output": "num",
-            "text": "book.descrip.yc:mind_stack/size"
-        },
-        {
-            "type": "hexcasting:pattern",
-            "op_id": "yc:punch_entity",
-            "anchor": "yc:punch_entity",
-            "input": "entity, num",
-            "output": "",
-            "text": "book.descrip.yc:punch_entity"
-        }
-    ]
+	"name": "yc.hex.book.entry.normal",
+	"category": "hexcasting:patterns",
+	"icon": "minecraft:command_block",
+	"pages": [
+		{
+			"type": "hexcasting:pattern",
+			"op_id": "yc:mind_patterns",
+			"anchor": "yc:mind_patterns",
+			"input": "",
+			"output": "list",
+			"text": "book.descrip.yc:mind_patterns"
+		},
+		{
+			"type": "hexcasting:pattern",
+			"op_id": "yc:mind_patterns/clear",
+			"anchor": "yc:mind_patterns/clear",
+			"input": "",
+			"output": "",
+			"text": "book.descrip.yc:mind_patterns/clear"
+		},
+		{
+			"type": "hexcasting:pattern",
+			"op_id": "yc:mind_stack/pop",
+			"anchor": "yc:mind_stack/pop",
+			"input": "",
+			"output": "any",
+			"text": "book.descrip.yc:mind_stack/pop"
+		},
+		{
+			"type": "hexcasting:pattern",
+			"op_id": "yc:mind_stack/push",
+			"anchor": "yc:mind_stack/push",
+			"input": "any",
+			"output": "",
+			"text": "book.descrip.yc:mind_stack/push"
+		},
+		{
+			"type": "hexcasting:pattern",
+			"op_id": "yc:mind_stack/size",
+			"anchor": "yc:mind_stack/size",
+			"input": "",
+			"output": "num",
+			"text": "book.descrip.yc:mind_stack/size"
+		},
+		{
+			"type": "hexcasting:pattern",
+			"op_id": "yc:nested_modify",
+			"anchor": "yc:nested_modify",
+			"input": "list, list, any",
+			"output": "list",
+			"text": "book.descrip.yc:nested_modify"
+		},
+		{
+			"type": "hexcasting:pattern",
+			"op_id": "yc:punch_entity",
+			"anchor": "yc:punch_entity",
+			"input": "entity, num",
+			"output": "",
+			"text": "book.descrip.yc:punch_entity"
+		}
+	]
 }

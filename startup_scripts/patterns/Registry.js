@@ -21,5 +21,7 @@ global.loadCustomPatterns = () => {
     registerPatternWrap('waawweeeeewaa', HexDir.SOUTH_WEST, 'mind_stack/size')
     registerPatternWrap('waawweeeeaaeaeaeaeaw', HexDir.SOUTH_WEST, 'mind_patterns')
     registerPatternWrap('waawweeeeewdewqa', HexDir.SOUTH_WEST, 'mind_patterns/clear')
+
+    registerPatternWrap('wdwawedqdewawdw', HexDir.SOUTH_WEST, 'nested_modify')
 }
 StartupEvents.postInit(global.loadCustomPatterns)
