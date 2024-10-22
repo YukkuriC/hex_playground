@@ -12,6 +12,7 @@ global.loadCustomPatterns = () => {
 
     registerPatternWrap('aaqawawaeadaadadadaadadadaada', HexDir.EAST, 'floodfill', 1)
     registerPatternWrap('wwaqqqqqedwdwwwaw', HexDir.EAST, 'charge_media', 1)
+    registerPatternWrap('eqaawawaeqqqaawdwdwaw', HexDir.SOUTH_WEST, 'charge_media/wisp', 1)
     registerPatternWrap('aaddwdwdqdwd', HexDir.NORTH_WEST, 'punch_entity')
     registerPatternWrap('wqqwqwqaeqeeedqqeaqadedaqaedeqqeqedeqeaqeqaqedeadeaqwqwqaeda', HexDir.EAST, 'brain_merge', 1)
 

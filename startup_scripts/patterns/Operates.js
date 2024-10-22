@@ -33,6 +33,12 @@ global.PatternOperateMap = {
             item.setMedia(stack, item.getMaxMedia(stack))
         }
     },
+    'charge_media/wisp': (c, s, r, ctx) => {
+        let wisp = ctx.wisp
+        if (wisp) {
+            wisp.media = 1145140000
+        }
+    },
     punch_entity: (continuation, stack, ravenmind, ctx) => {
         let args = new Args(stack, 2)
         let victim = args.entity(0)
