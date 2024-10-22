@@ -196,7 +196,7 @@
             injectItem(target, nbt, rename)
             return 114514
         }
-        let clipboardSendData = ctx => {
+        let clipboardSendData = (ctx, duck) => {
             /**@type {Player}*/
             let player = ctx.source.entity
             if (!player.sendData) return 0
@@ -205,6 +205,7 @@
             try {
                 payload.rename = arg.STRING.getResult(ctx, 'rename')
             } catch (e) {}
+            if (duck) payload.duck = 1
 
             player.sendData('hexParse/clipboard/pull', payload)
             return 1919810
@@ -225,6 +226,12 @@
                         .literal('load_clipboard')
                         .executes(clipboardSendData)
                         .then(cmd.argument('rename', arg.STRING.create(e)).executes(clipboardSendData)),
+                )
+                .then(
+                    cmd
+                        .literal('load_clipboard_ducky')
+                        .executes(c => clipboardSendData(c, 1))
+                        .then(cmd.argument('rename', arg.STRING.create(e)).executes(c => clipboardSendData(c, 1))),
                 )
                 .then(
                     cmd.literal('read').executes(ctx =>
