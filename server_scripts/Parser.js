@@ -4,6 +4,7 @@
     let PRRaw = global.loadRawClass(PatternRegistryPath)
     let Double = Java.loadClass('java.lang.Double')
     let HexIotaTypes = Java.loadClass('at.petrak.hexcasting.common.lib.hex.HexIotaTypes')
+    let EntityIota = Java.loadClass('at.petrak.hexcasting.api.spell.iota.EntityIota')
     let Registry = Java.loadClass('net.minecraft.core.Registry')
 
     let mapStartDir = {}
@@ -63,7 +64,7 @@
     ServerEvents.command('reload', onLoad)
 
     // 把正反解析函数挪一块
-    let str2nbt = raw => {
+    let str2nbt = (raw, player) => {
         raw = String(raw)
             .replace(/\/\/.*/g, ' ')
             .replace(/[\r\n]/g, ' ')
@@ -83,6 +84,11 @@
             // normal kw
             else if (kw in mapPatterns) {
                 stack[0].push(mapPatterns[kw])
+            }
+
+            // myself
+            else if (kw.toLowerCase() === 'myself') {
+                stack[0].push(String(HexIotaTypes.serialize(EntityIota(player))))
             }
 
             // num pattern by escape
@@ -185,7 +191,7 @@
         const { commands: cmd, arguments: arg } = e
 
         let codeParser = ctx => {
-            let nbt = str2nbt(arg.STRING.getResult(ctx, 'code'))
+            let nbt = str2nbt(arg.STRING.getResult(ctx, 'code'), ctx.source.entity)
             let rename = null
             try {
                 rename = arg.STRING.getResult(ctx, 'rename')
@@ -269,7 +275,7 @@
 
     NetworkEvents.dataReceived('hexParse/clipboard/push', e => {
         let { code, rename } = e.data
-        let nbt = str2nbt(code)
+        let nbt = str2nbt(code, e.player)
         let item = player2focus(e.player)
         injectItem(item, nbt, rename)
     })
