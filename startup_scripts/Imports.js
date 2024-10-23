@@ -27,6 +27,7 @@
             _('world').add([
                 _('entity').add([
                     'Mob',
+                    'projectile.EyeOfEnder',
                     _('npc').add([
                         //
                         'AbstractVillager',
@@ -56,6 +57,7 @@
     _('at.petrak.hexcasting.api')
         .add([
             'PatternRegistry',
+            'misc.HexDamageSources',
             _('spell').add([
                 _('math').add(['HexDir', 'HexPattern']),
                 'Action',

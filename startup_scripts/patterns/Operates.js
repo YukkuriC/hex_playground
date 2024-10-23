@@ -101,7 +101,7 @@ global.PatternOperateMap = {
             Brainsweeping.brainsweep(victim) // 天生万物以养人
             sideEffects.push(
                 OperatorSideEffect.Particles(ParticleSpray.cloud(victim.eyePosition, 1, 20)),
-                OperatorSideEffect.Particles(ParticleSpray.burst(inject.eyePosition, 0.3, 100)),
+                OperatorSideEffect.Particles(ParticleSpray.burst(inject.eyePosition, 1, 100)),
             )
             let posStr = `${victim.x} ${victim.y} ${victim.z}`
             ctx.world.runCommandSilent(`playsound minecraft:entity.villager.death ambient @a ${posStr} 0.8 1`)
@@ -109,6 +109,58 @@ global.PatternOperateMap = {
         }
 
         return OperationResult(c, stack, r, sideEffects)
+    },
+    crystalize: (c, s, r, ctx) => {
+        let crystalSteps = [
+            [Item.of('budding_amethyst'), 100],
+            [Item.of('hexcasting:charged_amethyst'), 10],
+            [Item.of('amethyst_shard'), 5],
+            [Item.of('hexcasting:amethyst_dust'), 1],
+        ]
+        let sideEffects = []
+
+        /**@type {Internal.Player}*/
+        let player = ctx.caster
+        let level = player.level
+        let origin = player.eyePosition
+        let x = origin.x(),
+            y = origin.y(),
+            z = origin.z()
+        for (let target of level.getEntitiesWithin(player.boundingBox.inflate(32))) {
+            // 筛选
+            if (target.type == 'dummmmmmy:target_dummy') continue
+            if (player.stringUuid === target.stringUuid) {
+                player.setAirSupply(0)
+                player.setFoodLevel(0)
+                player.attack(DamageSource.OUT_OF_WORLD, player.health - 1)
+                player.potionEffects.add('blindness', 200, 2)
+                player.potionEffects.add('night_vision', 100, 0)
+                continue
+            }
+            let targetPos = target.eyePosition
+            if (targetPos.subtract(origin).lengthSqr() > 1024) continue
+            // 处死
+            let health = target.health
+            if (health === undefined) continue
+            health *= Math.random()
+            target.setHealth(0)
+            // 结晶
+            for (let pair of crystalSteps) {
+                let [item, step] = pair
+                while (health >= step) {
+                    health -= step
+                    // create item ender eye
+                    let eye = new EyeOfEnder(level, targetPos.x(), targetPos.y(), targetPos.z())
+                    eye.setItem(item)
+                    eye.signalTo(new BlockPos(x + (Math.random() - 0.5) * 8, y + (Math.random() - 0.3) * 6, z + (Math.random() - 0.5) * 8))
+                    eye.spawn()
+                }
+            }
+            // fx
+            sideEffects.push(OperatorSideEffect.Particles(ParticleSpray.burst(targetPos, 5, 100)))
+        }
+
+        return OperationResult(c, s, r, sideEffects)
     },
 
     // 代码执行相关
