@@ -38,16 +38,7 @@ for (let pair of ['double', 'entity', 'list', 'pattern', 'vec3/vector', 'bool/bo
 }
 
 function ActionJS(id, isGreat) {
-    this.operate = (c, s, r, ct) => {
-        s = Array.from(s.toArray()) // for js methods
-        try {
-            return global.PatternOperateMap[id](c, s, r, ct) || OperationResult(c, s, r, [])
-        } catch (e) {
-            if (e instanceof Mishap)
-                return OperationResult(c, s, r, [OperatorSideEffect.DoMishap(e, Mishap.Context(HexPattern(HexDir.WEST, []), null))])
-            throw e
-        }
-    }
+    this.operate = (c, s, r, ct) => ActionJS.TryOperate(c, s, r, ct, global.PatternOperateMap[id])
 
     // isGreat
     this.isGreat = isGreat ? () => true : () => false
@@ -59,4 +50,20 @@ function ActionJS(id, isGreat) {
 ActionJS.prototype = {
     alwaysProcessGreatSpell: () => true,
     causesBlindDiversion: () => true,
+}
+ActionJS.TryOperate = (c, s, r, ct, func) => {
+    s = Array.from(s.toArray()) // for js methods
+    try {
+        return func(c, s, r, ct) || OperationResult(c, s, r, [])
+    } catch (e) {
+        if (e instanceof Mishap)
+            return OperationResult(c, s, r, [OperatorSideEffect.DoMishap(e, Mishap.Context(HexPattern(HexDir.WEST, []), null))])
+        throw e
+    }
+}
+ActionJS.actionLookup = global.getField(PatternRegistry, 'actionLookup', 1)
+ActionJS.OverrideRegister = (resourceKey, pattern, action, isGreat) => {
+    isGreat = !!isGreat
+    if (ActionJS.actionLookup.containsKey(resourceKey)) ActionJS.actionLookup.remove(resourceKey)
+    PatternRegistry.mapPattern(pattern, resourceKey, action, isGreat)
 }

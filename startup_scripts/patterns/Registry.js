@@ -1,11 +1,9 @@
 global.loadCustomPatterns = () => {
-    let actionLookup = global.getField(PatternRegistry, 'actionLookup', 1)
     function registerPatternWrap(seq, dir, id, isGreat) {
-        isGreat = !!isGreat
         if (!id in global.PatternOperateMap) throw new Error('missing operate: ' + id)
         let resourceKey = ResourceLocation('yc', id)
-        if (actionLookup.containsKey(resourceKey)) actionLookup.remove(resourceKey)
-        PatternRegistry.mapPattern(HexPattern.fromAngles(seq, dir), resourceKey, new ActionJS(id, isGreat), isGreat)
+        let pattern = HexPattern.fromAngles(seq, dir)
+        ActionJS.OverrideRegister(resourceKey, pattern, new ActionJS(id, isGreat), isGreat)
         // patchouli entry
         global.HexPatchouliGen.add(resourceKey, isGreat)
     }
