@@ -133,7 +133,7 @@ global.PatternOperateMap = {
                 player.setAirSupply(0)
                 player.setFoodLevel(0)
                 player.attack(DamageSource.OUT_OF_WORLD, player.health - 1)
-                player.potionEffects.add('blindness', 200, 2)
+                player.potionEffects.add('slowness', 200, 2)
                 player.potionEffects.add('night_vision', 100, 0)
                 continue
             }
