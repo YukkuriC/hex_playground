@@ -4,7 +4,7 @@ global.patternWrapMap = {
         let newEffects = []
         let hasCost = false
         for (let e of res.sideEffects) {
-            if (e instanceof OperatorSideEffect.ConsumeMedia) {
+            if (e.amount > 0) {
                 hasCost = true
             } else newEffects.push(e)
         }
