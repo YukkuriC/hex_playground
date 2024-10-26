@@ -11,5 +11,11 @@ global.patternWrapMap = {
         if (hasCost) DecoHelpers.OverrideEffects(res, newEffects)
         return res
     },
-    wrapTryMishap: base => (c, s, r, ct) => ActionJS.TryOperate(c, s, r, ct, base.operate),
+    wrapTryMishap: base => {
+        let wrappedCall = (c, s, r, ct) => {
+            // 爆了，无论什么姿势都会异常
+            return base.operate(c, s, r, ct)
+        }
+        return (c, s, r, ct) => ActionJS.TryOperate(c, s, r, ct, wrappedCall)
+    },
 }

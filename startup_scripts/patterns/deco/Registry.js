@@ -32,6 +32,7 @@
 
         for (let kv of ActionJS.actionLookup.entrySet()) {
             let opId = kv.getKey()
+            if (opId.namespace.startsWith('yc')) continue
             let action = kv.getValue()
             if (!opId || !patternById[opId]) continue
             allIds.push(opId)
@@ -46,17 +47,15 @@
             modifiedIds[opId] = 1
         }
 
-        // test: all native no cost
+        // add try-catch for all
         for (let id of allIds) {
-            if (!id.namespace.startsWith('hex')) continue
-            doWrap(id, 'noCost')
+            doWrap(id, 'wrapTryMishap')
         }
 
-        // add try-catch for modified & write back
-        // for (let id of allIds) {
-        //     if (!modifiedIds[id]) continue
-        //     doWrap(id, 'wrapTryMishap')
-        // }
+        // test: all native no cost
+        for (let id of allIds) {
+            doWrap(id, 'noCost')
+        }
 
         // write back
         for (let id of allIds) {
