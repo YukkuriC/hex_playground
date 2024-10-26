@@ -11,11 +11,15 @@ global.patternWrapMap = {
         if (hasCost) DecoHelpers.OverrideEffects(res, newEffects)
         return res
     },
-    wrapTryMishap: base => {
-        let wrappedCall = (c, s, r, ct) => {
-            // 爆了，无论什么姿势都会异常
-            return base.operate(c, s, r, ct)
+    wrapTryMishap: base => (c, s, r, ct) => {
+        try {
+            return base.operate(c, s, r, ct) || OperationResult(c, s, r, [])
+        } catch (e) {
+            // TODO JavaException fuck
+            global.test = e
+            if (e instanceof Mishap)
+                return OperationResult(c, s, r, [OperatorSideEffect.DoMishap(e, Mishap.Context(HexPattern(HexDir.WEST, []), null))])
+            throw e
         }
-        return (c, s, r, ct) => ActionJS.TryOperate(c, s, r, ct, wrappedCall)
     },
 }
