@@ -6,6 +6,7 @@
     let HexIotaTypes = Java.loadClass('at.petrak.hexcasting.common.lib.hex.HexIotaTypes')
     let EntityIota = Java.loadClass('at.petrak.hexcasting.api.spell.iota.EntityIota')
     let Registry = Java.loadClass('net.minecraft.core.Registry')
+    let CompoundTag = Java.loadClass('net.minecraft.nbt.CompoundTag')
 
     let mapStartDir = {}
     let mapLineDir = {}
@@ -178,8 +179,9 @@
     }
     let injectItem = (target, nbt, rename) => {
         if (target) {
-            let fooItem = Item.of('hexcasting:focus', `{data:${nbt}}`)
-            target.orCreateTag.data = fooItem.nbt.data
+            let tag = new CompoundTag()
+            tag.merge(nbt)
+            target.orCreateTag.data = tag
             if (rename) {
                 rename = String(rename).replace(/\\/g, '\\\\').replace(/\"/g, '\\"') // 统一按js string处理
                 target.orCreateTag.display = { Name: `{"text":"${rename}"}` }
@@ -220,7 +222,7 @@
             let target = player2focus(ctx.source.entity)
             if (!target) return 0
             let iotaRoot = target.item.readIota(target, ctx.source.level)
-            then(iotaRoot)
+            if (iotaRoot) then(iotaRoot)
             return 1919810
         }
 
