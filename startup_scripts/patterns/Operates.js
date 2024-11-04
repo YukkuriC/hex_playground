@@ -93,8 +93,8 @@ global.PatternOperateMap = {
                     newOffers.push(extOffers[Math.floor(Math.random() * extOffers.length)])
                 }
                 extOffers.clear()
-                victim.setOffers(extOffers)
-                victim.nbt.merge({ NoAI: 1 }) // 流浪栓绳你抗洗脑是吧
+                if (victim.setOffers) victim.setOffers(extOffers)
+                victim.nbt.merge({ NoAI: 1 }) // 流浪栓绳你抗洗脑是吧 // TODO 处理BlueSkies守门人等更加抗洗脑的
             }
             inject.setOffers(newOffers)
 
