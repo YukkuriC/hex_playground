@@ -104,6 +104,28 @@
                 stack[0].push(toNum(num))
             }
 
+            // special: mask
+            else if (kw.match(/^mask_[-v]+$/)) {
+                let seq = [],
+                    line = true,
+                    start = 'EAST'
+                if (kw[5] === 'v') {
+                    line = false
+                    seq.push('a')
+                    start = 'SOUTH_EAST'
+                }
+                for (let c of kw.substring(6)) {
+                    if (c === '-') {
+                        seq.push(line ? 'w' : 'e')
+                        line = true
+                    } else {
+                        seq.push(line ? 'ea' : 'da')
+                        line = false
+                    }
+                }
+                stack[0].push(toPattern(seq.join(''), start))
+            }
+
             // vec literals
             else if (kw.startsWith('vec')) {
                 let raw = kw.split('_')
