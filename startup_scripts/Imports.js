@@ -23,6 +23,10 @@
     let _ = (path, subs) => new _cls(path, subs)
 
     let roots = [
+        _('net.minecraftforge', [
+            //
+            'common.util.LazyOptional',
+        ]),
         _('net.minecraft', [
             _('sounds', ['SoundEvents', 'SoundSource']),
             _('world', [
@@ -45,6 +49,7 @@
         ]),
         _('java.lang.Integer'),
         _('at.petrak.hexcasting', [
+            _('forge.cap', ['HexCapabilities', 'adimpl.CapStaticMediaHolder']),
             'xplat.IXplatAbstractions',
             _('common', [
                 //
