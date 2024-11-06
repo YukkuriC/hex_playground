@@ -1,9 +1,10 @@
 // priority:10
 {
     let SCOPE = this
-    let _cls = function (path) {
+    let _cls = function (path, children) {
         this.path = path
         this.subs = []
+        if (children) this.add(children)
     }
     _cls.prototype = {
         add(children) {
@@ -19,63 +20,59 @@
             else SCOPE[root.substring(root.lastIndexOf('.') + 1)] = Java.loadClass(root)
         },
     }
-    let _ = path => new _cls(path)
+    let _ = (path, subs) => new _cls(path, subs)
 
-    _('net.minecraft')
-        .add([
-            _('sounds').add(['SoundEvents', 'SoundSource']),
-            _('world').add([
-                _('entity').add([
+    let roots = [
+        _('net.minecraft', [
+            _('sounds', ['SoundEvents', 'SoundSource']),
+            _('world', [
+                _('entity', [
                     'Mob',
                     'projectile.EyeOfEnder',
-                    _('npc').add([
+                    _('npc', [
                         //
                         'AbstractVillager',
                         'Villager',
                         'VillagerTrades',
                     ]),
                 ]),
-                _('level.block').add([
+                _('level.block', [
                     // legacy
                     'CocoaBlock',
                     'state.properties.IntegerProperty',
                 ]),
             ]),
-        ])
-        .build()
-    _('java.lang.Integer').build()
-    _('at.petrak.hexcasting')
-        .add([
+        ]),
+        _('java.lang.Integer'),
+        _('at.petrak.hexcasting', [
             'xplat.IXplatAbstractions',
-            _('common').add([
+            _('common', [
                 //
                 'lib.hex.HexIotaTypes',
                 'misc.Brainsweeping',
             ]),
-        ])
-        .build()
-    _('at.petrak.hexcasting.api')
-        .add([
+        ]),
+        _('at.petrak.hexcasting.api', [
             'PatternRegistry',
             'misc.HexDamageSources',
-            _('spell').add([
-                _('math').add(['HexDir', 'HexPattern']),
+            _('spell', [
+                _('math', ['HexDir', 'HexPattern']),
                 'Action',
                 'OperationResult',
                 'ParticleSpray',
-                _('casting').add([
+                _('casting', [
                     //
                     'CastingContext',
                     'sideeffects.OperatorSideEffect',
                 ]),
-                _('mishaps').add([
+                _('mishaps', [
                     //
                     'Mishap',
                     'MishapNotEnoughArgs',
                     'MishapInvalidIota',
                     'MishapAlreadyBrainswept',
                 ]),
-                _('iota').add([
+                _('iota', [
                     // 'Iota',
                     'Vec3Iota',
                     'ListIota',
@@ -83,8 +80,9 @@
                     'PatternIota',
                 ]),
             ]),
-        ])
-        .build()
+        ]),
+    ]
+    for (let root of roots) root.build()
 }
 
 global.EVENT_BUS = ForgeEvents.eventBus()
