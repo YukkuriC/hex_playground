@@ -167,12 +167,18 @@
             let angleSeq = i.pattern.anglesSignature()
             try {
                 if (angleSeq in specialPatternSeq) return specialPatternSeq[angleSeq]
-                let resKey = PRClass.matchPatternAndID(i.pattern, level).second
-                if (!(resKey in mapPatterns)) throw null // for special registers
+                let pair = PRClass.matchPatternAndID(i.pattern, level)
+                let resKey = pair.second
+                if (resKey == 'hexcasting:mask') {
+                    return `mask_${pair.first.mask.map(x => 'v-'[Number(x)]).join('')}`
+                } else if (resKey == 'hexcasting:number') {
+                    // TODO num literal
+                    throw null
+                } else if (!(resKey in mapPatterns)) throw null // for special registers
                 if (resKey.namespace === 'hexcasting') return resKey.path
                 else return String(resKey)
             } catch (e) {}
-            return `_${i.pattern.anglesSignature()}`
+            return `_${angleSeq}`
         } else if (i.double !== undefined) {
             return String(i.double)
         } else if (i.vec3) {
