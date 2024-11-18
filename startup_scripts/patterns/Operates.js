@@ -212,4 +212,5 @@ global.PatternOperateMap = {
         }
         stack.push(HexIotaTypes.deserialize(list_nbt, ctx.world))
     },
+    foo_nothing: () => {},
 }

@@ -26,6 +26,7 @@
         `{"hexcasting:data":{angles:[B;${seq2bytes(seq)}],start_dir:${mapStartDir[startDir]}},"hexcasting:type":"hexcasting:pattern"}`
     let toType = type => `{"hexcasting:data":"${type}","hexcasting:type":"hexal:iota_type"}`
     let toEntityType = type => `{"hexcasting:data":"${type}","hexcasting:type":"hexal:entity_type"}`
+    let toStr = str => `{"hexcasting:data":"${str}","hexcasting:type":"yc:comment"}`
 
     let specialPatternSeq = {
         qqqaw: '\\',
@@ -67,8 +68,12 @@
     // 把正反解析函数挪一块
     let str2nbt = (raw, player) => {
         raw = String(raw)
+            .replace(/\r/g, '')
             .replace(/\/\/.*/g, ' ')
-            .replace(/[\r\n]/g, ' ')
+            .replace(/\t/g, '    ')
+            .split('\n') // auto insert line break & tabs
+            .map(line => line.replace(/^\s*/, match => `tab_${match.length} `))
+            .join(' ')
             .replace(/\/\*.*?\*\//g, ' ')
         let code = []
         raw.replace(/\\|\(|\)|\[|\]|[\w\.\/\-\:]+/g, match => (code.push(match), ''))
@@ -90,6 +95,15 @@
             // myself
             else if (kw.toLowerCase() === 'myself') {
                 stack[0].push(String(HexIotaTypes.serialize(EntityIota(player))))
+            }
+
+            // indent
+            else if (kw.startsWith('tab')) {
+                let cnt = Number(kw.substring(4)) || 0
+                stack[0].push(toStr('\n' + ' '.repeat(cnt)))
+            } else if (kw.startsWith('comment')) {
+                let raw = kw.substring(8)
+                stack[0].push(toStr(raw))
             }
 
             // num pattern by escape
