@@ -7,6 +7,7 @@
     let EntityIota = Java.loadClass('at.petrak.hexcasting.api.spell.iota.EntityIota')
     let Registry = Java.loadClass('net.minecraft.core.Registry')
     let CompoundTag = Java.loadClass('net.minecraft.nbt.CompoundTag')
+    let CastingContext = Java.loadClass('at.petrak.hexcasting.api.spell.casting.CastingContext')
 
     let mapStartDir = {}
     let mapLineDir = {}
@@ -109,8 +110,41 @@
             // num pattern by escape
             else if (kw.startsWith('num_')) {
                 let num = Number(kw.substring(4)) || 0
-                stack[0].push(mapPatterns.escape)
-                stack[0].push(toNum(num))
+                // solve num
+                {
+                    let neg = num < 0
+                    let target = Math.min(Math.abs(num), 1e10)
+                    let seqList = []
+                    let tolerance = 1e-3 // no int64 so weaker
+
+                    // 1. handle decimal
+                    for (var i = 0; i < 100; i++) {
+                        if (target % 1 < tolerance) break
+                        target *= 2
+                        tolerance *= 2
+                        seqList.push('d')
+                    }
+
+                    // 2. bit deconstruct
+                    target = Math.round(target)
+                    while (target != 0) {
+                        if ((target & 10) == 10) {
+                            seqList.push('e')
+                            target ^= 10
+                        } else if ((target & 5) == 5) {
+                            seqList.push('q')
+                            target ^= 5
+                        } else if ((target & 1) == 1) {
+                            seqList.push('w')
+                            target ^= 1
+                        } else {
+                            seqList.push('a')
+                            target >>>= 1
+                        }
+                    }
+                    seqList.push(neg ? 'dedd' : 'aqaa')
+                    return toPattern(seqList.reverse().join(''), num < 0 ? 'NORTH_EAST' : 'SOUTH_EAST')
+                }
             }
             // num literal
             else if (kw.match(/^[0-9\.\-]+(e[0-9\.\-]+)?$/)) {
@@ -186,8 +220,11 @@
                 if (resKey == 'hexcasting:mask') {
                     return `mask_${pair.first.mask.map(x => 'v-'[Number(x)]).join('')}`
                 } else if (resKey == 'hexcasting:number') {
-                    // TODO num literal
-                    throw null
+                    let constInner = pair.first.execute(
+                        [],
+                        CastingContext(level.getPlayers()[0], 'MAIN_HAND', CastingContext.CastSource.STAFF),
+                    )
+                    return 'num_' + Math.round(constInner.get(0).getDouble() * 1e4) / 1e4
                 } else if (!(resKey in mapPatterns)) throw null // for special registers
                 if (resKey.namespace === 'hexcasting') return resKey.path
                 else return String(resKey)
@@ -270,7 +307,7 @@
 
         e.register(
             cmd
-                .literal('hexParse')
+                .literal('hexParse_ref')
                 .then(
                     cmd
                         .literal('load_clipboard')
