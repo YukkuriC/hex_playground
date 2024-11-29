@@ -22,8 +22,9 @@ SRC_TARGETS_SEP = ['assets/hex_playground', 'data/hex_playground']
 CUSTOM_LINKS = [
     # hex patchouli
     [
-        '../patchouli_books/thebook',
-        'data/hex_playground/patchouli_books/thebook'
+        # TODO need testing
+        # '../patchouli_books/thehexbook',
+        # 'data/hexcasting/patchouli_books/thehexbook'
     ]
 ]
 TYPE_TARGETS = ['probe']
