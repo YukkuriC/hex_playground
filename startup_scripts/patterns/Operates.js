@@ -1,3 +1,9 @@
+/*
+checklist:
+    brain_merge
+    mind_stack/*
+ */
+
 global.PatternOperateMap = {
     // 世界交互相关
     floodfill: (stack, ctx) => {
@@ -181,7 +187,7 @@ global.PatternOperateMap = {
         stack.push(DoubleIota(harness.stack.length))
     },
     mind_patterns: (stack, ctx) => {
-        let patterns = IXplatAbstractions.INSTANCE.getPatterns(ctx.caster)
+        let patterns = IXplatAbstractions.INSTANCE.getPatternsSavedInUi(ctx.caster)
         stack.push(ListIota(patterns.map(x => PatternIota(x.pattern))))
     },
     'mind_patterns/clear': (s, ctx) => {

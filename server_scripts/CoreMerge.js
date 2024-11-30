@@ -34,7 +34,7 @@ ServerEvents.recipes(e => {
                 for (let obj of offItem.nbt.patterns) item.nbt.data['hexcasting:data'].push(obj)
             } else {
                 convertDataToList(item.nbt)
-                for (let obj of HEX_API.INSTANCE.getPatterns(player).map(x => x.serializeToNBT()))
+                for (let obj of HEX_API.INSTANCE.getPatternsSavedInUi(player).map(x => x.serializeToNBT()))
                     item.nbt.data['hexcasting:data'].push({
                         'hexcasting:type': 'hexcasting:pattern',
                         'hexcasting:data': obj.Pattern,
