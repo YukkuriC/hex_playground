@@ -55,7 +55,8 @@ function ActionJS(id, pattern, options) {
             let newImg = img.copy(stack, img.parenCount, img.parenthesized, img.escapeNext, img.opsConsumed, img.userData)
             return OperationResult(newImg, sideEffects, cont, sound || HexEvalSounds.NORMAL_EXECUTE)
         } catch (e) {
-            if (e instanceof Mishap) return OperationResult(img, [OperatorSideEffect.DoMishap(e, Mishap.Context(pattern, null))], cont)
+            if (e instanceof Mishap)
+                return OperationResult(img, [OperatorSideEffect.DoMishap(e, Mishap.Context(pattern, null))], cont, HexEvalSounds.MISHAP)
             throw e
         }
     }
