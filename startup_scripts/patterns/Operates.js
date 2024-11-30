@@ -39,11 +39,12 @@ global.PatternOperateMap = {
         let args = new Args(stack, 2)
         let victim = args.entity(0)
         let damage = args.double(1)
+        let player = ctx.caster
 
         let sideEffects = [OperatorSideEffect.Particles(ParticleSpray.burst(victim.position(), damage / 20, damage * 2))]
 
         if (victim.attack) {
-            let src = DamageSource.playerAttack(ctx.caster)
+            let src = player.damageSources().playerAttack(player)
             victim.attack(src, damage)
         }
 
@@ -128,7 +129,7 @@ global.PatternOperateMap = {
             if (player.stringUuid === target.stringUuid) {
                 player.setAirSupply(0)
                 player.setFoodLevel(0)
-                player.attack(DamageSource.OUT_OF_WORLD, player.health - 1)
+                player.attack(player.damageSources().outOfBorder(), player.health - 1)
                 player.potionEffects.add('slowness', 200, 2)
                 player.potionEffects.add('night_vision', 100, 0)
                 continue
