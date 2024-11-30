@@ -37,26 +37,26 @@ for (let pair of ['double', 'entity', 'list', 'pattern', 'vec3/vector', 'bool/bo
     Args.prototype[key] = _buildGetter(key, keyMishap)
 }
 
-function ActionJS(id, isGreat) {
-    this.operate = (c, s, r, ct) => {
-        s = Array.from(s.toArray()) // for js methods
+/*
+porting note:
+stack -> img.stack
+ravenmind -> image.userData.remove(HexAPI.RAVENMIND_USERDATA)
+ctx -> env
+
+execute(args: List<Iota>, env: CastingEnvironment): newStack
+*/
+
+function ActionJS(id, pattern, options) {
+    const { sound } = options || {}
+    this.operate = (env, img, cont) => {
+        let stack = Array.from(img.stack.toArray())
         try {
-            return global.PatternOperateMap[id](c, s, r, ct) || OperationResult(c, s, r, [])
+            let sideEffects = global.PatternOperateMap[id](stack, env) || []
+            let newImg = img.copy(stack, img.parenCount, img.parenthesized, img.escapeNext, img.opsConsumed, img.userData)
+            return OperationResult(newImg, sideEffects, cont, sound || HexEvalSounds.NORMAL_EXECUTE)
         } catch (e) {
-            if (e instanceof Mishap)
-                return OperationResult(c, s, r, [OperatorSideEffect.DoMishap(e, Mishap.Context(HexPattern(HexDir.WEST, []), null))])
+            if (e instanceof Mishap) return OperationResult(img, [OperatorSideEffect.DoMishap(e, Mishap.Context(pattern, null))], cont)
             throw e
         }
     }
-
-    // isGreat
-    this.isGreat = isGreat ? () => true : () => false
-
-    // TODO displayName by lang
-    let _displayName = Text.translate(`hexcasting.spell.yc:${id}`).gold()
-    this.getDisplayName = this.displayName = () => _displayName
-}
-ActionJS.prototype = {
-    alwaysProcessGreatSpell: () => true,
-    causesBlindDiversion: () => true,
 }

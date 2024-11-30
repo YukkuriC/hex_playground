@@ -51,38 +51,14 @@
         _('at.petrak.hexcasting', [
             _('forge.cap', ['HexCapabilities', 'adimpl.CapStaticMediaHolder']),
             'xplat.IXplatAbstractions',
-            _('common', [
-                //
-                'lib.hex.HexIotaTypes',
-                'misc.Brainsweeping',
-            ]),
-        ]),
-        _('at.petrak.hexcasting.api', [
-            'PatternRegistry',
-            'misc.HexDamageSources',
-            _('spell', [
-                _('math', ['HexDir', 'HexPattern']),
-                'Action',
-                'OperationResult',
-                'ParticleSpray',
+            _('api', [
                 _('casting', [
-                    //
-                    'CastingContext',
-                    'sideeffects.OperatorSideEffect',
-                ]),
-                _('mishaps', [
-                    //
-                    'Mishap',
-                    'MishapNotEnoughArgs',
-                    'MishapInvalidIota',
-                    'MishapAlreadyBrainswept',
-                ]),
-                _('iota', [
-                    // 'Iota',
-                    'Vec3Iota',
-                    'ListIota',
-                    'DoubleIota',
-                    'PatternIota',
+                    'ActionRegistryEntry',
+                    'ParticleSpray',
+                    _('eval', ['OperationResult', _('sideeffects', ['EvalSound', 'OperatorSideEffect'])]),
+                    _('iota', ['IotaType', 'Vec3Iota', 'ListIota', 'DoubleIota', 'PatternIota']),
+                    _('mishaps', ['Mishap', 'MishapNotEnoughArgs', 'MishapInvalidIota', 'MishapAlreadyBrainswept']),
+                    _('math', ['HexDir', 'HexPattern']),
                 ]),
             ]),
         ]),

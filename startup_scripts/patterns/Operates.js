@@ -1,8 +1,8 @@
 global.PatternOperateMap = {
     // 世界交互相关
-    floodfill: (c, stack, r, ctx) => {
+    floodfill: (stack, ctx) => {
         let pos = new Args(stack, 1).vec3(0)
-        ctx['assertVecInRange(net.minecraft.world.phys.Vec3)'](pos)
+        ctx.assertVecInRange(pos)
 
         let startBlock = ctx.world.getBlock(pos)
         let targets = []
@@ -13,11 +13,7 @@ global.PatternOperateMap = {
                 b => {
                     if (targets.length >= 511) return false
                     if (b.id != startBlock.id) return false
-                    try {
-                        ctx['assertVecInRange(net.minecraft.world.phys.Vec3)'](pos)
-                    } catch (e) {
-                        return false
-                    }
+                    if (!ctx.isVecInAmbit(pos)) return false
                     return true
                 },
                 b => {
@@ -26,20 +22,20 @@ global.PatternOperateMap = {
             )
         stack.push(ListIota(targets))
     },
-    charge_media: (c, s, r, ctx) => {
+    charge_media: (s, ctx) => {
         let stack = ctx.caster.getItemInHand(ctx.castingHand)
         let item = stack.item
         if (item.setMedia && item.getMaxMedia) {
             item.setMedia(stack, item.getMaxMedia(stack))
         }
     },
-    'charge_media/wisp': (c, s, r, ctx) => {
+    'charge_media/wisp': (s, ctx) => {
         let wisp = ctx.wisp
         if (wisp) {
             wisp.media = 1145140000
         }
     },
-    punch_entity: (continuation, stack, ravenmind, ctx) => {
+    punch_entity: (stack, ctx) => {
         let args = new Args(stack, 2)
         let victim = args.entity(0)
         let damage = args.double(1)
@@ -51,9 +47,9 @@ global.PatternOperateMap = {
             victim.attack(src, damage)
         }
 
-        return OperationResult(continuation, stack, ravenmind, sideEffects)
+        return sideEffects
     },
-    brain_merge: (c, stack, r, ctx) => {
+    brain_merge: (stack, ctx) => {
         let args = new Args(stack, 2)
         /**@type {Internal.AbstractVillager}*/
         let victim = args.brainsweep_target(0)
@@ -108,9 +104,9 @@ global.PatternOperateMap = {
             ctx.world.runCommandSilent(`playsound minecraft:entity.player.levelup ambient @a ${posStr} 0.5 0.8`)
         }
 
-        return OperationResult(c, stack, r, sideEffects)
+        return sideEffects
     },
-    crystalize: (c, s, r, ctx) => {
+    crystalize: (s, ctx) => {
         let crystalSteps = [
             [Item.of('budding_amethyst'), 100],
             [Item.of('hexcasting:charged_amethyst'), 10],
@@ -160,34 +156,34 @@ global.PatternOperateMap = {
             sideEffects.push(OperatorSideEffect.Particles(ParticleSpray.burst(targetPos, 5, 100)))
         }
 
-        return OperationResult(c, s, r, sideEffects)
+        return sideEffects
     },
 
     // 代码执行相关
-    refresh_depth: (c, s, r, ctx) => {
-        global.setField(ctx, 'depth', Integer('-114514'))
-    },
-    'mind_stack/push': (c, stack, r, ctx) => {
+    // refresh_depth: (s, ctx) => {
+    //     global.setField(ctx, 'depth', Integer('-114514'))
+    // },
+    'mind_stack/push': (stack, ctx) => {
         let args = new Args(stack, 1)
         let harness = IXplatAbstractions.INSTANCE.getHarness(ctx.caster, ctx.castingHand)
         harness.stack.push(args.get(0))
         IXplatAbstractions.INSTANCE.setHarness(ctx.caster, harness)
     },
-    'mind_stack/pop': (c, stack, r, ctx) => {
+    'mind_stack/pop': (stack, ctx) => {
         let harness = IXplatAbstractions.INSTANCE.getHarness(ctx.caster, ctx.castingHand)
         if (harness.stack.length < 1) throw MishapNotEnoughArgs(1, 0)
         stack.push(harness.stack.pop())
         IXplatAbstractions.INSTANCE.setHarness(ctx.caster, harness)
     },
-    'mind_stack/size': (c, stack, r, ctx) => {
+    'mind_stack/size': (stack, ctx) => {
         let harness = IXplatAbstractions.INSTANCE.getHarness(ctx.caster, ctx.castingHand)
         stack.push(DoubleIota(harness.stack.length))
     },
-    mind_patterns: (c, stack, r, ctx) => {
+    mind_patterns: (stack, ctx) => {
         let patterns = IXplatAbstractions.INSTANCE.getPatterns(ctx.caster)
         stack.push(ListIota(patterns.map(x => PatternIota(x.pattern))))
     },
-    'mind_patterns/clear': (c, s, r, ctx) => {
+    'mind_patterns/clear': (s, ctx) => {
         // 自动重开画布
         let itemStack = ctx.caster.getItemInHand(ctx.castingHand)
         let item = itemStack?.item
@@ -199,18 +195,17 @@ global.PatternOperateMap = {
             if (item) item.use(ctx.world, ctx.caster, ctx.castingHand)
         })
     },
-    nested_modify: (c, stack, r, ctx) => {
+    nested_modify: (stack, ctx) => {
         let args = new Args(stack, 3)
-        let list_nbt = HexIotaTypes.serialize(args.get(0))
+        let list_nbt = IotaType.serialize(args.get(0))
         let idx_list = args.list(1).list
         let n = idx_list.length
         let setter = list_nbt
         for (let i = 0; i < n; i++) {
             let idx = Math.round(idx_list[i].double)
-            if (i === n - 1) setter['hexcasting:data'][idx] = HexIotaTypes.serialize(args.get(2))
+            if (i === n - 1) setter['hexcasting:data'][idx] = IotaType.serialize(args.get(2))
             else setter = setter['hexcasting:data'][idx]
         }
-        stack.push(HexIotaTypes.deserialize(list_nbt, ctx.world))
+        stack.push(IotaType.deserialize(list_nbt, ctx.world))
     },
-    foo_nothing: () => {},
 }
