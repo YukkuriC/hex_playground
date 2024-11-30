@@ -51,6 +51,7 @@
         _('at.petrak.hexcasting', [
             _('forge.cap', ['HexCapabilities', 'adimpl.CapStaticMediaHolder']),
             'xplat.IXplatAbstractions',
+            'common.lib.hex.HexEvalSounds',
             _('api', [
                 _('casting', [
                     'ActionRegistryEntry',
