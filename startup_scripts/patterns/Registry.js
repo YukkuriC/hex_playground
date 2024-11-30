@@ -5,7 +5,7 @@ StartupEvents.registry('hexcasting:action', e => {
         isGreat = !!isGreat
         if (!id in global.PatternOperateMap) throw new Error('missing operate: ' + id)
         let resourceKey = 'yc:' + id
-        global.perWorldPatterns.push(resourceKey)
+        if (isGreat) global.perWorldPatterns.push(resourceKey)
         let pattern = HexPattern.fromAngles(seq, dir)
         e.custom(resourceKey, ActionRegistryEntry(pattern, new ActionJS(id, pattern, options)))
         // patchouli entry
