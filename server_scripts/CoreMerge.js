@@ -1,15 +1,18 @@
 const HEX_API = Java.loadClass('at.petrak.hexcasting.xplat.IXplatAbstractions')
 
 ServerEvents.recipes(e => {
+    // helpers
+    function convertDataToList(nbt) {
+        if (!nbt.data) nbt.data = {}
+        if (nbt.data['hexcasting:type'] != 'hexcasting:list') {
+            nbt.data['hexcasting:type'] = 'hexcasting:list'
+            nbt.data['hexcasting:data'] = nbt.data['hexcasting:data'] ? [nbt.data['hexcasting:data']] : []
+        }
+    }
+
+    // append focus patterns
     e.shapeless('hexcasting:focus', ['hexcasting:focus']).modifyResult((grid, item) => {
         let { player, width, height } = grid
-
-        function convertDataToList(nbt) {
-            if (nbt.data['hexcasting:type'] != 'hexcasting:list') {
-                nbt.data['hexcasting:type'] = 'hexcasting:list'
-                nbt.data['hexcasting:data'] = nbt.data['hexcasting:data'] ? [nbt.data['hexcasting:data']] : []
-            }
-        }
 
         let src_item,
             total = width * height
@@ -18,7 +21,7 @@ ServerEvents.recipes(e => {
             if (src_item.id == 'hexcasting:focus') break
         }
 
-        item.orCreateTag.data = src_item.orCreateTag.data ?? {}
+        item.getOrCreateTag()
         if (player) {
             let offItem = player.offHandItem
             if (offItem.nbt?.data && offItem.nbt.data['hexcasting:type']) {
@@ -44,13 +47,44 @@ ServerEvents.recipes(e => {
 
         return item
     })
-    for (let target of [
+    // pair-clear items with content
+    for (let target_out of [
         //
         'hexcasting:focus',
         'hexcasting:cypher',
         'hexcasting:trinket',
         'hexcasting:artifact',
         'hexgloop:gloopifact',
-    ])
-        if (Platform.isLoaded(target.split(':')[0])) e.shapeless(Item.of(target, 2), [target, target])
+    ]) {
+        let target = target_out
+        if (!Platform.isLoaded(target.split(':')[0])) continue
+        e.shapeless(Item.of(target, 2), [target, target])
+
+        if (target === 'hexcasting:focus') continue
+        // auto inject focus to pattern
+        e.shapeless(target, [target, 'hexcasting:focus'])
+            .modifyResult((grid, item) => {
+                let { width, height } = grid
+
+                let focus,
+                    original,
+                    total = width * height
+                for (let i = 0; i < total; i++) {
+                    let ii = grid.get(i)
+                    if (ii.id == 'hexcasting:focus') focus = ii
+                    else if (ii.id == target) original = ii
+                }
+
+                item.orCreateTag.merge(original.orCreateTag)
+                convertDataToList(focus.orCreateTag)
+
+                item.nbt.patterns = focus.nbt.data['hexcasting:data']
+                if ((item.nbt['hexcasting:start_media'] || 0) <= 0) {
+                    item.nbt.putLong('hexcasting:start_media', 64e5)
+                }
+
+                return item
+            })
+            .keepIngredient('hexcasting:focus')
+    }
 })
