@@ -14,7 +14,7 @@
 	"hexcasting.action.yc:mind_patterns": "象形之精思",
 	"hexcasting.action.yc:mind_patterns/clear": "无形之策略",
 	"hexcasting.action.yc:nested_modify": "器官移植之提整",
-	"hexcasting.mishap.invalid_value.class.entity.brainsweep_target": "一个可洗脑目标",
+	"hexcasting.mishap.invalid_value.class.entity.brainmerge_target": "一个人形生物",
 	"book.descrip.yc:brain_merge": "在栈顶$(item)村民$()交易等级可升级时，对栈顶往下第二实体进行意识剥离，并提取其随机交易项（若有）$(br)被剥离意识的实体也可以是$(item)掠夺者$()、$(item)流浪栓绳$()等",
 	"book.descrip.yc:charge_media": "充能施法道具，若非使用道具施法则无效果",
 	"book.descrip.yc:charge_media/wisp": "充能当前施法的咒灵至等量于（默认配置下）$(bold)$(item)11451400$()紫水晶粉的媒质",

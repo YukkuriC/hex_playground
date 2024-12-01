@@ -1,7 +1,6 @@
 /*
 checklist:
-    brain_merge
-    mind_stack/*
+    charge_media/wisp
  */
 
 global.PatternOperateMap = {
@@ -59,11 +58,11 @@ global.PatternOperateMap = {
     brain_merge: (stack, ctx) => {
         let args = new Args(stack, 2)
         /**@type {Internal.AbstractVillager}*/
-        let victim = args.brainsweep_target(0)
+        let victim = args.brainmerge_target(0)
         /**@type {Internal.Villager}*/
         let inject = args.villager(1)
         // 异常处理
-        for (let target of [victim, inject]) if (Brainsweeping.isBrainswept(target)) throw MishapAlreadyBrainswept(target)
+        for (let target of [victim, inject]) if (IXplatAbstractions.INSTANCE.isBrainswept(target)) throw MishapAlreadyBrainswept(target)
         let sideEffects = []
 
         // 前额叶移植
@@ -101,7 +100,7 @@ global.PatternOperateMap = {
             }
             inject.setOffers(newOffers)
 
-            Brainsweeping.brainsweep(victim) // 天生万物以养人
+            IXplatAbstractions.INSTANCE.setBrainsweepAddlData(victim) // 天生万物以养人
             sideEffects.push(
                 OperatorSideEffect.Particles(ParticleSpray.cloud(victim.eyePosition, 1, 20)),
                 OperatorSideEffect.Particles(ParticleSpray.burst(inject.eyePosition, 1, 100)),
@@ -172,19 +171,20 @@ global.PatternOperateMap = {
     // },
     'mind_stack/push': (stack, ctx) => {
         let args = new Args(stack, 1)
-        let harness = IXplatAbstractions.INSTANCE.getHarness(ctx.caster, ctx.castingHand)
-        harness.stack.push(args.get(0))
-        IXplatAbstractions.INSTANCE.setHarness(ctx.caster, harness)
+        let img = IXplatAbstractions.INSTANCE.getStaffcastVM(ctx.caster, ctx.castingHand).image
+        img.stack.add(args.get(0))
+        IXplatAbstractions.INSTANCE.setStaffcastImage(ctx.caster, img)
     },
     'mind_stack/pop': (stack, ctx) => {
-        let harness = IXplatAbstractions.INSTANCE.getHarness(ctx.caster, ctx.castingHand)
-        if (harness.stack.length < 1) throw MishapNotEnoughArgs(1, 0)
-        stack.push(harness.stack.pop())
-        IXplatAbstractions.INSTANCE.setHarness(ctx.caster, harness)
+        let img = IXplatAbstractions.INSTANCE.getStaffcastVM(ctx.caster, ctx.castingHand).image
+        let removeIdx = img.stack.length - 1
+        if (removeIdx < 0) throw MishapNotEnoughArgs(1, 0)
+        stack.push(img.stack.remove(img.stack.length - 1))
+        IXplatAbstractions.INSTANCE.setStaffcastImage(ctx.caster, img)
     },
     'mind_stack/size': (stack, ctx) => {
-        let harness = IXplatAbstractions.INSTANCE.getHarness(ctx.caster, ctx.castingHand)
-        stack.push(DoubleIota(harness.stack.length))
+        let img = IXplatAbstractions.INSTANCE.getStaffcastVM(ctx.caster, ctx.castingHand).image
+        stack.push(DoubleIota(img.stack.length))
     },
     mind_patterns: (stack, ctx) => {
         let patterns = IXplatAbstractions.INSTANCE.getPatternsSavedInUi(ctx.caster)

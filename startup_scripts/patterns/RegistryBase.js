@@ -18,13 +18,10 @@ Args.prototype = {
     get(i) {
         return this.data[i]
     },
-    brainsweep_target(i) {
+    brainmerge_target(i) {
         let entity = this.entity(i)
-        if (entity instanceof Mob) {
-            if (Brainsweeping.isValidTarget(entity)) return entity
-            if (entity instanceof AbstractVillager) return entity
-        }
-        throw MishapInvalidIota.of(this.data[i], this.data.length - i - 1, 'class.entity.brainsweep_target')
+        if (entity instanceof AbstractVillager) return entity
+        throw MishapInvalidIota.of(this.data[i], this.data.length - i - 1, 'class.entity.brainmerge_target')
     },
     villager(i) {
         let entity = this.entity(i)
@@ -49,7 +46,8 @@ execute(args: List<Iota>, env: CastingEnvironment): newStack
 function ActionJS(id, pattern, options) {
     const { sound } = options || {}
     this.operate = (env, img, cont) => {
-        let stack = Array.from(img.stack.toArray())
+        let stack = img.stack
+        if (stack.toArray) stack = Array.from(stack.toArray())
         try {
             let sideEffects = global.PatternOperateMap[id](stack, env) || []
             let newImg = img.copy(stack, img.parenCount, img.parenthesized, img.escapeNext, img.opsConsumed, img.userData)
