@@ -83,14 +83,15 @@ global.PatternOperateMap = {
                     // ctx.caster.tell(`test ${tradeType} 0:${curLevelTrades[0]} 1:${curLevelTrades[1]}`)
                     if (!tradeType) break
                     let trade = tradeType.getOffer(inject, inject.random)
-                    newOffers.push(trade)
+                    if (trade) newOffers.push(trade)
                 }
             }
             // 再毛一个受害者的交易（若有）
             if (victim instanceof AbstractVillager) {
                 let extOffers = victim.offers
                 if (extOffers.length > 0) {
-                    newOffers.push(extOffers[Math.floor(Math.random() * extOffers.length)])
+                    let offer = extOffers[Math.floor(Math.random() * extOffers.length)]
+                    if (offer) newOffers.push(offer)
                 }
                 extOffers.clear()
                 if (victim.setOffers) victim.setOffers(extOffers)
