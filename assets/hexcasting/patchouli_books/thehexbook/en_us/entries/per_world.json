@@ -42,14 +42,6 @@
 			"input": "vector",
 			"output": "list",
 			"text": "book.descrip.yc:floodfill"
-		},
-		{
-			"type": "hexcasting:pattern",
-			"op_id": "yc:refresh_depth",
-			"anchor": "yc:refresh_depth",
-			"input": "",
-			"output": "",
-			"text": "book.descrip.yc:refresh_depth"
 		}
 	]
 }
