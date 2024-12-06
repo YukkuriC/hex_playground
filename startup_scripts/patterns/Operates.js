@@ -40,6 +40,12 @@ global.PatternOperateMap = {
             wisp.media = 1145140000
         }
     },
+    'charge_media/circle': (s, ctx) => {
+        let circle = ctx.impetus
+        if (circle) {
+            circle.media = 1145140000
+        }
+    },
     punch_entity: (stack, ctx) => {
         let args = new Args(stack, 2)
         let victim = args.entity(0)
