@@ -39,6 +39,13 @@ global.PatternOperateMap = {
             wisp.media = 1145140000
         }
     },
+    'charge_media/circle': (c, s, r, ctx) => {
+        let circle = ctx.spellCircle
+        if (circle) {
+            let src = ctx.world.getBlockEntity(circle.impetusPos)
+            if (src.media !== undefined) src.media = 1145140000
+        }
+    },
     punch_entity: (continuation, stack, ravenmind, ctx) => {
         let args = new Args(stack, 2)
         let victim = args.entity(0)
