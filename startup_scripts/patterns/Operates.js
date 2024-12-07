@@ -51,7 +51,8 @@ global.PatternOperateMap = {
         let victim = args.entity(0)
         let damage = args.double(1)
 
-        let sideEffects = [OperatorSideEffect.Particles(ParticleSpray.burst(victim.position(), damage / 20, damage * 2))]
+        let damage_for_fx = Math.max(10, Math.min(100, damage))
+        let sideEffects = [OperatorSideEffect.Particles(ParticleSpray.burst(victim.position(), damage_for_fx / 20, damage_for_fx * 2))]
 
         if (victim.attack) {
             let src = DamageSource.playerAttack(ctx.caster)
