@@ -20,7 +20,7 @@ Args.prototype = {
     },
     brainmerge_target(i) {
         let entity = this.entity(i)
-        if (entity instanceof AbstractVillager) return entity
+        if (entity instanceof AbstractVillager || entity instanceof Raider) return entity
         throw MishapInvalidIota.of(this.data[i], this.data.length - i - 1, 'class.entity.brainmerge_target')
     },
     villager(i) {

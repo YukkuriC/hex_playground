@@ -33,6 +33,7 @@
                 _('entity', [
                     'Mob',
                     'projectile.EyeOfEnder',
+                    'raid.Raider',
                     _('npc', [
                         //
                         'AbstractVillager',
