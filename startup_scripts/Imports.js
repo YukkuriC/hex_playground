@@ -48,7 +48,7 @@
                 ]),
             ]),
         ]),
-        _('java.lang.Integer'),
+        _('java.lang.Long'),
         _('at.petrak.hexcasting', [
             _('forge.cap', ['HexCapabilities', 'adimpl.CapStaticMediaHolder']),
             'xplat.IXplatAbstractions',

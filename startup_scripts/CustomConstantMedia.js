@@ -3,7 +3,7 @@
     let CapMedia = HexCapabilities.MEDIA
 
     let provide = function (stack, value, priority) {
-        value = Integer(String(value))
+        value = Long(String(value))
         priority = priority || 1000
         let supplier = () => new CapStaticMediaHolder(() => value, priority, stack)
         return {
