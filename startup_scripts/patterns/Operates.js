@@ -2,7 +2,7 @@
 checklist:
     charge_media/wisp
  */
-
+global.ScheduleSignals = new WeakHashMap()
 global.PatternOperateMap = {
     // 世界交互相关
     floodfill: (stack, ctx) => {
@@ -210,10 +210,26 @@ global.PatternOperateMap = {
             if (item) item.use(ctx.world, ctx.caster, ctx.castingHand)
         })
     },
+    'mind_env/schedule': (stack, ctx) => {
+        let args = new Args(stack, 2)
+        let code = args.list(0)
+        let timeout = args.double(1)
+        let key = ctx.impetus || ctx.caster
+        let oldSignal = global.ScheduleSignals.get(key)
+        if (oldSignal) oldSignal.cancel = true
+        let mySignal = { cancal: false }
+        global.ScheduleSignals.put(key, mySignal)
+
+        ctx.caster.server.scheduleInTicks(timeout, () => {
+            if (mySignal.cancal) return
+            let harness = CastingVM.empty(ctx)
+            harness.queueExecuteAndWrapIotas(code, ctx.caster.level)
+        })
+    },
     nested_modify: (stack, ctx) => {
         let args = new Args(stack, 3)
         let list_nbt = IotaType.serialize(args.get(0))
-        let idx_list = args.list(1).list
+        let idx_list = args.list(1)
         let n = idx_list.length
         let setter = list_nbt
         for (let i = 0; i < n; i++) {

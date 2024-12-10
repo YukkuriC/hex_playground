@@ -48,7 +48,7 @@
                 ]),
             ]),
         ]),
-        _('java.lang.Long'),
+        _('java', ['lang.Long', 'util.WeakHashMap']),
         _('at.petrak.hexcasting', [
             _('forge.cap', ['HexCapabilities', 'adimpl.CapStaticMediaHolder']),
             'xplat.IXplatAbstractions',
@@ -57,7 +57,7 @@
                 _('casting', [
                     'ActionRegistryEntry',
                     'ParticleSpray',
-                    _('eval', ['OperationResult', _('sideeffects', ['EvalSound', 'OperatorSideEffect'])]),
+                    _('eval', ['OperationResult', 'vm.CastingVM', _('sideeffects', ['EvalSound', 'OperatorSideEffect'])]),
                     _('iota', ['IotaType', 'Vec3Iota', 'ListIota', 'DoubleIota', 'PatternIota']),
                     _('mishaps', ['Mishap', 'MishapNotEnoughArgs', 'MishapInvalidIota', 'MishapAlreadyBrainswept']),
                     _('math', ['HexDir', 'HexPattern']),
