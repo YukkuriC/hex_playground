@@ -208,6 +208,22 @@ global.PatternOperateMap = {
             if (item) item.use(ctx.world, ctx.caster, ctx.castingHand)
         })
     },
+    'mind_env/schedule': (c, stack, r, ctx) => {
+        let args = new Args(stack, 2)
+        let code = args.list(0).list
+        let timeout = args.double(1)
+        let key = ctx.spellCircle || ctx.caster
+        let oldSignal = global.ScheduleSignals.get(key)
+        if (oldSignal) oldSignal.cancel = true
+        let mySignal = { cancel: false }
+        global.ScheduleSignals.put(key, mySignal)
+
+        ctx.caster.server.scheduleInTicks(timeout, () => {
+            if (mySignal.cancel) return
+            let harness = new CastingHarness(ctx);
+            harness.executeIotas(code, ctx.caster.level)
+        })
+    },
     nested_modify: (c, stack, r, ctx) => {
         let args = new Args(stack, 3)
         let list_nbt = HexIotaTypes.serialize(args.get(0))

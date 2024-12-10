@@ -47,7 +47,7 @@
                 ]),
             ]),
         ]),
-        _('java.lang.Integer'),
+        _('java', ['lang.Integer', 'util.WeakHashMap']),
         _('at.petrak.hexcasting', [
             _('forge.cap', ['HexCapabilities', 'adimpl.CapStaticMediaHolder']),
             'xplat.IXplatAbstractions',
@@ -68,6 +68,7 @@
                 _('casting', [
                     //
                     'CastingContext',
+                    'CastingHarness',
                     'sideeffects.OperatorSideEffect',
                 ]),
                 _('mishaps', [
