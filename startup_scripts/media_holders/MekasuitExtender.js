@@ -13,6 +13,7 @@
         // imports
         var ADMediaHolder = Java.type('at.petrak.hexcasting.api.addldata.ADMediaHolder')
         var StorageUtils = Java.type('mekanism.common.util.StorageUtils')
+        var FloatingLong = Java.type('mekanism.api.math.FloatingLong')
         var media = 1000000
         var MekasuitHolderCls = Java.extend(ADMediaHolder)
 
@@ -28,6 +29,7 @@
                 },
                 setMedia: function (media) {
                     // MekCap.setEnergy(media) not working, why?
+                    MekCap.setEnergy(FloatingLong.create(media))
                 },
                 canRecharge: function () {
                     return false
