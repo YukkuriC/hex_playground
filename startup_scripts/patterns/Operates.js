@@ -217,11 +217,11 @@ global.PatternOperateMap = {
         let key = ctx.impetus || ctx.caster
         let oldSignal = global.ScheduleSignals.get(key)
         if (oldSignal) oldSignal.cancel = true
-        let mySignal = { cancal: false }
+        let mySignal = { cancel: false }
         global.ScheduleSignals.put(key, mySignal)
 
         ctx.caster.server.scheduleInTicks(timeout, () => {
-            if (mySignal.cancal) return
+            if (mySignal.cancel) return
             let harness = CastingVM.empty(ctx)
             harness.queueExecuteAndWrapIotas(code, ctx.caster.level)
         })
