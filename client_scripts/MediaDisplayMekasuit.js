@@ -7,15 +7,17 @@
                 try {
                     let holder = IXplatAbstractions.INSTANCE.findMediaHolder(stack)
                     if (!holder) return
-                    let maxMedia = Math.round(holder.getMaxMedia() / 10000)
-                    let media = Math.round(holder.getMedia() / 10000)
-                    let ratio = media / maxMedia
+                    let maxMedia = holder.getMaxMedia()
+                    let media = holder.getMedia()
+                    let ratio = Math.round((media / maxMedia) * 100)
+                    maxMedia = Math.round(maxMedia / 1000) / 10
+                    media = Math.round(media / 1000) / 10
                     lines.add(
                         Text.translate(
                             'hexcasting.tooltip.media_amount.advanced',
                             Text.darkPurple(media),
                             Text.darkPurple(maxMedia),
-                            Text.of(Math.round(ratio * 100) + '%'),
+                            Text.of(ratio + '%'),
                         ),
                     )
                 } catch (e) {
