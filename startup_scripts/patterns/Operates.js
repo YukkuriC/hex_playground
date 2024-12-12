@@ -1,3 +1,4 @@
+global.ScheduleSignals = new WeakHashMap()
 global.PatternOperateMap = {
     // 世界交互相关
     floodfill: (c, stack, r, ctx) => {
@@ -220,7 +221,7 @@ global.PatternOperateMap = {
 
         ctx.caster.server.scheduleInTicks(timeout, () => {
             if (mySignal.cancel) return
-            let harness = new CastingHarness(ctx);
+            let harness = new CastingHarness(ctx)
             harness.executeIotas(code, ctx.caster.level)
         })
     },
