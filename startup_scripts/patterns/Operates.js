@@ -216,7 +216,7 @@ global.PatternOperateMap = {
         let key = ctx.spellCircle || ctx.caster
         let oldSignal = global.ScheduleSignals.get(key)
         if (oldSignal) oldSignal.cancel = true
-        let mySignal = { cancel: false }
+        let mySignal = { cancel: false, code: code }
         global.ScheduleSignals.put(key, mySignal)
 
         ctx.caster.server.scheduleInTicks(timeout, () => {
@@ -224,6 +224,17 @@ global.PatternOperateMap = {
             let harness = new CastingHarness(ctx)
             harness.executeIotas(code, ctx.caster.level)
         })
+    },
+    'mind_env/running_code': (stack, ctx) => {
+        let key = ctx.impetus || ctx.caster
+        let signal = global.ScheduleSignals.get(key)
+        if (!signal || signal.cancel) stack.push(NullIota())
+        else {
+            stack.push(ListIota(signal.code))
+            // let tmp = []
+            // for (let i of signal.code) tmp.push(i)
+            // stack.push(ListIota(tmp))
+        }
     },
     nested_modify: (c, stack, r, ctx) => {
         let args = new Args(stack, 3)

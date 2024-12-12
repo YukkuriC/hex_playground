@@ -83,6 +83,7 @@
                     'Vec3Iota',
                     'ListIota',
                     'DoubleIota',
+                    'NullIota',
                     'PatternIota',
                 ]),
             ]),
