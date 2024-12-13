@@ -2,8 +2,7 @@
     let minimalDisplay = val => {
         let res = String(val)
         res = res.replace(/\.0+$/, '')
-        let text = Text.darkPurple(`${res} Dust`)
-        return text
+        return Text.translate('hexcasting.tooltip.media', res).darkPurple()
     }
 
     ItemEvents.tooltip(reg => {

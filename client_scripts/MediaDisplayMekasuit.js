@@ -16,7 +16,7 @@
                         Text.translate(
                             'hexcasting.tooltip.media_amount.advanced',
                             Text.darkPurple(media),
-                            Text.darkPurple(maxMedia),
+                            Text.translate('hexcasting.tooltip.media', maxMedia).darkPurple(),
                             Text.of(ratio + '%'),
                         ),
                     )
