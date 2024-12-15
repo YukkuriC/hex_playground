@@ -172,6 +172,17 @@ global.PatternOperateMap = {
 
         return OperationResult(c, s, r, sideEffects)
     },
+    summon_arrow: (c, stack, r, ctx) => {
+        let args = new Args(stack, 2)
+        let pos = args.vec3(0)
+        let speed = args.vec3(1)
+        /**@type {Internal.SpectralArrow}*/
+        let arrow = new SpectralArrow(ctx.world, ctx.caster)
+        arrow.pickup = AbstractArrow$Pickup.DISALLOWED
+        arrow.setPos(pos)
+        arrow.setMotion(speed.x(), speed.y(), speed.z())
+        arrow.spawn()
+    },
 
     // 代码执行相关
     refresh_depth: (c, s, r, ctx) => {

@@ -17,6 +17,7 @@ global.loadCustomPatterns = () => {
     registerPatternWrap('aaddwdwdqdwd', HexDir.NORTH_WEST, 'punch_entity')
     registerPatternWrap('wqqwqwqaeqeeedqqeaqadedaqaedeqqeqedeqeaqeqaqedeadeaqwqwqaeda', HexDir.EAST, 'brain_merge', 1)
     registerPatternWrap('qwewewewewewdqeeeeedwwwawwqwwqwwwdedwwwqwwqwwwded', HexDir.EAST, 'crystalize', 1)
+    registerPatternWrap('qaeaqewqded', HexDir.NORTH_WEST, 'summon_arrow')
 
     registerPatternWrap('wewewewewewweeqeeqeeqeeqeeqee', HexDir.WEST, 'refresh_depth', 1)
     registerPatternWrap('waawweeeeedd', HexDir.SOUTH_WEST, 'mind_stack/push')
