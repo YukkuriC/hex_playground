@@ -32,7 +32,7 @@ Args.prototype = {
         throw MishapInvalidIota.of(this.data[i], this.data.length - i - 1, 'class.entity.villager')
     },
 }
-for (let pair of ['double', 'entity', 'list', 'pattern', 'vec3/vector', 'bool/boolean']) {
+for (let pair of ['double', 'entity', 'list', 'string', 'pattern', 'vec3/vector', 'bool/boolean']) {
     let [key, keyMishap] = pair.split('/')
     Args.prototype[key] = _buildGetter(key, keyMishap)
 }
