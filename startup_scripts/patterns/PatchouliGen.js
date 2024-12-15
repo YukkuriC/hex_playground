@@ -1,8 +1,8 @@
 global.HexPatchouliGen = {
     paths: {
         lang: 'kubejs/assets/hex_playground/lang/zh_cn.json',
-        normal: 'patchouli_books/thebook/en_us/entries/normal.json',
-        perWorld: 'patchouli_books/thebook/en_us/entries/per_world.json',
+        normal: 'kubejs/assets/hexcasting/patchouli_books/thehexbook/en_us/entries/normal.json',
+        perWorld: 'kubejs/assets/hexcasting/patchouli_books/thehexbook/en_us/entries/per_world.json',
     },
     overallMap: new Set(),
     normalMap: new Set(),
