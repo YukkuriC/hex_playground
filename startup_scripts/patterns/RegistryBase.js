@@ -50,11 +50,21 @@ function ActionJS(id, pattern, options) {
         if (stack.toArray) stack = Array.from(stack.toArray())
         try {
             let sideEffects = global.PatternOperateMap[id](stack, env) || []
-            let newImg = img.copy(stack, img.parenCount, img.parenthesized, img.escapeNext, img.opsConsumed, img.userData)
+            let newImg = img.copy(stack, img.parenCount, img.parenthesized, img.escapeNext, img.opsConsumed + 1, img.userData)
             return OperationResult(newImg, sideEffects, cont, sound || HexEvalSounds.NORMAL_EXECUTE)
         } catch (e) {
-            if (e instanceof Mishap)
-                return OperationResult(img, [OperatorSideEffect.DoMishap(e, Mishap.Context(pattern, null))], cont, HexEvalSounds.MISHAP)
+            if (e instanceof Mishap) {
+                OperatorSideEffect.DoMishap(e, Mishap.Context(pattern, null)).performEffect(CastingVM(img, env))
+                // hack: stop it anyway
+                let newImg = img.copy(stack, img.parenCount, img.parenthesized, img.escapeNext, env.maxOpCount() - 1, img.userData) // -1 to display current mishap
+                let mishapName = Text.translate(`hexcasting.action.yc:${id}`).aqua()
+                return OperationResult(
+                    newImg,
+                    [OperatorSideEffect.DoMishap(e, Mishap.Context(pattern, mishapName))],
+                    cont,
+                    HexEvalSounds.MISHAP,
+                )
+            }
             throw e
         }
     }
