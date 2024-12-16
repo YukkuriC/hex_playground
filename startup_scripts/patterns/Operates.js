@@ -236,7 +236,7 @@ global.PatternOperateMap = {
             harness.executeIotas(code, ctx.caster.level)
         })
     },
-    'mind_env/running_code': (stack, ctx) => {
+    'mind_env/running_code': (c, stack, r, ctx) => {
         let key = ctx.impetus || ctx.caster
         let signal = global.ScheduleSignals.get(key)
         if (!signal || signal.cancel) stack.push(NullIota())
