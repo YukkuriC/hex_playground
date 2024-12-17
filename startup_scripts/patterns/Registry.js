@@ -13,6 +13,8 @@ StartupEvents.registry('hexcasting:action', e => {
     }
 
     registerPatternWrap('aaqawawaeadaadadadaadadadaada', HexDir.EAST, 'floodfill', 1)
+    registerPatternWrap('qqqqqwdeddwqeeeeede', HexDir.SOUTH_EAST, 'zone_block_entity')
+
     registerPatternWrap('wwaqqqqqedwdwwwaw', HexDir.EAST, 'charge_media', 1)
     registerPatternWrap('eqaawawaeqqqaawdwdwaw', HexDir.SOUTH_WEST, 'charge_media/wisp', 1)
     registerPatternWrap('eaqwqaewwaqawdwaqaw', HexDir.SOUTH_WEST, 'charge_media/circle', 1)
