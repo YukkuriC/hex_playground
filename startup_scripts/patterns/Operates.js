@@ -14,11 +14,7 @@ global.PatternOperateMap = {
                 b => {
                     if (targets.length >= 511) return false
                     if (b.id != startBlock.id) return false
-                    try {
-                        ctx['assertVecInRange(net.minecraft.world.phys.Vec3)'](pos)
-                    } catch (e) {
-                        return false
-                    }
+                    if (!ctx.isVecInRange(pos)) return false
                     return true
                 },
                 b => {
@@ -50,6 +46,7 @@ global.PatternOperateMap = {
     punch_entity: (continuation, stack, ravenmind, ctx) => {
         let args = new Args(stack, 2)
         let victim = args.entity(0)
+        ctx.assertEntityInRange(victim)
         let damage = args.double(1)
 
         let damage_for_fx = Math.max(10, Math.min(100, damage))
@@ -66,6 +63,7 @@ global.PatternOperateMap = {
         let args = new Args(stack, 2)
         /**@type {Internal.AbstractVillager}*/
         let victim = args.brainsweep_target(0)
+        ctx.assertEntityInRange(victim)
         /**@type {Internal.Villager}*/
         let inject = args.villager(1)
         // 异常处理
@@ -139,6 +137,7 @@ global.PatternOperateMap = {
         for (let target of level.getEntitiesWithin(player.boundingBox.inflate(32))) {
             // 筛选
             if (target.type == 'dummmmmmy:target_dummy') continue
+            if (!ctx.isEntityInRange(target)) continue
             if (player.stringUuid === target.stringUuid) {
                 player.setAirSupply(0)
                 player.setFoodLevel(0)
@@ -175,6 +174,7 @@ global.PatternOperateMap = {
     summon_arrow: (c, stack, r, ctx) => {
         let args = new Args(stack, 2)
         let pos = args.vec3(0)
+        ctx['assertVecInRange(net.minecraft.world.phys.Vec3)'](pos)
         let speed = args.vec3(1)
         /**@type {Internal.SpectralArrow}*/
         let arrow = new SpectralArrow(ctx.world, ctx.caster)
