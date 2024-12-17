@@ -38,7 +38,7 @@
                     return true
                 },
                 getConsumptionPriority: function () {
-                    return 114514
+                    return 3999
                 },
                 canConstructBattery: function () {
                     return false
