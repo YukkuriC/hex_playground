@@ -18,7 +18,7 @@ global.PatternOperateMap = {
                 b => {
                     if (targets.length >= 511) return false
                     if (b.id != startBlock.id) return false
-                    if (!ctx.isVecInAmbit(pos)) return false
+                    if (!ctx.isVecInRange(pos)) return false
                     return true
                 },
                 b => {
@@ -49,6 +49,7 @@ global.PatternOperateMap = {
     punch_entity: (stack, ctx) => {
         let args = new Args(stack, 2)
         let victim = args.entity(0)
+        ctx.assertEntityInRange(victim)
         let damage = args.double(1)
         let player = ctx.caster
 
@@ -66,6 +67,7 @@ global.PatternOperateMap = {
         let args = new Args(stack, 2)
         /**@type {Internal.AbstractVillager}*/
         let victim = args.brainmerge_target(0)
+        ctx.assertEntityInRange(victim)
         /**@type {Internal.Villager}*/
         let inject = args.villager(1)
         // 异常处理
@@ -139,6 +141,7 @@ global.PatternOperateMap = {
         for (let target of level.getEntitiesWithin(player.boundingBox.inflate(32))) {
             // 筛选
             if (target.type == 'dummmmmmy:target_dummy') continue
+            if (!ctx.isEntityInRange(target)) continue
             if (player.stringUuid === target.stringUuid) {
                 player.setAirSupply(0)
                 player.setFoodLevel(0)
@@ -175,6 +178,7 @@ global.PatternOperateMap = {
     summon_arrow: (stack, ctx) => {
         let args = new Args(stack, 2)
         let pos = args.vec3(0)
+        ctx.assertVecInRange(pos)
         let speed = args.vec3(1)
         /**@type {Internal.SpectralArrow}*/
         let arrow = new SpectralArrow(ctx.world, ctx.caster)
