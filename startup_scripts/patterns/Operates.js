@@ -1,6 +1,6 @@
 global.ScheduleSignals = new WeakHashMap()
 global.PatternOperateMap = {
-    // 世界交互相关
+    // 查询相关
     floodfill: (c, stack, r, ctx) => {
         let pos = new Args(stack, 1).vec3(0)
         ctx['assertVecInRange(net.minecraft.world.phys.Vec3)'](pos)
@@ -23,6 +23,33 @@ global.PatternOperateMap = {
             )
         stack.push(ListIota(targets))
     },
+    zone_block_entity: (c, stack, r, ctx) => {
+        let args = new Args(stack, 2)
+        let pos = args.vec3(0)
+        ctx['assertVecInRange(net.minecraft.world.phys.Vec3)'](pos)
+        let x = pos.x(),
+            y = pos.y(),
+            z = pos.z()
+        let distSq = args.double(1)
+        distSq *= distSq
+        let chunkX = x >> 4,
+            chunkY = z >> 4
+        /**@type {Internal.ServerLevel}*/
+        let level = ctx.world
+        let targets = []
+        for (let cx = chunkX - 1; cx <= chunkX + 1; cx++) {
+            for (let cy = chunkY - 1; cy <= chunkY + 1; cy++) {
+                let chunk = level.getChunk(cx, cy)
+                for (let bpos of chunk.getBlockEntitiesPos()) {
+                    if (!ctx.isVecInRange(bpos)) continue
+                    let dsq = Math.pow(x - bpos.x, 2) + Math.pow(y - bpos.y, 2) + Math.pow(z - bpos.z, 2)
+                    if (dsq <= distSq) targets.push(Vec3Iota(bpos))
+                }
+            }
+        }
+        stack.push(ListIota(targets))
+    },
+    // 世界交互相关
     charge_media: (c, s, r, ctx) => {
         let stack = ctx.caster.getItemInHand(ctx.castingHand)
         let item = stack.item
