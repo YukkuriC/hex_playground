@@ -205,7 +205,12 @@ global.PatternOperateMap = {
         let speed = args.vec3(1)
         /**@type {Internal.SpectralArrow}*/
         let arrow = new SpectralArrow(ctx.world, ctx.caster)
-        arrow.pickup = AbstractArrow$Pickup.DISALLOWED
+        arrow.mergeNbt({
+            life: 1150,
+            damage: 5,
+            pickup: 0,
+            PierceLevel: 5,
+        })
         arrow.setPos(pos)
         arrow.setMotion(speed.x(), speed.y(), speed.z())
         arrow.spawn()

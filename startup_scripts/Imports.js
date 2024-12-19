@@ -32,7 +32,7 @@
             _('world', [
                 _('entity', [
                     'Mob',
-                    _('projectile', ['AbstractArrow$Pickup', 'SpectralArrow', 'EyeOfEnder']),
+                    _('projectile', ['SpectralArrow', 'EyeOfEnder']),
                     _('npc', [
                         //
                         'AbstractVillager',
