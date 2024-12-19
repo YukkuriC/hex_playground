@@ -47,20 +47,9 @@
         }
     `)
 
-    let provide = function (stack) {
-        return {
-            getCapability(cap, side) {
-                if (stack.isEmpty() || cap !== CapMedia) return LazyOptional.empty()
-                return LazyOptional.of(() => NS.invokeFunction('buildCap', stack))
-            },
-        }
-    }
-
-    ForgeEvents.onGenericEvent('net.minecraftforge.event.AttachCapabilitiesEvent', 'net.minecraft.world.item.ItemStack', e =>
-        global.onBindMekasuitMedia(e),
+    global.registerMediaCap(
+        IDMekasuitCap,
+        stack => stack.id.startsWith('mekanism:mekasuit_'),
+        stack => () => NS.invokeFunction('buildCap', stack),
     )
-    global.onBindMekasuitMedia = e => {
-        let stack = e.getObject()
-        if (stack.id.startsWith('mekanism:mekasuit_')) e.addCapability(IDMekasuitCap, provide(stack))
-    }
 }
