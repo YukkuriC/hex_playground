@@ -5,6 +5,22 @@
 	"pages": [
 		{
 			"type": "hexcasting:pattern",
+			"op_id": "yc:mind_env/running_code",
+			"anchor": "yc:mind_env/running_code",
+			"input": "",
+			"output": "list/null",
+			"text": "book.descrip.yc:mind_env/running_code"
+		},
+		{
+			"type": "hexcasting:pattern",
+			"op_id": "yc:mind_env/schedule",
+			"anchor": "yc:mind_env/schedule",
+			"input": "list, num",
+			"output": "",
+			"text": "book.descrip.yc:mind_env/schedule"
+		},
+		{
+			"type": "hexcasting:pattern",
 			"op_id": "yc:mind_patterns",
 			"anchor": "yc:mind_patterns",
 			"input": "",
@@ -58,6 +74,22 @@
 			"input": "entity, num",
 			"output": "",
 			"text": "book.descrip.yc:punch_entity"
+		},
+		{
+			"type": "hexcasting:pattern",
+			"op_id": "yc:summon_arrow",
+			"anchor": "yc:summon_arrow",
+			"input": "vec, vec",
+			"output": "",
+			"text": "book.descrip.yc:summon_arrow"
+		},
+		{
+			"type": "hexcasting:pattern",
+			"op_id": "yc:zone_block_entity",
+			"anchor": "yc:zone_block_entity",
+			"input": "vec, num",
+			"output": "list",
+			"text": "book.descrip.yc:zone_block_entity"
 		}
 	]
 }
