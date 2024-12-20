@@ -53,7 +53,7 @@ global.HexPatchouliGen = {
         let keySeq = Array.from(this.overallMap).sort()
         for (let id of keySeq) {
             let page = pagesExist[id] ?? this.genPage(id)
-            langMapDirty |= this.tryAddLang(langMap, 'hexcasting.spell.' + id)
+            langMapDirty |= this.tryAddLang(langMap, 'hexcasting.action.' + id)
             langMapDirty |= this.tryAddLang(langMap, page.text)
             if (reorder || !(id in pagesExist)) {
                 if (this.normalMap.has(id)) {
