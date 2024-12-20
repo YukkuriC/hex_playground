@@ -18,14 +18,14 @@
 
     ForgeEvents.onGenericEvent('net.minecraftforge.event.AttachCapabilitiesEvent', 'net.minecraft.world.item.ItemStack', e => {
         let stack = e.getObject()
-        try {
-            for (let entry of capPool) {
+        for (let entry of capPool) {
+            try {
                 let [id, predicate, supplierGen] = entry
                 if (!predicate(stack)) continue
                 e.addCapability(id, provideMediaCap(stack, supplierGen))
+            } catch (e) {
+                console.error(e)
             }
-        } catch (e) {
-            console.error(e)
         }
     })
 }
