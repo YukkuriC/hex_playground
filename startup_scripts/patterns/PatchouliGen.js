@@ -1,6 +1,7 @@
 global.HexPatchouliGen = {
     paths: {
         lang: 'kubejs/assets/hex_playground/lang/zh_cn.json',
+        lang_en: 'kubejs/assets/hex_playground/lang/en_us.json',
         normal: 'kubejs/assets/hexcasting/patchouli_books/thehexbook/en_us/entries/normal.json',
         perWorld: 'kubejs/assets/hexcasting/patchouli_books/thehexbook/en_us/entries/per_world.json',
     },
@@ -44,10 +45,12 @@ global.HexPatchouliGen = {
             entryNormal.pages = []
             entryPerWorld.pages = []
         }
-        let langMap = this.read('lang')
+        let langMap = this.read('lang'),
+            langMap_en = this.read('lang_en')
         let normapDocDirty = false,
             perWorldDocDirty = false,
-            langMapDirty = false
+            langMapDirty = false,
+            langMapDirty_en = false
 
         // fill missing data
         let keySeq = Array.from(this.overallMap).sort()
@@ -55,6 +58,8 @@ global.HexPatchouliGen = {
             let page = pagesExist[id] ?? this.genPage(id)
             langMapDirty |= this.tryAddLang(langMap, 'hexcasting.action.' + id)
             langMapDirty |= this.tryAddLang(langMap, page.text)
+            langMapDirty_en |= this.tryAddLang(langMap_en, 'hexcasting.action.' + id)
+            langMapDirty_en |= this.tryAddLang(langMap_en, page.text)
             if (reorder || !(id in pagesExist)) {
                 if (this.normalMap.has(id)) {
                     entryNormal.pages.push(page)
@@ -70,5 +75,6 @@ global.HexPatchouliGen = {
         if (normapDocDirty) this.write('normal', entryNormal)
         if (perWorldDocDirty) this.write('perWorld', entryPerWorld)
         if (langMapDirty) this.write('lang', langMap)
+        if (langMapDirty_en) this.write('lang_en', langMap_en)
     },
 }
