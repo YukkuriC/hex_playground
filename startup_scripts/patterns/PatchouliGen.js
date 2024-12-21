@@ -79,3 +79,10 @@ global.HexPatchouliGen = {
         if (langMapDirty_en) this.write('lang_en', langMap_en)
     },
 }
+
+if (Platform.getMcVersion() < '1.20') {
+    Object.assign(global.HexPatchouliGen.paths, {
+        normal: 'patchouli_books/thebook/en_us/entries/normal.json',
+        perWorld: 'patchouli_books/thebook/en_us/entries/per_world.json',
+    })
+}
