@@ -1,4 +1,5 @@
 global.HexPatchouliGen = {
+    actionNamePrefix: Platform.getMcVersion() >= '1.20' ? 'hexcasting.action.' : 'hexcasting.spell.',
     paths: {
         lang: 'kubejs/assets/hex_playground/lang/zh_cn.json',
         lang_en: 'kubejs/assets/hex_playground/lang/en_us.json',
@@ -56,9 +57,9 @@ global.HexPatchouliGen = {
         let keySeq = Array.from(this.overallMap).sort()
         for (let id of keySeq) {
             let page = pagesExist[id] ?? this.genPage(id)
-            langMapDirty |= this.tryAddLang(langMap, 'hexcasting.action.' + id)
+            langMapDirty |= this.tryAddLang(langMap, this.actionNamePrefix + id)
             langMapDirty |= this.tryAddLang(langMap, page.text)
-            langMapDirty_en |= this.tryAddLang(langMap_en, 'hexcasting.action.' + id)
+            langMapDirty_en |= this.tryAddLang(langMap_en, this.actionNamePrefix + id)
             langMapDirty_en |= this.tryAddLang(langMap_en, page.text)
             if (reorder || !(id in pagesExist)) {
                 if (this.normalMap.has(id)) {
