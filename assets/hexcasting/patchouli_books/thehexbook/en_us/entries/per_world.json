@@ -9,8 +9,9 @@
 			"anchor": "yc:brain_merge",
 			"input": "entity, entity",
 			"output": "",
-			"text": "book.descrip.yc:brain_merge"
+			"text": ""
 		},
+		"book.descrip.yc:brain_merge",
 		{
 			"type": "hexcasting:pattern",
 			"op_id": "yc:charge_media",

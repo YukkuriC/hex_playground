@@ -5,19 +5,20 @@
 	"pages": [
 		{
 			"type": "hexcasting:pattern",
+			"op_id": "yc:mind_env/schedule",
+			"anchor": "yc:mind_env/schedule",
+			"input": "list, num",
+			"output": "",
+			"text": ""
+		},
+		"book.descrip.yc:mind_env/schedule",
+		{
+			"type": "hexcasting:pattern",
 			"op_id": "yc:mind_env/running_code",
 			"anchor": "yc:mind_env/running_code",
 			"input": "",
 			"output": "list/null",
 			"text": "book.descrip.yc:mind_env/running_code"
-		},
-		{
-			"type": "hexcasting:pattern",
-			"op_id": "yc:mind_env/schedule",
-			"anchor": "yc:mind_env/schedule",
-			"input": "list, num",
-			"output": "",
-			"text": "book.descrip.yc:mind_env/schedule"
 		},
 		{
 			"type": "hexcasting:pattern",
@@ -65,8 +66,9 @@
 			"anchor": "yc:nested_modify",
 			"input": "list, list, any",
 			"output": "list",
-			"text": "book.descrip.yc:nested_modify"
+			"text": ""
 		},
+		"book.descrip.yc:nested_modify",
 		{
 			"type": "hexcasting:pattern",
 			"op_id": "yc:punch_entity",
