@@ -1,12 +1,7 @@
 // requires: mekanism
 {
     let IDMekasuitCap = new ResourceLocation('yc', 'media_mekasuit')
-    let CapMedia = HexCapabilities.MEDIA
-    let NS = Java.class.class
-        .forName('org.openjdk.nashorn.api.scripting.NashornScriptEngineFactory')
-        .getConstructor()
-        .newInstance()
-        .getScriptEngine()
+    let NS = global.createNashorn()
 
     // bind this
     NS.eval(`
