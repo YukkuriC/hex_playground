@@ -15,8 +15,8 @@
                     lines.add(
                         Text.translate(
                             'hexcasting.tooltip.media_amount.advanced',
-                            Text.darkPurple(media),
-                            Text.translate('hexcasting.tooltip.media', maxMedia).darkPurple(),
+                            Text.of(media).color(ItemMediaHolder.HEX_COLOR),
+                            Text.translate('hexcasting.tooltip.media', maxMedia).color(ItemMediaHolder.HEX_COLOR),
                             Text.of(ratio + '%'),
                         ),
                     )
