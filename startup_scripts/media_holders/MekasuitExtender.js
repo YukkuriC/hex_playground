@@ -9,12 +9,25 @@
         var ADMediaHolder = Java.type('at.petrak.hexcasting.api.addldata.ADMediaHolder')
         var StorageUtils = Java.type('mekanism.common.util.StorageUtils')
         var FloatingLong = Java.type('mekanism.api.math.FloatingLong')
-        var media = 1000000
-        var MekasuitHolderCls = Java.extend(ADMediaHolder)
+        var MekasuitHolderBase = Java.extend(ADMediaHolder, {
+            canRecharge: function () {
+                return false
+            },
+            canProvide: function () {
+                return true
+            },
+            getConsumptionPriority: function () {
+                return 3999
+            },
+            canConstructBattery: function () {
+                return false
+            },
+        })
+        var MekasuitHolderCls = Java.extend(MekasuitHolderBase)
 
         function buildCap(stack) {
             var MekCap = StorageUtils.getEnergyContainer(stack, 0)
-            if(!MekCap) return null
+            if (!MekCap) return null
             return new MekasuitHolderCls({
                 getMedia: function () {
                     return MekCap.getEnergy()
@@ -23,20 +36,8 @@
                     return MekCap.getMaxEnergy()
                 },
                 setMedia: function (media) {
-                    // MekCap.setEnergy(media) not working, why?
+                    media = Math.max(media, 0)
                     MekCap.setEnergy(FloatingLong.create(media))
-                },
-                canRecharge: function () {
-                    return false
-                },
-                canProvide: function () {
-                    return true
-                },
-                getConsumptionPriority: function () {
-                    return 3999
-                },
-                canConstructBattery: function () {
-                    return false
                 },
             })
         }
