@@ -1,7 +1,7 @@
 // requires: hexal
 
 BlockEvents.rightClicked('hexal:mediafied_storage', e => {
-    if (e.hand != 'MAIN_HAND') return
+    if (e.hand != 'MAIN_HAND' || e.player.shiftKeyDown) return
     let {
         player,
         level,
