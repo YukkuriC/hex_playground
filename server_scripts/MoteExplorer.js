@@ -1,4 +1,6 @@
 // requires: hexal
+// ignored: true
+// moved to HexOverpowered
 
 BlockEvents.rightClicked('hexal:mediafied_storage', e => {
     if (e.hand != 'MAIN_HAND' || e.player.shiftKeyDown) return
