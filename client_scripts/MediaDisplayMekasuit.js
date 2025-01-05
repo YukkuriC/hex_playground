@@ -1,4 +1,6 @@
 // requires: mekanism
+// ignored: true
+// moved to HexOverpowered
 {
     // https://github1s.com/FallingColors/HexMod/blob/main/Common/src/main/java/at/petrak/hexcasting/common/items/magic/ItemMediaHolder.java
     ItemEvents.tooltip(reg => {

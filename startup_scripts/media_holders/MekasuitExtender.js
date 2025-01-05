@@ -1,4 +1,6 @@
 // requires: mekanism
+// ignored: true
+// moved to HexOverpowered
 {
     let IDMekasuitCap = new ResourceLocation('yc', 'media_mekasuit')
     let NS = global.createNashorn()
