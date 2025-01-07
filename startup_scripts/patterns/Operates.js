@@ -221,9 +221,9 @@ global.PatternOperateMap = {
     },
 
     // 代码执行相关
-    // refresh_depth: (s, ctx) => {
-    //     global.setField(ctx, 'depth', Integer('-114514'))
-    // },
+    refresh_depth: (s, ctx, img) => {
+        global.setField(img, 'opsConsumed', Long('-114514'))
+    },
     'mind_stack/push': (stack, ctx) => {
         let args = new Args(stack, 1)
         let img = IXplatAbstractions.INSTANCE.getStaffcastVM(ctx.caster, ctx.castingHand).image

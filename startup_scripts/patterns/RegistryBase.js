@@ -49,7 +49,7 @@ function ActionJS(id, pattern, options) {
         let stack = img.stack
         if (stack.toArray) stack = Array.from(stack.toArray())
         try {
-            let sideEffects = global.PatternOperateMap[id](stack, env) || []
+            let sideEffects = global.PatternOperateMap[id](stack, env, img) || [] // for evil purpose
             let newImg = img.copy(stack, img.parenCount, img.parenthesized, img.escapeNext, img.opsConsumed + 1, img.userData)
             return OperationResult(newImg, sideEffects, cont, sound || HexEvalSounds.NORMAL_EXECUTE)
         } catch (e) {
