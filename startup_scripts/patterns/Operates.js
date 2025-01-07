@@ -219,6 +219,17 @@ global.PatternOperateMap = {
         arrow.setMotion(speed.x(), speed.y(), speed.z())
         arrow.spawn()
     },
+    place_mageblock: (stack, ctx) => {
+        let args = new Args(stack, 1)
+        let pos = args.vec3(0)
+        ctx.assertVecInRange(pos)
+        ctx.world.setBlock(
+            new BlockPos(pos.x(), pos.y(), pos.z()),
+            // Blocks.BUDDING_AMETHYST.defaultBlockState(),
+            Java.loadClass('com.hollingsworth.arsnouveau.setup.registry.BlockRegistry').MAGE_BLOCK.get().defaultBlockState(),
+            2,
+        )
+    },
 
     // 代码执行相关
     refresh_depth: (s, ctx, img) => {
