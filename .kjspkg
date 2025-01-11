@@ -1,0 +1,8 @@
+{
+  "author": "YukkuriC",
+  "description": "Custom patterns and others for HexCasting 1.20",
+  "versions": [10],
+  "modloaders": ["forge"],
+  "dependencies": ["mod:hexcasting"],
+  "incompatibilities": []
+}
