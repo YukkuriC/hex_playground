@@ -37,7 +37,7 @@ ServerEvents.recipes(e => {
                 for (let obj of offItem.nbt.patterns) item.nbt.data['hexcasting:data'].push(obj)
             } else {
                 convertDataToList(item.nbt)
-                for (let obj of HEX_API.INSTANCE.getPatterns(player).map(x => x.serializeToNBT()))
+                for (let obj of HEX_API.INSTANCE.getPatternsSavedInUi(player).map(x => x.serializeToNBT()))
                     item.nbt.data['hexcasting:data'].push({
                         'hexcasting:type': 'hexcasting:pattern',
                         'hexcasting:data': obj.Pattern,
@@ -70,9 +70,9 @@ ServerEvents.recipes(e => {
                     original,
                     total = width * height
                 for (let i = 0; i < total; i++) {
-                    let item = grid.get(i)
-                    if (item.id == 'hexcasting:focus') focus = item
-                    else if (item.id == target) original = item
+                    let ii = grid.get(i)
+                    if (ii.id == 'hexcasting:focus') focus = ii
+                    else if (ii.id == target) original = ii
                 }
 
                 item.orCreateTag.merge(original.orCreateTag)

@@ -1,9 +1,13 @@
+/*
+checklist:
+    charge_media/wisp
+ */
 global.ScheduleSignals = new WeakHashMap()
 global.PatternOperateMap = {
     // 查询相关
-    floodfill: (c, stack, r, ctx) => {
+    floodfill: (stack, ctx) => {
         let pos = new Args(stack, 1).vec3(0)
-        ctx['assertVecInRange(net.minecraft.world.phys.Vec3)'](pos)
+        ctx.assertVecInRange(pos)
 
         let startBlock = ctx.world.getBlock(pos)
         let targets = []
@@ -23,10 +27,10 @@ global.PatternOperateMap = {
             )
         stack.push(ListIota(targets))
     },
-    zone_block_entity: (c, stack, r, ctx) => {
+    zone_block_entity: (stack, ctx) => {
         let args = new Args(stack, 2)
         let pos = args.vec3(0)
-        ctx['assertVecInRange(net.minecraft.world.phys.Vec3)'](pos)
+        ctx.assertVecInRange(pos)
         let x = pos.x(),
             y = pos.y(),
             z = pos.z()
@@ -50,51 +54,51 @@ global.PatternOperateMap = {
         stack.push(ListIota(targets))
     },
     // 世界交互相关
-    charge_media: (c, s, r, ctx) => {
+    charge_media: (s, ctx) => {
         let stack = ctx.caster.getItemInHand(ctx.castingHand)
         let item = stack.item
         if (item.setMedia && item.getMaxMedia) {
             item.setMedia(stack, item.getMaxMedia(stack))
         }
     },
-    'charge_media/wisp': (c, s, r, ctx) => {
+    'charge_media/wisp': (s, ctx) => {
         let wisp = ctx.wisp
         if (wisp) {
             wisp.media = 1145140000
         }
     },
-    'charge_media/circle': (c, s, r, ctx) => {
-        let circle = ctx.spellCircle
+    'charge_media/circle': (s, ctx) => {
+        let circle = ctx.impetus
         if (circle) {
-            let src = ctx.world.getBlockEntity(circle.impetusPos)
-            if (src.media !== undefined) src.media = 1145140000
+            circle.media = 1145140000
         }
     },
-    punch_entity: (continuation, stack, ravenmind, ctx) => {
+    punch_entity: (stack, ctx) => {
         let args = new Args(stack, 2)
         let victim = args.entity(0)
         ctx.assertEntityInRange(victim)
         let damage = args.double(1)
+        let player = ctx.caster
 
         let damage_for_fx = Math.max(10, Math.min(100, damage))
         let sideEffects = [OperatorSideEffect.Particles(ParticleSpray.burst(victim.position(), damage_for_fx / 20, damage_for_fx * 2))]
 
         if (victim.attack) {
-            let src = DamageSource.playerAttack(ctx.caster)
+            let src = player.damageSources().playerAttack(player)
             victim.attack(src, damage)
         }
 
-        return OperationResult(continuation, stack, ravenmind, sideEffects)
+        return sideEffects
     },
-    brain_merge: (c, stack, r, ctx) => {
+    brain_merge: (stack, ctx) => {
         let args = new Args(stack, 2)
         /**@type {Internal.AbstractVillager}*/
-        let victim = args.brainsweep_target(0)
+        let victim = args.brainmerge_target(0)
         ctx.assertEntityInRange(victim)
         /**@type {Internal.Villager}*/
         let inject = args.villager(1)
         // 异常处理
-        for (let target of [victim, inject]) if (Brainsweeping.isBrainswept(target)) throw MishapAlreadyBrainswept(target)
+        for (let target of [victim, inject]) if (IXplatAbstractions.INSTANCE.isBrainswept(target)) throw MishapAlreadyBrainswept(target)
         let sideEffects = []
 
         // 前额叶移植
@@ -133,7 +137,7 @@ global.PatternOperateMap = {
             }
             inject.setOffers(newOffers)
 
-            Brainsweeping.brainsweep(victim) // 天生万物以养人
+            IXplatAbstractions.INSTANCE.setBrainsweepAddlData(victim) // 天生万物以养人
             sideEffects.push(
                 OperatorSideEffect.Particles(ParticleSpray.cloud(victim.eyePosition, 1, 20)),
                 OperatorSideEffect.Particles(ParticleSpray.burst(inject.eyePosition, 1, 100)),
@@ -143,9 +147,9 @@ global.PatternOperateMap = {
             ctx.world.runCommandSilent(`playsound minecraft:entity.player.levelup ambient @a ${posStr} 0.5 0.8`)
         }
 
-        return OperationResult(c, stack, r, sideEffects)
+        return sideEffects
     },
-    crystalize: (c, s, r, ctx) => {
+    crystalize: (s, ctx) => {
         let crystalSteps = [
             [Item.of('budding_amethyst'), 100],
             [Item.of('hexcasting:charged_amethyst'), 10],
@@ -168,7 +172,7 @@ global.PatternOperateMap = {
             if (player.stringUuid === target.stringUuid) {
                 player.setAirSupply(0)
                 player.setFoodLevel(0)
-                player.attack(DamageSource.OUT_OF_WORLD, player.health - 1)
+                player.attack(player.damageSources().outOfBorder(), player.health - 1)
                 player.potionEffects.add('slowness', 200, 2)
                 player.potionEffects.add('night_vision', 100, 0)
                 continue
@@ -196,12 +200,12 @@ global.PatternOperateMap = {
             sideEffects.push(OperatorSideEffect.Particles(ParticleSpray.burst(targetPos, 5, 100)))
         }
 
-        return OperationResult(c, s, r, sideEffects)
+        return sideEffects
     },
-    summon_arrow: (c, stack, r, ctx) => {
+    summon_arrow: (stack, ctx) => {
         let args = new Args(stack, 2)
         let pos = args.vec3(0)
-        ctx['assertVecInRange(net.minecraft.world.phys.Vec3)'](pos)
+        ctx.assertVecInRange(pos)
         let speed = args.vec3(1)
         /**@type {Internal.SpectralArrow}*/
         let arrow = new SpectralArrow(ctx.world, ctx.caster)
@@ -215,32 +219,44 @@ global.PatternOperateMap = {
         arrow.setMotion(speed.x(), speed.y(), speed.z())
         arrow.spawn()
     },
+    place_mageblock: (stack, ctx) => {
+        let args = new Args(stack, 1)
+        let pos = args.vec3(0)
+        ctx.assertVecInRange(pos)
+        ctx.world.setBlock(
+            new BlockPos(pos.x(), pos.y(), pos.z()),
+            // Blocks.BUDDING_AMETHYST.defaultBlockState(),
+            Java.loadClass('com.hollingsworth.arsnouveau.setup.registry.BlockRegistry').MAGE_BLOCK.get().defaultBlockState(),
+            2,
+        )
+    },
 
     // 代码执行相关
-    refresh_depth: (c, s, r, ctx) => {
-        global.setField(ctx, 'depth', Integer('-114514'))
+    refresh_depth: (s, ctx, img) => {
+        global.setField(img, 'opsConsumed', Long('-114514'))
     },
-    'mind_stack/push': (c, stack, r, ctx) => {
+    'mind_stack/push': (stack, ctx) => {
         let args = new Args(stack, 1)
-        let harness = IXplatAbstractions.INSTANCE.getHarness(ctx.caster, ctx.castingHand)
-        harness.stack.push(args.get(0))
-        IXplatAbstractions.INSTANCE.setHarness(ctx.caster, harness)
+        let img = IXplatAbstractions.INSTANCE.getStaffcastVM(ctx.caster, ctx.castingHand).image
+        img.stack.add(args.get(0))
+        IXplatAbstractions.INSTANCE.setStaffcastImage(ctx.caster, img)
     },
-    'mind_stack/pop': (c, stack, r, ctx) => {
-        let harness = IXplatAbstractions.INSTANCE.getHarness(ctx.caster, ctx.castingHand)
-        if (harness.stack.length < 1) throw MishapNotEnoughArgs(1, 0)
-        stack.push(harness.stack.pop())
-        IXplatAbstractions.INSTANCE.setHarness(ctx.caster, harness)
+    'mind_stack/pop': (stack, ctx) => {
+        let img = IXplatAbstractions.INSTANCE.getStaffcastVM(ctx.caster, ctx.castingHand).image
+        let removeIdx = img.stack.length - 1
+        if (removeIdx < 0) throw MishapNotEnoughArgs(1, 0)
+        stack.push(img.stack.remove(img.stack.length - 1))
+        IXplatAbstractions.INSTANCE.setStaffcastImage(ctx.caster, img)
     },
-    'mind_stack/size': (c, stack, r, ctx) => {
-        let harness = IXplatAbstractions.INSTANCE.getHarness(ctx.caster, ctx.castingHand)
-        stack.push(DoubleIota(harness.stack.length))
+    'mind_stack/size': (stack, ctx) => {
+        let img = IXplatAbstractions.INSTANCE.getStaffcastVM(ctx.caster, ctx.castingHand).image
+        stack.push(DoubleIota(img.stack.length))
     },
-    mind_patterns: (c, stack, r, ctx) => {
-        let patterns = IXplatAbstractions.INSTANCE.getPatterns(ctx.caster)
+    mind_patterns: (stack, ctx) => {
+        let patterns = IXplatAbstractions.INSTANCE.getPatternsSavedInUi(ctx.caster)
         stack.push(ListIota(patterns.map(x => PatternIota(x.pattern))))
     },
-    'mind_patterns/clear': (c, s, r, ctx) => {
+    'mind_patterns/clear': (s, ctx) => {
         // 自动重开画布
         let itemStack = ctx.caster.getItemInHand(ctx.castingHand)
         let item = itemStack?.item
@@ -252,11 +268,11 @@ global.PatternOperateMap = {
             if (item) item.use(ctx.world, ctx.caster, ctx.castingHand)
         })
     },
-    'mind_env/schedule': (c, stack, r, ctx) => {
+    'mind_env/schedule': (stack, ctx) => {
         let args = new Args(stack, 2)
-        let code = args.list(0).list
+        let code = args.list(0)
         let timeout = args.double(1)
-        let key = ctx.spellCircle || ctx.caster
+        let key = ctx.impetus || ctx.caster
         let oldSignal = global.ScheduleSignals.get(key)
         if (oldSignal) oldSignal.cancel = true
         let mySignal = { cancel: false, code: code }
@@ -264,33 +280,32 @@ global.PatternOperateMap = {
 
         ctx.caster.server.scheduleInTicks(timeout, () => {
             if (mySignal.cancel) return
-            let harness = new CastingHarness(ctx)
-            harness.executeIotas(code, ctx.caster.level)
+            let harness = CastingVM.empty(ctx)
+            harness.queueExecuteAndWrapIotas(code, ctx.caster.level)
         })
     },
-    'mind_env/running_code': (c, stack, r, ctx) => {
+    'mind_env/running_code': (stack, ctx) => {
         let key = ctx.impetus || ctx.caster
         let signal = global.ScheduleSignals.get(key)
         if (!signal || signal.cancel) stack.push(NullIota())
         else {
-            stack.push(ListIota(signal.code))
-            // let tmp = []
-            // for (let i of signal.code) tmp.push(i)
-            // stack.push(ListIota(tmp))
+            // stack.push(ListIota(signal.code)) // kjs wtf?
+            let tmp = []
+            for (let i of signal.code) tmp.push(i)
+            stack.push(ListIota(tmp))
         }
     },
-    nested_modify: (c, stack, r, ctx) => {
+    nested_modify: (stack, ctx) => {
         let args = new Args(stack, 3)
-        let list_nbt = HexIotaTypes.serialize(args.get(0))
-        let idx_list = args.list(1).list
+        let list_nbt = IotaType.serialize(args.get(0))
+        let idx_list = args.list(1)
         let n = idx_list.length
         let setter = list_nbt
         for (let i = 0; i < n; i++) {
             let idx = Math.round(idx_list[i].double)
-            if (i === n - 1) setter['hexcasting:data'][idx] = HexIotaTypes.serialize(args.get(2))
+            if (i === n - 1) setter['hexcasting:data'][idx] = IotaType.serialize(args.get(2))
             else setter = setter['hexcasting:data'][idx]
         }
-        stack.push(HexIotaTypes.deserialize(list_nbt, ctx.world))
+        stack.push(IotaType.deserialize(list_nbt, ctx.world))
     },
-    foo_nothing: () => {},
 }

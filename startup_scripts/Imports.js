@@ -33,6 +33,7 @@
                 _('entity', [
                     'Mob',
                     _('projectile', ['SpectralArrow', 'EyeOfEnder']),
+                    'raid.Raider',
                     _('npc', [
                         //
                         'AbstractVillager',
@@ -47,44 +48,19 @@
                 ]),
             ]),
         ]),
-        _('java', ['lang.Integer', 'util.WeakHashMap']),
+        _('java', ['lang.Long', 'util.WeakHashMap']),
         _('at.petrak.hexcasting', [
             _('forge.cap', ['HexCapabilities', 'adimpl.CapStaticMediaHolder']),
             'xplat.IXplatAbstractions',
-            _('common', [
-                //
-                'lib.hex.HexIotaTypes',
-                'misc.Brainsweeping',
-            ]),
-        ]),
-        _('at.petrak.hexcasting.api', [
-            'PatternRegistry',
-            'misc.HexDamageSources',
-            _('spell', [
-                _('math', ['HexDir', 'HexPattern']),
-                'Action',
-                'OperationResult',
-                'ParticleSpray',
+            'common.lib.hex.HexEvalSounds',
+            _('api', [
                 _('casting', [
-                    //
-                    'CastingContext',
-                    'CastingHarness',
-                    'sideeffects.OperatorSideEffect',
-                ]),
-                _('mishaps', [
-                    //
-                    'Mishap',
-                    'MishapNotEnoughArgs',
-                    'MishapInvalidIota',
-                    'MishapAlreadyBrainswept',
-                ]),
-                _('iota', [
-                    // 'Iota',
-                    'Vec3Iota',
-                    'ListIota',
-                    'DoubleIota',
-                    'NullIota',
-                    'PatternIota',
+                    'ActionRegistryEntry',
+                    'ParticleSpray',
+                    _('eval', ['OperationResult', 'vm.CastingVM', _('sideeffects', ['EvalSound', 'OperatorSideEffect'])]),
+                    _('iota', ['IotaType', 'NullIota', 'Vec3Iota', 'ListIota', 'DoubleIota', 'PatternIota']),
+                    _('mishaps', ['Mishap', 'MishapNotEnoughArgs', 'MishapInvalidIota', 'MishapAlreadyBrainswept']),
+                    _('math', ['HexDir', 'HexPattern']),
                 ]),
             ]),
         ]),

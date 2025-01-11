@@ -1,11 +1,13 @@
-global.loadCustomPatterns = () => {
-    let actionLookup = global.getField(PatternRegistry, 'actionLookup', 1)
-    function registerPatternWrap(seq, dir, id, isGreat) {
+global.perWorldPatterns = []
+
+StartupEvents.registry('hexcasting:action', e => {
+    function registerPatternWrap(seq, dir, id, isGreat, options) {
         isGreat = !!isGreat
         if (!id in global.PatternOperateMap) throw new Error('missing operate: ' + id)
-        let resourceKey = ResourceLocation('yc', id)
-        if (actionLookup.containsKey(resourceKey)) actionLookup.remove(resourceKey)
-        PatternRegistry.mapPattern(HexPattern.fromAngles(seq, dir), resourceKey, new ActionJS(id, isGreat), isGreat)
+        let resourceKey = 'yc:' + id
+        if (isGreat) global.perWorldPatterns.push(resourceKey)
+        let pattern = HexPattern.fromAngles(seq, dir)
+        e.custom(resourceKey, ActionRegistryEntry(pattern, new ActionJS(id, pattern, options)))
         // patchouli entry
         global.HexPatchouliGen.add(resourceKey, isGreat)
     }
@@ -20,6 +22,7 @@ global.loadCustomPatterns = () => {
     registerPatternWrap('wqqwqwqaeqeeedqqeaqadedaqaedeqqeqedeqeaqeqaqedeadeaqwqwqaeda', HexDir.EAST, 'brain_merge', 1)
     registerPatternWrap('qwewewewewewdqeeeeedwwwawwqwwqwwwdedwwwqwwqwwwded', HexDir.EAST, 'crystalize', 1)
     registerPatternWrap('qaeaqewqded', HexDir.NORTH_WEST, 'summon_arrow')
+    registerPatternWrap('eeeeedewdqeeeeedewd', HexDir.WEST, 'place_mageblock')
 
     registerPatternWrap('wewewewewewweeqeeqeeqeeqeeqee', HexDir.WEST, 'refresh_depth', 1)
     registerPatternWrap('waawweeeeedd', HexDir.SOUTH_WEST, 'mind_stack/push')
@@ -31,7 +34,4 @@ global.loadCustomPatterns = () => {
     registerPatternWrap('wqaqwweeeeeqdeaqq', HexDir.SOUTH_WEST, 'mind_env/running_code')
 
     registerPatternWrap('wdwawedqdewawdw', HexDir.SOUTH_WEST, 'nested_modify')
-
-    registerPatternWrap('adadadadaqadadadada', HexDir.SOUTH_EAST, 'foo_nothing')
-}
-StartupEvents.postInit(global.loadCustomPatterns)
+})

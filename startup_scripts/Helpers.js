@@ -70,3 +70,9 @@ global.shuffleList = list => {
         }
     }
 }
+
+// get new nashorn env
+{
+    let NSFactory = Java.class.forName('org.openjdk.nashorn.api.scripting.NashornScriptEngineFactory').getConstructor().newInstance()
+    global.createNashorn = () => NSFactory.getScriptEngine()
+}

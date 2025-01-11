@@ -9,8 +9,9 @@
 			"anchor": "yc:brain_merge",
 			"input": "entity, entity",
 			"output": "",
-			"text": "book.descrip.yc:brain_merge"
+			"text": ""
 		},
+		"book.descrip.yc:brain_merge",
 		{
 			"type": "hexcasting:pattern",
 			"op_id": "yc:charge_media",
@@ -37,6 +38,14 @@
 		},
 		{
 			"type": "hexcasting:pattern",
+			"op_id": "yc:refresh_depth",
+			"anchor": "yc:refresh_depth",
+			"input": "",
+			"output": "",
+			"text": "book.descrip.yc:refresh_depth"
+		},
+		{
+			"type": "hexcasting:pattern",
 			"op_id": "yc:crystalize",
 			"anchor": "yc:crystalize",
 			"input": "",
@@ -50,14 +59,6 @@
 			"input": "vector",
 			"output": "list",
 			"text": "book.descrip.yc:floodfill"
-		},
-		{
-			"type": "hexcasting:pattern",
-			"op_id": "yc:refresh_depth",
-			"anchor": "yc:refresh_depth",
-			"input": "",
-			"output": "",
-			"text": "book.descrip.yc:refresh_depth"
 		}
 	]
 }

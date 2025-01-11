@@ -18,12 +18,9 @@ Args.prototype = {
     get(i) {
         return this.data[i]
     },
-    brainsweep_target(i) {
+    brainmerge_target(i) {
         let entity = this.entity(i)
-        if (entity instanceof Mob) {
-            if (Brainsweeping.isValidTarget(entity)) return entity
-            if (entity instanceof AbstractVillager) return entity
-        }
+        if (entity instanceof AbstractVillager || entity instanceof Raider) return entity
         throw MishapInvalidIota.of(this.data[i], this.data.length - i - 1, 'class.entity.brainmerge_target')
     },
     villager(i) {
@@ -37,26 +34,38 @@ for (let pair of ['double', 'entity', 'list', 'string', 'pattern', 'vec3/vector'
     Args.prototype[key] = _buildGetter(key, keyMishap)
 }
 
-function ActionJS(id, isGreat) {
-    this.operate = (c, s, r, ct) => {
-        s = Array.from(s.toArray()) // for js methods
+/*
+porting note:
+stack -> img.stack
+ravenmind -> image.userData.remove(HexAPI.RAVENMIND_USERDATA)
+ctx -> env
+
+execute(args: List<Iota>, env: CastingEnvironment): newStack
+*/
+
+function ActionJS(id, pattern, options) {
+    const { sound } = options || {}
+    this.operate = (env, img, cont) => {
+        let stack = img.stack
+        if (stack.toArray) stack = Array.from(stack.toArray())
         try {
-            return global.PatternOperateMap[id](c, s, r, ct) || OperationResult(c, s, r, [])
+            let sideEffects = global.PatternOperateMap[id](stack, env, img) || [] // for evil purpose
+            let newImg = img.copy(stack, img.parenCount, img.parenthesized, img.escapeNext, img.opsConsumed + 1, img.userData)
+            return OperationResult(newImg, sideEffects, cont, sound || HexEvalSounds.NORMAL_EXECUTE)
         } catch (e) {
-            if (e instanceof Mishap)
-                return OperationResult(c, s, r, [OperatorSideEffect.DoMishap(e, Mishap.Context(HexPattern(HexDir.WEST, []), null))])
+            if (e instanceof Mishap) {
+                OperatorSideEffect.DoMishap(e, Mishap.Context(pattern, null)).performEffect(CastingVM(img, env))
+                // hack: stop it anyway
+                let newImg = img.copy(stack, img.parenCount, img.parenthesized, img.escapeNext, env.maxOpCount() - 1, img.userData) // -1 to display current mishap
+                let mishapName = Text.translate(`hexcasting.action.yc:${id}`).aqua()
+                return OperationResult(
+                    newImg,
+                    [OperatorSideEffect.DoMishap(e, Mishap.Context(pattern, mishapName))],
+                    cont,
+                    HexEvalSounds.MISHAP,
+                )
+            }
             throw e
         }
     }
-
-    // isGreat
-    this.isGreat = isGreat ? () => true : () => false
-
-    // TODO displayName by lang
-    let _displayName = Text.translate(`hexcasting.spell.yc:${id}`).gold()
-    this.getDisplayName = this.displayName = () => _displayName
-}
-ActionJS.prototype = {
-    alwaysProcessGreatSpell: () => true,
-    causesBlindDiversion: () => true,
 }
