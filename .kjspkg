@@ -1,0 +1,8 @@
+{
+  "author": "YukkuriC",
+  "description": "Custom patterns and others for HexCasting 1.19; also includes primitive version of HexParse & HexOverpowered",
+  "versions": [9],
+  "modloaders": ["forge"],
+  "dependencies": ["mod:hexcasting"],
+  "incompatibilities": []
+}
