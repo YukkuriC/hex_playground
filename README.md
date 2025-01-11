@@ -5,8 +5,8 @@
 1. 自定义法术注册
     - `startup_scripts/*`
     - `assets/*`
-    - `server_scripts/MiscCommands.js`：全面重载命令`/hexcasting reloadCustomPatterns`
-1. 核心iota与序列化文本（以注册名为基础）
+    - ~~`server_scripts/MiscCommands.js`：全面重载命令`/hexcasting reloadCustomPatterns`~~ 1.20不可用
+1. ~~核心iota与序列化文本（以注册名为基础）~~ [已jar化](https://github.com/YukkuriC/HexParseMod)
     - `server_scripts/Parser.js`：解析命令`/hexParse`
     - `client_scripts/ClipboardReader.js`：其中读取剪贴板相关指令客户端侧逻辑
 1. 非平衡QoL道具调整
