@@ -5,8 +5,11 @@ ServerEvents.recipes(e => {
     function convertDataToList(nbt) {
         if (!nbt.data) nbt.data = {}
         if (nbt.data['hexcasting:type'] != 'hexcasting:list') {
+            if (nbt.data['hexcasting:type']) {
+                let oldData = Object.assign({}, nbt.data)
+                nbt.data['hexcasting:data'] = [oldData]
+            } else nbt.data['hexcasting:data'] = []
             nbt.data['hexcasting:type'] = 'hexcasting:list'
-            nbt.data['hexcasting:data'] = nbt.data['hexcasting:data'] ? [nbt.data['hexcasting:data']] : []
         }
     }
 
