@@ -1,3 +1,5 @@
+// ignored:true
+// moved to hexop
 ItemEvents.tooltip(reg => {
     for (let target_out of [
         //
