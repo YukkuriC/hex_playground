@@ -17,7 +17,7 @@
         build(root) {
             root = root ? `${root}.${this.path}` : this.path
             if (this.subs.length > 0) for (let c of this.subs) c.build(root)
-            else SCOPE[root.substring(root.lastIndexOf('.') + 1)] = Java.loadClass(root)
+            else SCOPE[root.substring(root.lastIndexOf('.') + 1)] = Java.tryLoadClass(root)
         },
     }
     let _ = (path, subs) => new _cls(path, subs)

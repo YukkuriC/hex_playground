@@ -1,4 +1,4 @@
-{
+if (HexCapabilities) {
     let IDStaticCap = new ResourceLocation('hexcasting', 'media_item')
     let CapMedia = HexCapabilities.MEDIA
 
