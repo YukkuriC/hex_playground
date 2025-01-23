@@ -67,5 +67,3 @@
     ]
     for (let root of roots) root.build()
 }
-
-global.EVENT_BUS = ForgeEvents.eventBus()

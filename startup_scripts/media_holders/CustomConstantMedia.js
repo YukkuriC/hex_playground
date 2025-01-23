@@ -1,4 +1,4 @@
-if (HexCapabilities) {
+if (this.HexCapabilities) {
     let IDStaticCap = new ResourceLocation('hexcasting', 'media_item')
     let mediaMap = {
         'minecraft:enchanted_golden_apple': 1145140000,

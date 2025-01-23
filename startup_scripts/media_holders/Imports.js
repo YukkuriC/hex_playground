@@ -1,5 +1,5 @@
 // priority:10
-if (HexCapabilities) {
+if (this.HexCapabilities) {
     let CapMedia = HexCapabilities.MEDIA
     let provideMediaCap = (stack, supplierGen) => {
         let supplier = supplierGen(stack)
