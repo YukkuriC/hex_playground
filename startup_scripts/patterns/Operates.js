@@ -53,6 +53,15 @@ global.PatternOperateMap = {
         }
         stack.push(ListIota(targets))
     },
+    // fallbacks
+    check_ambit: (stack, ctx) => {
+        let args = new Args(stack, 1)
+        let pos = args.vec3(0)
+        stack.push(BooleanIota(
+            // ctx.isVecInRange(pos) && ctx.isVecInWorld(pos)
+            ctx.isVecInAmbit(pos)
+        ))
+    },
     // 世界交互相关
     charge_media: (s, ctx) => {
         let stack = ctx.caster.getItemInHand(ctx.castingHand)

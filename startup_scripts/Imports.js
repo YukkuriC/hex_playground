@@ -58,7 +58,7 @@
                     'ActionRegistryEntry',
                     'ParticleSpray',
                     _('eval', ['OperationResult', 'vm.CastingVM', _('sideeffects', ['EvalSound', 'OperatorSideEffect'])]),
-                    _('iota', ['IotaType', 'NullIota', 'Vec3Iota', 'ListIota', 'DoubleIota', 'PatternIota']),
+                    _('iota', ['IotaType', 'NullIota', 'BooleanIota', 'Vec3Iota', 'ListIota', 'DoubleIota', 'PatternIota']),
                     _('mishaps', ['Mishap', 'MishapNotEnoughArgs', 'MishapInvalidIota', 'MishapAlreadyBrainswept']),
                     _('math', ['HexDir', 'HexPattern']),
                 ]),
