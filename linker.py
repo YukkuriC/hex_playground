@@ -31,7 +31,7 @@ MC_ROOT = r'C:/Minecraft/.minecraft/versions'
 BASE_DIR = sys.argv[1] if len(sys.argv) > 1 else 'Hex'
 LINK_NAME = 'HEX'
 
-for sub in ['ars mekanism 1.20.1']:
+for sub in [BASE_DIR]:
     kjsPath = os.path.join(MC_ROOT, sub, 'kubejs')
     if not os.path.isdir(kjsPath):
         continue
