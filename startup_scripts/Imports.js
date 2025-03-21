@@ -41,11 +41,6 @@
                         'VillagerTrades',
                     ]),
                 ]),
-                _('level.block', [
-                    // legacy
-                    'CocoaBlock',
-                    'state.properties.IntegerProperty',
-                ]),
             ]),
         ]),
         _('java', ['lang.Long', 'util.WeakHashMap']),

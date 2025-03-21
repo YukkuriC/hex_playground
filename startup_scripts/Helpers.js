@@ -41,24 +41,6 @@
         }
     }
 }
-/**
- * check crop age
- * @param { Internal.CropBlock } block
- * @param { Internal.BlockState } state
- */
-global.CanHarvest = (block, state) => {
-    if (block.isMaxAge && block.isMaxAge(state)) return true
-    for (const prop of state.getProperties()) {
-        if (!prop instanceof IntegerProperty) continue
-        if (prop.getName() != 'age') continue
-        /** @type { Internal.IntegerProperty }*/
-        let intProp = prop
-        let age = state.getValue(intProp)
-        let maxAge = intProp.getPossibleValues().size() - 1
-        if (age == maxAge) return true
-    }
-    return false
-}
 
 global.shuffleList = list => {
     for (let f = list.length - 1; f > 0; f--) {
