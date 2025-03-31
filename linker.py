@@ -16,7 +16,7 @@ def linkFolder(link: str, src: str):
 
 
 SRC_ROOT = os.path.dirname(__file__)
-SRC_TARGETS = ['server_scripts', 'startup_scripts', 'client_scripts', 'probe']
+SRC_TARGETS = ['server_scripts', 'startup_scripts', 'client_scripts']
 SRC_TARGETS_SEP = ['assets/hex_playground', 'assets/hexcasting']
 CUSTOM_LINKS = [
     # hex patchouli
