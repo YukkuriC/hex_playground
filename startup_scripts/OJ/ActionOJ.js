@@ -40,7 +40,7 @@ ActionOJ.genAction = (onExist, onMiss) => {
         }
     }
 }
-ActionOJ.genGetCtx = field => (ctx, stack) => stack.push(DoubleIota(ctx['field']))
+ActionOJ.genGetCtx = field => (ctx, stack) => stack.push(DoubleIota(ctx[field]))
 
 global.ActionOJMap = {
     start(stack, env, img) {
