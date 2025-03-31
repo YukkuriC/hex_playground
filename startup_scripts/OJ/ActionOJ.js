@@ -10,7 +10,7 @@ function ActionOJ(id, pattern) {
         } catch (e) {
             let sideEffects = []
             if (e instanceof Mishap) {
-                let mishapName = Text.translate(`hexcasting.action.yc:${id}`).aqua()
+                let mishapName = Text.translate(`hexcasting.action.yc:oj/${id}`).aqua()
                 let mishapEffect = OperatorSideEffect.DoMishap(e, Mishap.Context(pattern, mishapName))
                 mishapEffect.performEffect(CastingVM(img, env))
                 sideEffects.push(mishapEffect)
@@ -19,14 +19,14 @@ function ActionOJ(id, pattern) {
                 env.caster.tell(Text.red(e))
             } else throw e
             // manual stop
-            let newImg = img.copy(stack, 114514, img.parenthesized, img.escapeNext, 0, img.userData)
+            let newImg = img.copy(stack, img.parenCount, img.parenthesized, img.escapeNext, 0, img.userData)
             while (cont.next) cont = cont.next // stop anyway
             return OperationResult(newImg, sideEffects, cont, HexEvalSounds.MISHAP)
         }
     }
 }
 ActionOJ.outOfProblem = () => {
-    throw Text.translate('oj.problem_miss').string
+    throw ActionOJ.doTranslate('oj.problem_miss')
 }
 ActionOJ.pushNull = s => s.push(NullIota())
 ActionOJ.genAction = (onExist, onMiss) => {
@@ -41,13 +41,16 @@ ActionOJ.genAction = (onExist, onMiss) => {
     }
 }
 ActionOJ.genGetCtx = field => (ctx, stack) => stack.push(DoubleIota(ctx[field]))
+ActionOJ.doTranslate = function () {
+    return String(Text.translate.apply(null, arguments).string)
+}
 
 global.ActionOJMap = {
     start(stack, env, img) {
         let id = new Args(stack, 1).double(0)
         let problem = Problem.pool[id]
-        if (!problem) throw Text.translate('oj.problem_invalid', id).string
-        ProblemContext.set(env.caster, problem.createContext(env, img))
+        if (!problem) throw ActionOJ.doTranslate('oj.problem_invalid', id)
+        ProblemContext.set(env.caster, problem.createContext(env, img).start(stack, env, img))
     },
     fetch: ActionOJ.genAction((ctx, stack, env, img) => ctx.fetch(stack, env, img)),
     submit: ActionOJ.genAction((ctx, stack, env, img) => ctx.submit(stack, env, img)),

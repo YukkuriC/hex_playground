@@ -20,13 +20,14 @@ ProblemContext.prototype = {
     start(stack, env, img) {
         this.tryCall('onStart', stack, env, img)
         env.caster.tell(Text.translate('oj.problem_start', this.id).yellow())
+        return this
     },
     fetch(stack, env, img) {
         env.caster.tell(Text.translate('oj.case_input', this.id).yellow())
-        this.tryCall('onFetch', this, stack, env, img)
+        this.tryCall('onFetch', stack, env, img)
     },
     submit(stack, env, img) {
-        this.tryCall('onSubmit', this, stack, env, img)
+        this.tryCall('onSubmit', stack, env, img)
         env.caster.tell(Text.translate('oj.case_clear', this.caseIdx).green())
         this.caseIdx++
         if (this.caseIdx >= this.caseCount) {
