@@ -4,7 +4,7 @@ new Problem(0)
 new Problem(1, { caseCount: 3 })
 new Problem(2, {
     onSubmit(stack) {
-        this.tryCompare(new Args(stack, 1).entity(0), this.env.caster)
+        this.tryCompare(new Args(stack, 1).entity(0), this.player)
     },
 })
 

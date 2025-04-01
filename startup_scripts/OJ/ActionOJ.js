@@ -31,11 +31,11 @@ ActionOJ.outOfProblem = () => {
 ActionOJ.pushNull = s => s.push(NullIota())
 ActionOJ.genAction = (onExist, onMiss) => {
     onMiss = onMiss || ActionOJ.outOfProblem
-    return (stack, env, img) => {
+    return (stack, env) => {
         let ctx = ProblemContext.get(env.caster)
-        if (ctx) onExist(ctx, stack, env, img)
+        if (ctx) onExist(ctx, stack)
         else {
-            onMiss(stack, env, img)
+            onMiss(stack)
             return
         }
     }
@@ -50,13 +50,13 @@ global.ActionOJMap = {
         let id = new Args(stack, 1).double(0)
         let problem = Problem.pool[id]
         if (!problem) throw ActionOJ.doTranslate('oj.problem_invalid', id)
-        ProblemContext.set(env.caster, problem.createContext(env, img).start(stack, env, img))
+        ProblemContext.set(env.caster, problem.createContext(env, img).start(stack))
     },
-    fetch: ActionOJ.genAction((ctx, stack, env, img) => ctx.fetch(stack, env, img)),
-    submit: ActionOJ.genAction((ctx, stack, env, img) => ctx.submit(stack, env, img)),
+    fetch: ActionOJ.genAction((ctx, stack) => ctx.fetch(stack)),
+    submit: ActionOJ.genAction((ctx, stack) => ctx.submit(stack)),
     get_id: ActionOJ.genAction(ActionOJ.genGetCtx('id'), s => s.push(NullIota())),
     get_case: ActionOJ.genAction(ActionOJ.genGetCtx('caseIdx')),
-    get_max_case: ActionOJ.genAction(ActionOJ.genGetCtx('caseCount')),
+    case_count: ActionOJ.genAction(ActionOJ.genGetCtx('caseCount')),
 }
 
 StartupEvents.registry('hexcasting:action', e => {
@@ -64,7 +64,7 @@ StartupEvents.registry('hexcasting:action', e => {
         if (!id in global.ActionOJMap) throw new Error('missing operate: ' + id)
         let resourceKey = 'yc:oj/' + id
         let pattern = HexPattern.fromAngles(seq, dir)
-        e.custom(resourceKey, ActionRegistryEntry(pattern, new ActionOJ(id, pattern, options)))
+        e.custom(resourceKey, ActionRegistryEntry(pattern, new ActionOJ(id, pattern)))
     }
 
     registerPatternWrap('dwddw', HexDir.EAST, 'start')
@@ -72,5 +72,5 @@ StartupEvents.registry('hexcasting:action', e => {
     registerPatternWrap('dwddwwaawa', HexDir.EAST, 'submit')
     registerPatternWrap('dwddweaqa', HexDir.EAST, 'get_id')
     registerPatternWrap('dwddweaqaa', HexDir.EAST, 'get_case')
-    registerPatternWrap('dwddweaqaaqde', HexDir.EAST, 'get_max_case')
+    registerPatternWrap('dwddweaqaaqde', HexDir.EAST, 'case_count')
 })
