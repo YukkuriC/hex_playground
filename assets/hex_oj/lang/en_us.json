@@ -3,6 +3,7 @@
     "oj.case_input": "Receiving input from Case #%s",
     "oj.case_clear": "Case #%s passed",
     "oj.problem_clear": "Problem #%s solved",
+    "oj.problem_invalid": "Problem doesn't exist: #%s",
     "oj.problem_miss": "Not in a problem!",
     "oj.wrong_answer": "WRONG ANSWER",
     "oj.wrong_answer.input": "Input: %s",

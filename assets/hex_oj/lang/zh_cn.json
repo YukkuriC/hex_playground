@@ -3,6 +3,7 @@
     "oj.case_input": "获取用例 #%s 的输入",
     "oj.case_clear": "用例 #%s 通过",
     "oj.problem_clear": "问题 #%s 解决",
+    "oj.problem_invalid": "问题不存在：#%s",
     "oj.problem_miss": "未在问题内！",
     "oj.wrong_answer": "答案错误",
     "oj.wrong_answer.input": "输入：%s",
