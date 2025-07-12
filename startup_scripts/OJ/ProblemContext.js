@@ -32,6 +32,7 @@ ProblemContext.prototype = {
         if (this.caseIdx >= this.caseCount) {
             env.caster.tell(Text.translate('oj.problem_clear', this.id).green())
             env.caster.stages.add(`oj_${this.id}`)
+            ProblemContext.remove(env.caster)
         }
     },
 }
