@@ -20,10 +20,10 @@ ProblemContext.prototype = {
         if (got !== expected) this.wrongAnswer(this.caseIdx, got, expected)
     },
     wrongAnswer(input, got, expected) {
-        let ret = [Text.translate('oj.wrong_answer').string]
-        if (input !== undefined) ret.push(Text.translate('oj.wrong_answer.input', input).string)
-        if (got !== undefined) ret.push(Text.translate('oj.wrong_answer.got', got).string)
-        if (expected !== undefined) ret.push(Text.translate('oj.wrong_answer.expected', expected).string)
+        let ret = [ActionOJ.doTranslate('oj.wrong_answer')]
+        if (input !== undefined) ret.push(ActionOJ.doTranslate('oj.wrong_answer.input', input))
+        if (got !== undefined) ret.push(ActionOJ.doTranslate('oj.wrong_answer.got', got))
+        if (expected !== undefined) ret.push(ActionOJ.doTranslate('oj.wrong_answer.expected', expected))
         throw ret.join('\n')
     },
     start(stack) {

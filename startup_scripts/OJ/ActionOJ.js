@@ -42,7 +42,7 @@ ActionOJ.genAction = (onExist, onMiss) => {
 }
 ActionOJ.genGetCtx = field => (ctx, stack) => stack.push(DoubleIota(ctx[field]))
 ActionOJ.doTranslate = function () {
-    return String(Text.translate.apply(null, arguments).string)
+    return String(Text.translate.apply(null, Array.from(arguments).map(ProblemUtils.toDisplay)).string)
 }
 
 global.ActionOJMap = {
