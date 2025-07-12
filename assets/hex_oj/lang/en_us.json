@@ -1,0 +1,11 @@
+{
+    "oj.problem_start": "Problem #%s started",
+    "oj.case_input": "Receiving input from Case #%s",
+    "oj.case_clear": "Case #%s passed",
+    "oj.problem_clear": "Problem #%s solved",
+    "oj.problem_miss": "Not in a problem!",
+    "oj.wrong_answer": "WRONG ANSWER",
+    "oj.wrong_answer.input": "Input: %s",
+    "oj.wrong_answer.expected": "Expected: %s",
+    "oj.wrong_answer.got": "Got: %s"
+}

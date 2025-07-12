@@ -1,0 +1,11 @@
+{
+    "oj.problem_start": "问题 #%s 已开启",
+    "oj.case_input": "获取用例 #%s 的输入",
+    "oj.case_clear": "用例 #%s 通过",
+    "oj.problem_clear": "问题 #%s 解决",
+    "oj.problem_miss": "未在问题内！",
+    "oj.wrong_answer": "答案错误",
+    "oj.wrong_answer.input": "输入：%s",
+    "oj.wrong_answer.expected": "正确答案：%s",
+    "oj.wrong_answer.got": "提交：%s"
+}
