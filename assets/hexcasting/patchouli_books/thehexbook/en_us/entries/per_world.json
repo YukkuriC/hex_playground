@@ -2,6 +2,7 @@
 	"name": "yc.hex.book.entry.per_world",
 	"category": "hexcasting:patterns",
 	"icon": "minecraft:repeating_command_block",
+	"advancement": "hexcasting:root",
 	"pages": [
 		{
 			"type": "hexcasting:pattern",
@@ -14,7 +15,7 @@
 		"book.descrip.yc:brain_merge",
 		{
 			"type": "hexcasting:pattern",
-			"op_id": "yc:charge_media",
+		"op_id": "yc:charge_media",
 			"anchor": "yc:charge_media",
 			"input": "",
 			"output": "",
