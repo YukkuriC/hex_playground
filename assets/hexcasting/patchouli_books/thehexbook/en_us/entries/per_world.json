@@ -15,7 +15,7 @@
 		"book.descrip.yc:brain_merge",
 		{
 			"type": "hexcasting:pattern",
-		"op_id": "yc:charge_media",
+			"op_id": "yc:charge_media",
 			"anchor": "yc:charge_media",
 			"input": "",
 			"output": "",
