@@ -34,7 +34,6 @@
     PersonalManaEvents.AddOnInsert(e => {
         let map = getTrainingMap(e.player)
         map.max = (map.max || 0) + e.actual * RATIO_REGEN_TO_MAX + e.dropped * RATIO_OVER_REGEN_TO_MAX
-        e.player.tell(e.player.class) // TODO: why do I get LocalPlayer?
         refreshPersonalMana(e.player)
     })
 
