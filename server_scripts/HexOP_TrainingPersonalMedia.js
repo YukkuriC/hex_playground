@@ -10,10 +10,11 @@
      * @returns {{max?:number; regen?:number}}
      */
     let getTrainingMap = (/**@type {Internal.ServerPlayer}*/ player) => {
-        if (!player.persistentData.training_media?.put) {
-            player.persistentData.training_media = {}
+        let pdata = player.getPersistentData()
+        if (!pdata.training_media?.put) {
+            pdata.training_media = {}
         }
-        return player.persistentData.training_media
+        return pdata.training_media
     }
 
     /**
