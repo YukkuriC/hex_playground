@@ -11,12 +11,10 @@
      */
     let getTrainingMap = (/**@type {Internal.ServerPlayer}*/ player) => {
         if (!player.persistentData.training_media?.put) {
-            player.tell('wtf' + player.persistentData.training_media?.put)
             player.persistentData.training_media = {}
         }
         return player.persistentData.training_media
     }
-    global.getTrainingMap = getTrainingMap
 
     /**
      * @param {Internal.ServerPlayer} player
