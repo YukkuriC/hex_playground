@@ -24,7 +24,7 @@ ServerEvents.recipes(e => {
             if (src_item.id == 'hexcasting:focus') break
         }
 
-        item.getOrCreateTag()
+        item.nbt = src_item.nbt
         if (player) {
             let offItem = player.offHandItem
             if (offItem.nbt?.data && offItem.nbt.data['hexcasting:type']) {
