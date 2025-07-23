@@ -17,9 +17,9 @@ StartupEvents.registry('hexcasting:action', e => {
 
     registerPatternWrap('wawaw', HexDir.EAST, 'check_ambit')
 
-    registerPatternWrap('wwaqqqqqedwdwwwaw', HexDir.EAST, 'charge_media', 1)
-    registerPatternWrap('eqaawawaeqqqaawdwdwaw', HexDir.SOUTH_WEST, 'charge_media/wisp', 1)
-    registerPatternWrap('eaqwqaewwaqawdwaqaw', HexDir.SOUTH_WEST, 'charge_media/circle', 1)
+    // registerPatternWrap('wwaqqqqqedwdwwwaw', HexDir.EAST, 'charge_media', 1)
+    // registerPatternWrap('eqaawawaeqqqaawdwdwaw', HexDir.SOUTH_WEST, 'charge_media/wisp', 1)
+    // registerPatternWrap('eaqwqaewwaqawdwaqaw', HexDir.SOUTH_WEST, 'charge_media/circle', 1)
     registerPatternWrap('aaddwdwdqdwd', HexDir.NORTH_WEST, 'punch_entity')
     registerPatternWrap('wqqwqwqaeqeeedqqeaqadedaqaedeqqeqedeqeaqeqaqedeadeaqwqwqaeda', HexDir.EAST, 'brain_merge', 1)
     registerPatternWrap('qwewewewewewdqeeeeedwwwawwqwwqwwwdedwwwqwwqwwwded', HexDir.EAST, 'crystalize', 1)
