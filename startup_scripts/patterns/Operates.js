@@ -64,6 +64,9 @@ global.PatternOperateMap = {
             ),
         )
     },
+    in_nether: (stack, ctx) => {
+        stack.push(BooleanIota(String(ctx.world.dimension) == 'minecraft:the_nether'))
+    },
     // 世界交互相关
     charge_media: (s, ctx) => {
         let stack = ctx.caster.getItemInHand(ctx.castingHand)

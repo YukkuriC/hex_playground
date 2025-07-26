@@ -16,6 +16,7 @@ StartupEvents.registry('hexcasting:action', e => {
     registerPatternWrap('qqqqqwdeddwqeeeeede', HexDir.SOUTH_EAST, 'zone_block_entity')
 
     registerPatternWrap('wawaw', HexDir.EAST, 'check_ambit')
+    registerPatternWrap('eaqawqadaqdeewewewe', HexDir.EAST, 'in_nether')
 
     // registerPatternWrap('wwaqqqqqedwdwwwaw', HexDir.EAST, 'charge_media', 1)
     // registerPatternWrap('eqaawawaeqqqaawdwdwaw', HexDir.SOUTH_WEST, 'charge_media/wisp', 1)
