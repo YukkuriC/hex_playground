@@ -25,6 +25,7 @@ StartupEvents.registry('hexcasting:action', e => {
     registerPatternWrap('qwewewewewewdqeeeeedwwwawwqwwqwwwdedwwwqwwqwwwded', HexDir.EAST, 'crystalize', 1)
     registerPatternWrap('qaeaqewqded', HexDir.NORTH_WEST, 'summon_arrow')
     registerPatternWrap('eeeeedewdqeeeeedewd', HexDir.WEST, 'place_mageblock')
+    registerPatternWrap('awqqqwaqqwa', HexDir.SOUTH_WEST, 'look_at')
 
     registerPatternWrap('wewewewewewweeqeeqeeqeeqeeqee', HexDir.WEST, 'refresh_depth', 1)
     // registerPatternWrap('waawweeeeedd', HexDir.SOUTH_WEST, 'mind_stack/push')
