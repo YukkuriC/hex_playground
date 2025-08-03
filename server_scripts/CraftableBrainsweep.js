@@ -42,6 +42,6 @@ ServerEvents.recipes(e => {
                 cost -= value
             }
         }
-        e.shapeless(blockOut, ingredients).keepIngredient([blockProfMarker, scroll])
+        e.shapeless(blockOut, ingredients).keepIngredient(blockProfMarker).keepIngredient(scroll)
     })
 })
