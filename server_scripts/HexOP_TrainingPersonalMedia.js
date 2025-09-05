@@ -1,7 +1,7 @@
 // requires: hexoverpowered
 {
     let RATIO_REGEN_TO_MAX = 2e-2
-    let RATIO_OVER_REGEN_TO_MAX = 1e-5
+    let RATIO_OVER_REGEN_TO_MAX = 0 // disabled passive exponential gen
     let RATIO_CAST_TO_REGEN = 2e-3
     let RATIO_HURT_TO_MAX = 1000
     let KEY_TRAINING = 'hexop_training'
