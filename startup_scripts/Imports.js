@@ -50,6 +50,7 @@
             'common.lib.hex.HexEvalSounds',
             _('api', [
                 _('casting', [
+                    'castables.Action',
                     'ActionRegistryEntry',
                     'ParticleSpray',
                     _('eval', ['OperationResult', 'vm.CastingVM', _('sideeffects', ['EvalSound', 'OperatorSideEffect'])]),

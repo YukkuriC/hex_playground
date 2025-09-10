@@ -7,7 +7,7 @@ StartupEvents.registry('hexcasting:action', e => {
         let resourceKey = 'yc:' + id
         if (isGreat) global.perWorldPatterns.push(resourceKey)
         let pattern = HexPattern.fromAngles(seq, dir)
-        e.custom(resourceKey, ActionRegistryEntry(pattern, new ActionJS(id, pattern, options)))
+        e.custom(resourceKey, ActionRegistryEntry(pattern, ActionJS(id, pattern, options)))
         // patchouli entry
         global.HexPatchouliGen.add(resourceKey, isGreat)
     }

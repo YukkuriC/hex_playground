@@ -45,23 +45,26 @@ execute(args: List<Iota>, env: CastingEnvironment): newStack
 
 function ActionJS(id, pattern, options) {
     const { sound } = options || {}
-    this.operate = (env, img, cont) => {
-        let stack = img.stack
-        if (stack.toArray) stack = Array.from(stack.toArray())
-        try {
-            let sideEffects = global.PatternOperateMap[id](stack, env, img) || [] // for evil purpose
-            let newImg = img.copy(stack, img.parenCount, img.parenthesized, img.escapeNext, img.opsConsumed + 1, img.userData)
-            return OperationResult(newImg, sideEffects, cont, sound || HexEvalSounds.NORMAL_EXECUTE)
-        } catch (e) {
-            if (e instanceof Mishap) {
-                let mishapName = Text.translate(`hexcasting.action.yc:${id}`).aqua()
-                let mishapEffect = OperatorSideEffect.DoMishap(e, Mishap.Context(pattern, mishapName))
-                mishapEffect.performEffect(CastingVM(img, env))
-                let newImg = img.copy(stack, img.parenCount, img.parenthesized, img.escapeNext, 0, img.userData)
-                while (cont.next) cont = cont.next // stop anyway
-                return OperationResult(newImg, [mishapEffect], cont, HexEvalSounds.MISHAP)
+    let actionProto = {
+        operate(env, img, cont) {
+            let stack = img.stack
+            if (stack.toArray) stack = Array.from(stack.toArray())
+            try {
+                let sideEffects = global.PatternOperateMap[id](stack, env, img) || [] // for evil purpose
+                let newImg = img.copy(stack, img.parenCount, img.parenthesized, img.escapeNext, img.opsConsumed + 1, img.userData)
+                return OperationResult(newImg, sideEffects, cont, sound || HexEvalSounds.NORMAL_EXECUTE)
+            } catch (e) {
+                if (e instanceof Mishap) {
+                    let mishapName = Text.translate(`hexcasting.action.yc:${id}`).aqua()
+                    let mishapEffect = OperatorSideEffect.DoMishap(e, Mishap.Context(pattern, mishapName))
+                    mishapEffect.performEffect(CastingVM(img, env))
+                    let newImg = img.copy(stack, img.parenCount, img.parenthesized, img.escapeNext, 0, img.userData)
+                    while (cont.next) cont = cont.next // stop anyway
+                    return OperationResult(newImg, [mishapEffect], cont, HexEvalSounds.MISHAP)
+                }
+                throw e
             }
-            throw e
-        }
+        },
     }
+    return new JavaAdapter(Action, actionProto)
 }
