@@ -1,0 +1,27 @@
+# Changes here will be overwritten by Copier. NEVER EDIT MANUALLY
+# See: https://copier.readthedocs.io/en/stable/configuring/#the-copier-answersyml-file
+_commit: f634156
+_src_path: gh:YukkuriC/hexdoc-hexcasting-template
+author: YukkuriC
+book_id: hexcasting:thehexbook
+default_branch: main
+github_repo: hex_playground
+gradle_mod_version_key: mod_version_base
+hexdoc_mod_plugin_classname: HexPlaygroundModPlugin
+hexdoc_plugin_classname: HexPlaygroundPlugin
+java_lang:
+    ext: java
+    src: java
+java_package: .
+mod_display_name: Hex Playground
+modid: yc
+multiloader: false
+package_export_root: doc/src/hexdoc_hex_playground/_export
+package_name: hexdoc-hex_playground
+package_slug: hexdoc_hex_playground
+package_src: doc/src/hexdoc_hex_playground
+pages_url: https://yukkuric.github.io/hex_playground/
+pattern_regex:
+    per_world_value: 'true'
+    regex: wrap\(\s*"(?P<name>[a-zA-Z0-9_\/]+)",\s*"(?P<signature>[aqweds]+)",\s*HexDir.(?P<startdir>\w+)
+pattern_registry: startup_scripts/patterns/Registry.js

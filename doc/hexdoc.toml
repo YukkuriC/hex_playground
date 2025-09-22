@@ -1,0 +1,44 @@
+modid = "yc"
+book = "hexcasting:thehexbook"
+default_lang = "en_us"
+default_branch = "main"
+
+resource_dirs = [  # top takes priority
+    "resources",
+    "{$_common.src}/main/resources",
+    { path="{$_common.src}/generated/resources", required=false },
+    { modid="hexcasting" },
+    { modid="minecraft" },
+    { modid="hexdoc" },
+]
+export_dir = "src/hexdoc_hex_playground/_export/generated"
+
+[template]
+icon = "icon.png"
+include = [
+    "yc",
+    "hexcasting",
+    "hexdoc",
+]
+
+[template.args]
+mod_name = "Hex Playground"
+author = "YukkuriC"
+show_landing_text = false
+
+[extra.hexcasting]
+# regexes for parsing pattern registry files - try running copier update and picking a different regex if your patterns aren't loading
+# NOTE: "!Raw" means "don't apply variable interpolation to this value"
+_pattern_regex = { "!Raw"='wrap\(\s*"(?P<name>[a-zA-Z0-9_\/]+)",\s*"(?P<signature>[aqweds]+)",\s*HexDir.(?P<startdir>\w+)' }
+_per_world_value = "true"
+
+[[extra.hexcasting.pattern_stubs]]
+path = "{$_common.package}/startup_scripts/patterns/Registry.js"
+regex = "{^_pattern_regex}"
+per_world_value = "{^_per_world_value}"
+
+# platforms
+
+[_common]
+src = "../src"
+package = "{src}/main/java/."
