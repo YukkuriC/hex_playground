@@ -3,6 +3,8 @@
 
 咒法学 & KubeJS试验田 ~~爆改新生魔艺~~
 
+[Online HexBook](https://yukkuric.github.io/he_playground)
+
 ## 主要功能（&涉及文件）
 1. 自定义法术注册
     - `startup_scripts/*`

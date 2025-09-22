@@ -18,8 +18,17 @@ from .__version__ import PY_VERSION
 class HexPlaygroundPlugin(ModPluginImpl):
     @staticmethod
     @hookimpl
-    def hexdoc_mod_plugin(branch: str) -> ModPlugin:
+    def hexdoc_mod_plugin(branch: str, props) -> ModPlugin:
+        if props.modid=='yc':
+            HexPlaygroundPlugin.do_patch()
         return HexPlaygroundModPlugin(branch=branch)
+    
+    @staticmethod
+    def do_patch():
+        from hexdoc_hexcasting.metadata import HexContext
+        def force_old_pattern(self:HexContext, signatures, loader):
+            return self._add_patterns_0_10(signatures, loader.props)
+        HexContext._add_patterns_0_11=force_old_pattern
 
 
 class HexPlaygroundModPlugin(ModPluginWithBook):
