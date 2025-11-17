@@ -293,6 +293,15 @@ global.PatternOperateMap = {
         let args = new Args(stack, 2)
         let code = args.list(0)
         let timeout = args.double(1)
+        let executor = () => {
+            let harness = CastingVM.empty(ctx)
+            harness.queueExecuteAndWrapIotas(code, ctx.caster.level)
+        }
+        if (timeout <= 0) {
+            executor()
+            return
+        }
+
         let key = ctx.impetus || ctx.caster
         let oldSignal = global.ScheduleSignals.get(key)
         if (oldSignal) oldSignal.cancel = true
@@ -301,8 +310,7 @@ global.PatternOperateMap = {
 
         ctx.caster.server.scheduleInTicks(timeout, () => {
             if (mySignal.cancel) return
-            let harness = CastingVM.empty(ctx)
-            harness.queueExecuteAndWrapIotas(code, ctx.caster.level)
+            executor()
         })
     },
     'mind_env/running_code': (stack, ctx) => {
