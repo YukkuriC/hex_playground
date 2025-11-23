@@ -55,6 +55,7 @@ ServerEvents.recipes(e => {
         //
         'hexcasting:focus',
         'hexcasting:cypher',
+        'hexcasting:ancient_cypher',
         'hexcasting:trinket',
         'hexcasting:artifact',
         'hexgloop:gloopifact',
