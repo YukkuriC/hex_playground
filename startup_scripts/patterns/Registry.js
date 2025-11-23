@@ -34,8 +34,8 @@ StartupEvents.registry('hexcasting:action', e => {
     // registerPatternWrap('waawweeeeewaa', HexDir.SOUTH_WEST, 'mind_stack/size')
     // registerPatternWrap('waawweeeeaaeaeaeaeaw', HexDir.SOUTH_WEST, 'mind_patterns')
     registerPatternWrap('waawweeeeewdewqa', HexDir.SOUTH_WEST, 'mind_patterns/clear')
-    registerPatternWrap('waawedaqqqqdeaqq', HexDir.SOUTH_WEST, 'mind_env/schedule')
-    registerPatternWrap('wqaqwweeeeeqdeaqq', HexDir.SOUTH_WEST, 'mind_env/running_code')
+    // registerPatternWrap('waawedaqqqqdeaqq', HexDir.SOUTH_WEST, 'mind_env/schedule')
+    // registerPatternWrap('wqaqwweeeeeqdeaqq', HexDir.SOUTH_WEST, 'mind_env/running_code')
 
     registerPatternWrap('wdwawedqdewawdw', HexDir.SOUTH_WEST, 'nested_modify')
 })

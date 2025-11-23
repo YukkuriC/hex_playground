@@ -6,23 +6,6 @@
 	"pages": [
 		{
 			"type": "hexcasting:pattern",
-			"op_id": "yc:mind_env/schedule",
-			"anchor": "yc:mind_env/schedule",
-			"input": "list, num",
-			"output": "",
-			"text": ""
-		},
-		"book.descrip.yc:mind_env/schedule",
-		{
-			"type": "hexcasting:pattern",
-			"op_id": "yc:mind_env/running_code",
-			"anchor": "yc:mind_env/running_code",
-			"input": "",
-			"output": "list/null",
-			"text": "book.descrip.yc:mind_env/running_code"
-		},
-		{
-			"type": "hexcasting:pattern",
 			"op_id": "yc:mind_patterns/clear",
 			"anchor": "yc:mind_patterns/clear",
 			"input": "",
