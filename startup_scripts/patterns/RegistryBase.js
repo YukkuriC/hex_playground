@@ -48,7 +48,8 @@ function ActionJS(id, pattern, options) {
     let actionProto = {
         operate(env, img, cont) {
             let stack = img.stack
-            if (stack.toArray) stack = Array.from(stack.toArray())
+            if (stack.toArray) stack = stack.toArray()
+            stack = Array.from(stack) // always copy for mishap recover
             try {
                 let sideEffects = global.PatternOperateMap[id](stack, env, img) || [] // for evil purpose
                 let newImg = img.copy(stack, img.parenCount, img.parenthesized, img.escapeNext, img.opsConsumed + 1, img.userData)
@@ -58,7 +59,7 @@ function ActionJS(id, pattern, options) {
                     let mishapName = Text.translate(`hexcasting.action.yc:${id}`).aqua()
                     let mishapEffect = OperatorSideEffect.DoMishap(e, Mishap.Context(pattern, mishapName))
                     mishapEffect.performEffect(CastingVM(img, env))
-                    let newImg = img.copy(stack, img.parenCount, img.parenthesized, img.escapeNext, 0, img.userData)
+                    let newImg = img.copy(img.stack, img.parenCount, img.parenthesized, img.escapeNext, 0, img.userData)
                     while (cont.next) cont = cont.next // stop anyway
                     return OperationResult(newImg, [mishapEffect], cont, HexEvalSounds.MISHAP)
                 }
