@@ -53,7 +53,12 @@
                     'castables.Action',
                     'ActionRegistryEntry',
                     'ParticleSpray',
-                    _('eval', ['OperationResult', 'vm.CastingVM', _('sideeffects', ['EvalSound', 'OperatorSideEffect'])]),
+                    _('eval', [
+                        'CastingEnvironmentComponent',
+                        'OperationResult',
+                        'vm.CastingVM',
+                        _('sideeffects', ['EvalSound', 'OperatorSideEffect']),
+                    ]),
                     _('iota', ['IotaType', 'NullIota', 'BooleanIota', 'Vec3Iota', 'ListIota', 'DoubleIota', 'PatternIota']),
                     _('mishaps', ['Mishap', 'MishapNotEnoughArgs', 'MishapInvalidIota', 'MishapAlreadyBrainswept']),
                     _('math', ['HexDir', 'HexPattern']),

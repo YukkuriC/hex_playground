@@ -251,6 +251,21 @@ global.PatternOperateMap = {
         let pos = args.vec3(1)
         entity.lookAt('eyes', pos)
     },
+    i_see_all: (stack, ctx) => {
+        let locals = global.PatternOperateMap.i_see_all // func as obj
+        if (!locals.protoComp) {
+            let key = new JavaAdapter(CastingEnvironmentComponent.Key, {})
+            locals.protoComp = {
+                onIsVecInRange(vec, current) {
+                    return true
+                },
+                getKey() {
+                    return key
+                },
+            }
+        }
+        ctx.addExtension(new JavaAdapter(CastingEnvironmentComponent.IsVecInRange, locals.protoComp))
+    },
 
     // 代码执行相关
     refresh_depth: (s, ctx, img) => {

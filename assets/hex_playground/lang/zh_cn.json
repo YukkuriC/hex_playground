@@ -37,5 +37,9 @@
 	"book.descrip.yc:mind_env/running_code": "获取当前环境上一次延时执行的图案列表。",
 	"book.descrip.yc:mind_env/schedule": "将给定图案列表延迟给定时间（tick数）后执行；每种执行途径同时最多只能有一个延时，发起新延时将取消已有延时动作。",
 	"book.descrip.yc:summon_arrow": "给定发射点与发射速度，召唤一支光灵箭。",
-	"book.descrip.yc:zone_block_entity": "获取给定坐标与半径内的所有方块实体，返回各方块对应位置的列表。"
+	"book.descrip.yc:zone_block_entity": "获取给定坐标与半径内的所有方块实体，返回各方块对应位置的列表。",
+	"hexcasting.action.yc:i_see_all": "全视",
+	"book.descrip.yc:i_see_all": "$(b)众将见/$$(br)解锁全维度施法范围",
+	"hexcasting.action.yc:look_at": "折颈法术",
+	"book.descrip.yc:look_at": "（不会真的折断脖子）使输入实体强制看向输入坐标"
 }

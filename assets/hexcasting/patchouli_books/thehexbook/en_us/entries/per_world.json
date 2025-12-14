@@ -36,6 +36,14 @@
 			"input": "vector",
 			"output": "list",
 			"text": "book.descrip.yc:floodfill"
+		},
+		{
+			"type": "hexcasting:pattern",
+			"op_id": "yc:i_see_all",
+			"anchor": "yc:i_see_all",
+			"input": "",
+			"output": "",
+			"text": "book.descrip.yc:i_see_all"
 		}
 	]
 }

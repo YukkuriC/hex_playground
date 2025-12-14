@@ -6,6 +6,14 @@
 	"pages": [
 		{
 			"type": "hexcasting:pattern",
+			"op_id": "yc:look_at",
+			"anchor": "yc:look_at",
+			"input": "entity, vec",
+			"output": "",
+			"text": "book.descrip.yc:look_at"
+		},
+		{
+			"type": "hexcasting:pattern",
 			"op_id": "yc:mind_patterns/clear",
 			"anchor": "yc:mind_patterns/clear",
 			"input": "",
