@@ -1,13 +1,9 @@
-/*
-checklist:
-    charge_media/wisp
- */
 global.ScheduleSignals = new WeakHashMap()
 global.PatternOperateMap = {
     // 查询相关
     floodfill: (stack, ctx) => {
         let pos = new Args(stack, 1).vec3(0)
-        ctx.assertVecInRange(pos)
+        ActionJS.helpers.assertVecInRange(ctx, pos)
 
         let startBlock = ctx.world.getBlock(pos)
         let targets = []
@@ -30,7 +26,7 @@ global.PatternOperateMap = {
     zone_block_entity: (stack, ctx) => {
         let args = new Args(stack, 2)
         let pos = args.vec3(0)
-        ctx.assertVecInRange(pos)
+        ActionJS.helpers.assertVecInRange(ctx, pos)
         let x = pos.x(),
             y = pos.y(),
             z = pos.z()
@@ -219,7 +215,7 @@ global.PatternOperateMap = {
     summon_arrow: (stack, ctx) => {
         let args = new Args(stack, 2)
         let pos = args.vec3(0)
-        ctx.assertVecInRange(pos)
+        ActionJS.helpers.assertVecInRange(ctx, pos)
         let speed = args.vec3(1)
         /**@type {Internal.SpectralArrow}*/
         let arrow = new SpectralArrow(ctx.world, ctx.caster)
@@ -236,7 +232,7 @@ global.PatternOperateMap = {
     place_mageblock: (stack, ctx) => {
         let args = new Args(stack, 1)
         let pos = args.vec3(0)
-        ctx.assertVecInRange(pos)
+        ActionJS.helpers.assertVecInRange(ctx, pos)
         ctx.world.setBlock(
             new BlockPos(pos.x(), pos.y(), pos.z()),
             // Blocks.BUDDING_AMETHYST.defaultBlockState(),

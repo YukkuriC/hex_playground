@@ -60,7 +60,7 @@
                         _('sideeffects', ['EvalSound', 'OperatorSideEffect']),
                     ]),
                     _('iota', ['IotaType', 'NullIota', 'BooleanIota', 'Vec3Iota', 'ListIota', 'DoubleIota', 'PatternIota']),
-                    _('mishaps', ['Mishap', 'MishapNotEnoughArgs', 'MishapInvalidIota', 'MishapAlreadyBrainswept']),
+                    _('mishaps', ['Mishap', 'MishapNotEnoughArgs', 'MishapInvalidIota', 'MishapAlreadyBrainswept', 'MishapBadLocation']),
                     _('math', ['HexDir', 'HexPattern']),
                 ]),
             ]),

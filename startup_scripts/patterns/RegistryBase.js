@@ -69,3 +69,9 @@ function ActionJS(id, pattern, options) {
     }
     return new JavaAdapter(Action, actionProto)
 }
+ActionJS.helpers = {
+    assertVecInRange(ctx, vec) {
+        if (!ctx.isVecInWorld(vec)) throw new MishapBadLocation(vec, 'out_of_world')
+        if (!ctx.isVecInRange(vec)) throw new MishapBadLocation(vec, 'too_far')
+    },
+}
