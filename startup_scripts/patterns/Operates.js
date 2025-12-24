@@ -234,7 +234,7 @@ global.PatternOperateMap = {
         let pos = args.vec3(0)
         ActionJS.helpers.assertVecInRange(ctx, pos)
         ctx.world.setBlock(
-            new BlockPos(pos.x(), pos.y(), pos.z()),
+            BlockPos.containing(pos),
             // Blocks.BUDDING_AMETHYST.defaultBlockState(),
             Java.loadClass('com.hollingsworth.arsnouveau.setup.registry.BlockRegistry').MAGE_BLOCK.get().defaultBlockState(),
             2,
