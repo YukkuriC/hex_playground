@@ -8,6 +8,7 @@ ProblemContext.prototype = {
     bindEnv(env, img) {
         this.env = env
         this.img = img
+        this.player = env.caster
         return this
     },
     tryCall(funcName) {
@@ -27,21 +28,21 @@ ProblemContext.prototype = {
     },
     start(stack) {
         this.tryCall('onStart', stack)
-        env.caster.tell(Text.translate('oj.problem_start', this.id).yellow())
+        this.player.tell(Text.translate('oj.problem_start', this.id).yellow())
         return this
     },
     fetch(stack) {
-        env.caster.tell(Text.translate('oj.case_input', this.id).yellow())
+        this.player.tell(Text.translate('oj.case_input', this.id).yellow())
         this.tryCall('onFetch', stack)
     },
     submit(stack) {
         this.tryCall('onSubmit', stack)
-        env.caster.tell(Text.translate('oj.case_clear', this.caseIdx).green())
+        this.player.tell(Text.translate('oj.case_clear', this.caseIdx).green())
         this.caseIdx++
         if (this.caseIdx >= this.caseCount) {
-            env.caster.tell(Text.translate('oj.problem_clear', this.id).green())
-            env.caster.stages.add(`oj_${this.id}`)
-            ProblemContext.remove(env.caster)
+            this.player.tell(Text.translate('oj.problem_clear', this.id).green())
+            this.player.stages.add(`oj_${this.id}`)
+            ProblemContext.remove(this.player)
         }
     },
 }
