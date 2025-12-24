@@ -45,7 +45,9 @@ ActionOJ.genGetCtx = field => (ctx, stack) => stack.push(DoubleIota(ctx[field]))
 global.ActionOJMap = {
     start(stack, env, img) {
         let id = new Args(stack, 1).double(0)
-        // TODO new problem context
+        let problem = Problem.pool[id]
+        if (!problem) throw Text.translate('oj.problem_invalid', id).string
+        ProblemContext.set(env.caster, problem.createContext(env, img))
     },
     fetch: ActionOJ.genAction((ctx, stack, env, img) => ctx.fetch(stack, env, img)),
     submit: ActionOJ.genAction((ctx, stack, env, img) => ctx.submit(stack, env, img)),
