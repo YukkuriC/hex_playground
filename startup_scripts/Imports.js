@@ -43,7 +43,7 @@
                 ]),
             ]),
         ]),
-        _('java', ['lang.Long', 'util.WeakHashMap']),
+        _('java', [_('lang', ['Long', 'Integer']), 'util.WeakHashMap']),
         _('at.petrak.hexcasting', [
             _('forge.cap', ['HexCapabilities', 'adimpl.CapStaticMediaHolder']),
             'xplat.IXplatAbstractions',

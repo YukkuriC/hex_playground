@@ -47,7 +47,9 @@ global.PatternOperateMap = {
                 }
             }
         }
-        stack.push(ListIota(targets))
+        let ret = ListIota(targets)
+        global.setField(ret, 'size', Integer('0'))
+        stack.push(ret)
     },
     // fallbacks
     check_ambit: (stack, ctx) => {
