@@ -265,7 +265,7 @@ global.PatternOperateMap = {
 
     // 代码执行相关
     refresh_depth: (s, ctx, img) => {
-        global.setField(img, 'opsConsumed', Long('-114514'))
+        return { opsConsumed: -114514 }
     },
     'mind_stack/push': (stack, ctx) => {
         let args = new Args(stack, 1)

@@ -51,8 +51,21 @@ function ActionJS(id, pattern, options) {
             if (stack.toArray) stack = stack.toArray()
             stack = Array.from(stack) // always copy for mishap recover
             try {
-                let sideEffects = global.PatternOperateMap[id](stack, env, img) || [] // for evil purpose
-                let newImg = img.copy(stack, img.parenCount, img.parenthesized, img.escapeNext, img.opsConsumed + 1, img.userData)
+                let returnObject = global.PatternOperateMap[id](stack, env, img, cont) || [] // for evil purpose
+                let sideEffects
+                if (returnObject.push) sideEffects = returnObject
+                else {
+                    cont = returnObject.newCont || cont
+                    sideEffects = returnObject.sideEffects || []
+                }
+                let newImg = img.copy(
+                    stack,
+                    img.parenCount,
+                    img.parenthesized,
+                    img.escapeNext,
+                    returnObject.opsConsumed || img.opsConsumed + 1,
+                    img.userData,
+                )
                 return OperationResult(newImg, sideEffects, cont, sound || HexEvalSounds.NORMAL_EXECUTE)
             } catch (e) {
                 if (e instanceof Mishap) {
