@@ -38,5 +38,5 @@ StartupEvents.registry('hexcasting:action', e => {
     // registerPatternWrap('waawedaqqqqdeaqq', HexDir.SOUTH_WEST, 'mind_env/schedule')
     // registerPatternWrap('wqaqwweeeeeqdeaqq', HexDir.SOUTH_WEST, 'mind_env/running_code')
 
-    registerPatternWrap('wdwawedqdewawdw', HexDir.SOUTH_WEST, 'nested_modify')
+    // registerPatternWrap('wdwawedqdewawdw', HexDir.SOUTH_WEST, 'nested_modify')
 })
