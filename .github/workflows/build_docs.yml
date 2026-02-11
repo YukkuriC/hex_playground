@@ -3,7 +3,7 @@ name: Build the web book
 on:
   push:
     branches:
-      - "main"
+      # - "main"
     tags: "v*"
   workflow_dispatch:
     inputs:
