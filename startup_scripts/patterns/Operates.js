@@ -350,4 +350,9 @@ global.PatternOperateMap = {
         }
         stack.push(IotaType.deserialize(list_nbt, ctx.world))
     },
+    size_holder: stack => {
+        let holder = ListIota([DoubleIota(114514)])
+        global.setField(holder, 'size', Integer('-114514'))
+        stack.push(holder)
+    },
 }

@@ -6,7 +6,7 @@ StartupEvents.registry('hexcasting:action', e => {
         if (!id in global.PatternOperateMap) throw new Error('missing operate: ' + id)
         let resourceKey = 'yc:' + id
         if (isGreat) global.perWorldPatterns.push(resourceKey)
-        let pattern = HexPattern.fromAngles(seq, dir)
+        let pattern = HexPattern.fromAnglesUnchecked(seq, dir)
         e.custom(resourceKey, ActionRegistryEntry(pattern, ActionJS(id, pattern, options)))
         // patchouli entry
         global.HexPatchouliGen.add(resourceKey, isGreat)
@@ -39,4 +39,5 @@ StartupEvents.registry('hexcasting:action', e => {
     // registerPatternWrap('wqaqwweeeeeqdeaqq', HexDir.SOUTH_WEST, 'mind_env/running_code')
 
     // registerPatternWrap('wdwawedqdewawdw', HexDir.SOUTH_WEST, 'nested_modify')
+    registerPatternWrap('sdsdsdsdsds', HexDir.WEST, 'size_holder')
 })
