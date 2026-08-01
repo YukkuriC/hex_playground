@@ -4,7 +4,7 @@
     let CastingEnvironment = Java.loadClass('at.petrak.hexcasting.api.casting.eval.CastingEnvironment')
     let CastingEnvironmentComponent = Java.loadClass('at.petrak.hexcasting.api.casting.eval.CastingEnvironmentComponent')
     let FakePlayer =
-        Java.tryLoadClass('net.minecraftforge.common.util.FakePlayer') || Java.loadClass('net.fabricmc.fabric.api.entity.FakePlayer')
+        Java.tryLoadClass('net.neoforged.neoforge.common.util.FakePlayer') || Java.loadClass('net.fabricmc.fabric.api.entity.FakePlayer')
     let key = new JavaAdapter(CastingEnvironmentComponent.Key, {})
     /**@type {Internal.CastingEnvironmentComponent.ExtractMedia.Pre} */
     let protoComp = {

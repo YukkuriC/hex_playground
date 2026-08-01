@@ -1,6 +1,6 @@
 // priority:10
 if (this.HexCapabilities) {
-    let CapMedia = HexCapabilities.MEDIA
+    let CapMedia = HexCapabilities.Item.MEDIA
     let provideMediaCap = (stack, supplierGen) => {
         let supplier = supplierGen(stack)
         return {
@@ -12,17 +12,15 @@ if (this.HexCapabilities) {
     }
 
     let capPool = []
-    global.registerMediaCap = (id, predicate, supplierGen) => {
-        capPool.push([id, predicate, supplierGen])
+    global.registerMediaCap = (id, supplier) => {
+        capPool.push([id, supplier])
     }
 
-    ForgeEvents.onGenericEvent('net.minecraftforge.event.AttachCapabilitiesEvent', 'net.minecraft.world.item.ItemStack', e => {
-        let stack = e.getObject()
+    NativeEvents.onEvent(Java.loadClass('net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent'), e => {
         for (let entry of capPool) {
             try {
-                let [id, predicate, supplierGen] = entry
-                if (!predicate(stack)) continue
-                e.addCapability(id, provideMediaCap(stack, supplierGen))
+                let [id, supplier] = entry
+                e.registerItem(CapMedia, supplier, Item.getItem(id))
             } catch (e) {
                 console.error(e)
             }

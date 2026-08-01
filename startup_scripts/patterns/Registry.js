@@ -3,11 +3,12 @@ global.perWorldPatterns = []
 StartupEvents.registry('hexcasting:action', e => {
     function registerPatternWrap(seq, dir, id, isGreat, options) {
         isGreat = !!isGreat
-        if (!id in global.PatternOperateMap) throw new Error('missing operate: ' + id)
+        if ((!id) in global.PatternOperateMap) throw new Error('missing operate: ' + id)
         let resourceKey = 'yc:' + id
         if (isGreat) global.perWorldPatterns.push(resourceKey)
         let pattern = HexPattern.fromAnglesUnchecked(seq, dir)
-        e.custom(resourceKey, ActionRegistryEntry(pattern, ActionJS(id, pattern, options)))
+        let obj = ActionRegistryEntry(pattern, ActionJS(id, pattern, options))
+        e.createCustom(resourceKey, () => obj)
         // patchouli entry
         global.HexPatchouliGen.add(resourceKey, isGreat)
     }
