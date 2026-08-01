@@ -53,6 +53,7 @@ execute(args: List<Iota>, env: CastingEnvironment): newStack
 
 function ActionJS(id, pattern, options) {
     const { sound } = options || {}
+    let fImgStack = Reflection.getField(CastingImage, 'stack')
     let actionProto = {
         operate(env, img, cont) {
             Args.prototype.world = env.world
@@ -67,22 +68,15 @@ function ActionJS(id, pattern, options) {
                     cont = returnObject.newCont || cont
                     sideEffects = returnObject.sideEffects || []
                 }
-                let newImg = img.copy(
-                    TreeList.from(stack),
-                    img.parenCount,
-                    img.parenthesized,
-                    img.escapeNext,
-                    img.simulateNext,
-                    returnObject.opsConsumed || img.opsConsumed + 1,
-                    img.userData,
-                )
+                let newImg = img.withUsedOps(returnObject.opsConsumed || img.opsConsumed + 1)
+                fImgStack.set(newImg, TreeList.from(stack))
                 return OperationResult(newImg, sideEffects, cont, sound || HexEvalSounds.NORMAL_EXECUTE)
             } catch (e) {
                 if (e instanceof Mishap) {
                     let mishapName = Text.translate(`hexcasting.action.yc:${id}`).aqua()
                     let mishapEffect = OperatorSideEffect.DoMishap(e, Mishap.Context(pattern, mishapName))
                     mishapEffect.performEffect(CastingVM(img, env))
-                    let newImg = img.copy(img.stack, img.parenCount, img.parenthesized, img.escapeNext, img.simulateNext, 0, img.userData)
+                    let newImg = img.withUsedOps(0)
                     while (cont.next) cont = cont.next // stop anyway
                     return OperationResult(newImg, [mishapEffect], cont, HexEvalSounds.MISHAP)
                 }

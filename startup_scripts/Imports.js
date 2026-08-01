@@ -57,15 +57,14 @@
                         'CastingEnvironmentComponent',
                         'OperationResult',
                         'vm.CastingVM',
+                        'vm.CastingImage',
                         _('sideeffects', ['EvalSound', 'OperatorSideEffect']),
                     ]),
                     _('iota', ['IotaType', 'NullIota', 'BooleanIota', 'Vec3Iota', 'ListIota', 'DoubleIota', 'PatternIota']),
                     _('mishaps', ['Mishap', 'MishapNotEnoughArgs', 'MishapInvalidIota', 'MishapAlreadyBrainswept', 'MishapBadLocation']),
                     _('math', ['HexDir', 'HexPattern']),
                 ]),
-                _('utils', [
-                    'TreeList',
-                ]),
+                'utils.TreeList',
             ]),
         ]),
     ]
