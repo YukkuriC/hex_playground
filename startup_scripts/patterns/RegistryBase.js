@@ -18,6 +18,13 @@ Args.prototype = {
     get(i) {
         return this.data[i]
     },
+    // 1.21: getEntity(ServerLevel)
+    entity(i) {
+        let iota = this.data[i]
+        let res = iota.getEntity(this.world)
+        if (res === undefined) throw MishapInvalidIota.of(iota, this.data.length - i - 1, 'entity')
+        return res
+    },
     brainmerge_target(i) {
         let entity = this.entity(i)
         if (entity instanceof AbstractVillager || entity instanceof Raider) return entity
@@ -28,8 +35,9 @@ Args.prototype = {
         if (entity instanceof Villager) return entity
         throw MishapInvalidIota.of(this.data[i], this.data.length - i - 1, 'class.entity.villager')
     },
+    world: null,
 }
-for (let pair of ['double', 'entity', 'list', 'string', 'pattern', 'vec3/vector', 'bool/boolean']) {
+for (let pair of ['double', 'list', 'string', 'pattern', 'vec3/vector', 'bool/boolean']) {
     let [key, keyMishap] = pair.split('/')
     Args.prototype[key] = _buildGetter(key, keyMishap)
 }
@@ -47,6 +55,7 @@ function ActionJS(id, pattern, options) {
     const { sound } = options || {}
     let actionProto = {
         operate(env, img, cont) {
+            Args.prototype.world = env.world
             let stack = img.stack
             if (stack.toArray) stack = stack.toArray()
             stack = Array.from(stack) // always copy for mishap recover
@@ -63,6 +72,7 @@ function ActionJS(id, pattern, options) {
                     img.parenCount,
                     img.parenthesized,
                     img.escapeNext,
+                    img.simulateNext,
                     returnObject.opsConsumed || img.opsConsumed + 1,
                     img.userData,
                 )
@@ -72,7 +82,7 @@ function ActionJS(id, pattern, options) {
                     let mishapName = Text.translate(`hexcasting.action.yc:${id}`).aqua()
                     let mishapEffect = OperatorSideEffect.DoMishap(e, Mishap.Context(pattern, mishapName))
                     mishapEffect.performEffect(CastingVM(img, env))
-                    let newImg = img.copy(img.stack, img.parenCount, img.parenthesized, img.escapeNext, 0, img.userData)
+                    let newImg = img.copy(img.stack, img.parenCount, img.parenthesized, img.escapeNext, img.simulateNext, 0, img.userData)
                     while (cont.next) cont = cont.next // stop anyway
                     return OperationResult(newImg, [mishapEffect], cont, HexEvalSounds.MISHAP)
                 }
