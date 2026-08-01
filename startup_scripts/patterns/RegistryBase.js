@@ -21,7 +21,7 @@ Args.prototype = {
     // 1.21: getEntity(ServerLevel)
     entity(i) {
         let iota = this.data[i]
-        let res = iota.getEntity(this.world)
+        let res = iota.getEntity && iota.getEntity(this.world)
         if (res === undefined) throw MishapInvalidIota.of(iota, this.data.length - i - 1, 'entity')
         return res
     },
