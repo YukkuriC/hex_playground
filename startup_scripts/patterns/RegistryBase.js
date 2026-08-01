@@ -22,7 +22,7 @@ Args.prototype = {
     entity(i) {
         let iota = this.data[i]
         let res = iota.getEntity && iota.getEntity(this.world)
-        if (res === undefined) throw MishapInvalidIota.of(iota, this.data.length - i - 1, 'entity')
+        if (res === undefined) throw MishapInvalidIota.of(iota, this.data.length - i - 1, 'class.entity')
         return res
     },
     brainmerge_target(i) {
