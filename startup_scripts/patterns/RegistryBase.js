@@ -53,7 +53,6 @@ execute(args: List<Iota>, env: CastingEnvironment): newStack
 
 function ActionJS(id, pattern, options) {
     const { sound } = options || {}
-    let fImgStack = Reflection.getField(CastingImage, 'stack')
     let actionProto = {
         operate(env, img, cont) {
             Args.prototype.world = env.world
@@ -69,7 +68,7 @@ function ActionJS(id, pattern, options) {
                     sideEffects = returnObject.sideEffects || []
                 }
                 let newImg = img.withUsedOps(returnObject.opsConsumed || img.opsConsumed + 1)
-                fImgStack.set(newImg, TreeList.from(stack))
+                ActionJS.helpers.fImgStack.set(newImg, TreeList.from(stack))
                 return OperationResult(newImg, sideEffects, cont, sound || HexEvalSounds.NORMAL_EXECUTE)
             } catch (e) {
                 if (e instanceof Mishap) {
@@ -91,4 +90,5 @@ ActionJS.helpers = {
         if (!ctx.isVecInWorld(vec)) throw new MishapBadLocation(vec, 'out_of_world')
         if (!ctx.isVecInRange(vec)) throw new MishapBadLocation(vec, 'too_far')
     },
+    fImgStack: Reflection.getField(CastingImage, 'stack'),
 }
