@@ -61,7 +61,8 @@ ServerEvents.recipes(e => {
         'hexgloop:gloopifact',
     ]) {
         let target = target_out
-        if (Item.of(target).empty) continue
+        Item.exists
+        if (!Item.exists(target)) continue
         e.shapeless(Item.of(target, 2), [target, target])
 
         if (target === 'hexcasting:focus') continue

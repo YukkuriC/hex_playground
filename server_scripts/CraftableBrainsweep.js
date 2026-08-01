@@ -6,7 +6,7 @@ ServerEvents.recipes(e => {
 
     let POI = BuiltInRegistries.POINT_OF_INTEREST_TYPE
     let POIKey = Registries.POINT_OF_INTEREST_TYPE
-    let scroll = Item.of('hexcasting:scroll', '{op_id:"hexcasting:brainsweep"}').weakNBT()
+    let scroll = 'hexcasting:scroll[hexcasting:op_id="hexcasting:brainsweep"]'
 
     let costSteps = [
         ['hexcasting:quenched_allay', 120],
@@ -31,7 +31,7 @@ ServerEvents.recipes(e => {
             else blockProfMarker = 'jukebox'
         }
         let blockIn = raw.get('blockIn').get('block').asString
-        let blockOut = raw.get('result').get('name').asString
+        let blockOut = raw.get('result').get('Name').asString
 
         // output
         let ingredients = [blockIn, blockProfMarker, 'soul_sand', scroll]

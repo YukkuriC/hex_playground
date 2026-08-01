@@ -49,7 +49,7 @@
     })
 
     // overcast adds max
-    EntityEvents.hurt(e => {
+    EntityEvents.afterHurt(e => {
         let { player, source } = e
         if (player && source.getType() == 'hexcasting.overcast') {
             modifyTraining(player, RATIO_HURT_TO_MAX * Math.min(e.damage, player.maxHealth / 2), 0)
