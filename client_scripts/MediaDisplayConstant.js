@@ -7,7 +7,7 @@
 
     NativeEvents.onEvent('net.neoforged.neoforge.event.entity.player.ItemTooltipEvent', e => {
         let stack = e.itemStack
-        let lines = e.tooltip
+        let lines = e.toolTip
         let holder = IXplatAbstractions.INSTANCE.findMediaHolder(stack)
         if (!holder || !holder.canConstructBattery()) return
         let media = holder.media / 10000
