@@ -63,6 +63,9 @@
                     _('mishaps', ['Mishap', 'MishapNotEnoughArgs', 'MishapInvalidIota', 'MishapAlreadyBrainswept', 'MishapBadLocation']),
                     _('math', ['HexDir', 'HexPattern']),
                 ]),
+                _('utils', [
+                    'TreeList',
+                ]),
             ]),
         ]),
     ]

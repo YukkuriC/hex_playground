@@ -68,7 +68,7 @@ function ActionJS(id, pattern, options) {
                     sideEffects = returnObject.sideEffects || []
                 }
                 let newImg = img.copy(
-                    stack,
+                    TreeList.from(stack),
                     img.parenCount,
                     img.parenthesized,
                     img.escapeNext,
