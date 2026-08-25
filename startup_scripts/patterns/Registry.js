@@ -1,14 +1,21 @@
 global.perWorldPatterns = []
 
-StartupEvents.registry('hexcasting:action', e => {
+/**
+ * Changes:
+ * create obj = register, no more registry phase
+ * TODO:
+ * great tag dump
+ * Patchouli dump
+ */
+;(() => {
+    let { ActionJS, ActionRegistryJS } = HexJS
     function registerPatternWrap(seq, dir, id, isGreat, options) {
         isGreat = !!isGreat
         if ((!id) in global.PatternOperateMap) throw new Error('missing operate: ' + id)
         let resourceKey = 'yc:' + id
         if (isGreat) global.perWorldPatterns.push(resourceKey)
         let pattern = HexPattern.fromAnglesUnchecked(seq, dir)
-        let obj = ActionRegistryEntry(pattern, ActionJS(id, pattern, options))
-        e.createCustom(resourceKey, () => obj)
+        let obj = ActionRegistryJS(pattern, resourceKey, ActionJS().setOperateMutableStack(global.PatternOperateMap[id]), isGreat)
         // patchouli entry
         global.HexPatchouliGen.add(resourceKey, isGreat)
     }
@@ -41,4 +48,4 @@ StartupEvents.registry('hexcasting:action', e => {
 
     // registerPatternWrap('wdwawedqdewawdw', HexDir.SOUTH_WEST, 'nested_modify')
     registerPatternWrap('sdsdsdsdsds', HexDir.WEST, 'size_holder')
-})
+})()

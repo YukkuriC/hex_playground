@@ -1,4 +1,12 @@
 global.ScheduleSignals = new WeakHashMap()
+
+/**
+ * Changes:
+ * return Mishap = throw Mishap
+ * TODO:
+ * ActionJS.helpers
+ * Args
+ */
 global.PatternOperateMap = {
     // 查询相关
     floodfill: (stack, ctx) => {

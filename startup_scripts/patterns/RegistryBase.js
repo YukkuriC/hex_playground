@@ -42,49 +42,7 @@ for (let pair of ['double', 'list', 'string', 'pattern', 'vec3/vector', 'bool/bo
     Args.prototype[key] = _buildGetter(key, keyMishap)
 }
 
-/*
-porting note:
-stack -> img.stack
-ravenmind -> image.userData.remove(HexAPI.RAVENMIND_USERDATA)
-ctx -> env
-
-execute(args: List<Iota>, env: CastingEnvironment): newStack
-*/
-
-function ActionJS(id, pattern, options) {
-    const { sound } = options || {}
-    let actionProto = {
-        operate(env, img, cont) {
-            Args.prototype.world = env.world
-            let stack = img.stack
-            if (stack.toArray) stack = stack.toArray()
-            stack = Array.from(stack) // always copy for mishap recover
-            try {
-                let returnObject = global.PatternOperateMap[id](stack, env, img, cont) || [] // for evil purpose
-                let sideEffects
-                if (returnObject.push) sideEffects = returnObject
-                else {
-                    cont = returnObject.newCont || cont
-                    sideEffects = returnObject.sideEffects || []
-                }
-                let newImg = img.withUsedOps(returnObject.opsConsumed || img.opsConsumed + 1)
-                ActionJS.helpers.fImgStack.set(newImg, TreeList.from(stack))
-                return OperationResult(newImg, sideEffects, cont, sound || HexEvalSounds.NORMAL_EXECUTE)
-            } catch (e) {
-                if (e instanceof Mishap) {
-                    let mishapName = Text.translate(`hexcasting.action.yc:${id}`).aqua()
-                    let mishapEffect = OperatorSideEffect.DoMishap(e, Mishap.Context(pattern, mishapName))
-                    mishapEffect.performEffect(CastingVM(img, env))
-                    let newImg = img.withUsedOps(0)
-                    while (cont.next) cont = cont.next // stop anyway
-                    return OperationResult(newImg, [mishapEffect], cont, HexEvalSounds.MISHAP)
-                }
-                throw e
-            }
-        },
-    }
-    return new JavaAdapter(Action, actionProto)
-}
+/* 
 ActionJS.helpers = {
     assertVecInRange(ctx, vec) {
         if (!ctx.isVecInWorld(vec)) throw new MishapBadLocation(vec, 'out_of_world')
@@ -92,3 +50,4 @@ ActionJS.helpers = {
     },
     fImgStack: Reflection.getField(CastingImage, 'stack'),
 }
+ */
