@@ -73,7 +73,7 @@ global.PatternOperateMap = {
         let victim = args.entity(0)
         ctx.assertEntityInRange(victim)
         let damage = args.double(1)
-        let player = ctx.caster
+        let player = ctx.castingEntity
 
         let damage_for_fx = Math.max(10, Math.min(100, damage))
         let sideEffects = [OperatorSideEffect.Particles(ParticleSpray.burst(victim.position(), damage_for_fx / 20, damage_for_fx * 2))]
@@ -113,7 +113,7 @@ global.PatternOperateMap = {
                 for (let j = 0; j < 2 && j < curLevelTrades.length; j++) {
                     // let tradeType = curLevelTrades.pop() 这倒霉的array pop之后不删的
                     let tradeType = curLevelTrades[j]
-                    // ctx.caster.tell(`test ${tradeType} 0:${curLevelTrades[0]} 1:${curLevelTrades[1]}`)
+                    // ctx.castingEntity.tell(`test ${tradeType} 0:${curLevelTrades[0]} 1:${curLevelTrades[1]}`)
                     if (!tradeType) break
                     let trade = tradeType.getOffer(inject, inject.random)
                     if (trade) newOffers.push(trade)
@@ -154,7 +154,7 @@ global.PatternOperateMap = {
         let sideEffects = []
 
         /**@type {Internal.Player}*/
-        let player = ctx.caster
+        let player = ctx.castingEntity
         let level = player.level
         let origin = player.eyePosition
         let x = origin.x(),
@@ -203,7 +203,7 @@ global.PatternOperateMap = {
         ctx.assertVecInRange(pos)
         let speed = args.vec3(1)
         /**@type {Internal.SpectralArrow}*/
-        let arrow = new SpectralArrow(ctx.world, ctx.caster)
+        let arrow = new SpectralArrow(ctx.world, ctx.castingEntity)
         arrow.mergeNbt({
             life: 1150,
             damage: 5,
@@ -254,14 +254,14 @@ global.PatternOperateMap = {
     },
     'mind_patterns/clear': (s, ctx) => {
         // 自动重开画布
-        let itemStack = ctx.caster.getItemInHand(ctx.castingHand)
+        let itemStack = ctx.castingEntity.getItemInHand(ctx.castingHand)
         let item = itemStack?.item
         if (item?.class.name === 'at.petrak.hexcasting.common.items.ItemStaff') {
-            item.use(ctx.world, ctx.caster, ctx.castingHand)
+            item.use(ctx.world, ctx.castingEntity, ctx.castingHand)
         } else item = null
-        ctx.caster.server.scheduleInTicks(1, () => {
-            IXplatAbstractions.INSTANCE.setPatterns(ctx.caster, [])
-            if (item) item.use(ctx.world, ctx.caster, ctx.castingHand)
+        ctx.castingEntity.server.scheduleInTicks(1, () => {
+            IXplatAbstractions.INSTANCE.setPatterns(ctx.castingEntity, [])
+            if (item) item.use(ctx.world, ctx.castingEntity, ctx.castingHand)
         })
     },
     size_holder: stack => {
