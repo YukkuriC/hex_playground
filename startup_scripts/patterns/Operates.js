@@ -1,17 +1,11 @@
 global.ScheduleSignals = new WeakHashMap()
 
-/**
- * Changes:
- * return Mishap = throw Mishap
- * TODO:
- * ActionJS.helpers
- * Args
- */
+let { Args } = HexJS
 global.PatternOperateMap = {
     // 查询相关
     floodfill: (stack, ctx) => {
         let pos = new Args(stack, 1).vec3(0)
-        ActionJS.helpers.assertVecInRange(ctx, pos)
+        ctx.assertVecInRange(pos)
 
         let startBlock = ctx.world.getBlock(pos)
         let targets = []
@@ -29,12 +23,12 @@ global.PatternOperateMap = {
                     targets.push(Vec3Iota(b.pos))
                 },
             )
-        stack.push(ListIota(targets))
+        stack.push(ListIota(TreeList.from(targets)))
     },
     zone_block_entity: (stack, ctx) => {
         let args = new Args(stack, 2)
         let pos = args.vec3(0)
-        ActionJS.helpers.assertVecInRange(ctx, pos)
+        ctx.assertVecInRange(pos)
         let x = pos.x(),
             y = pos.y(),
             z = pos.z()
@@ -55,7 +49,7 @@ global.PatternOperateMap = {
                 }
             }
         }
-        let ret = ListIota(targets)
+        let ret = ListIota(TreeList.from(targets))
         global.setField(ret, 'size', Integer('0'))
         stack.push(ret)
     },
@@ -225,7 +219,7 @@ global.PatternOperateMap = {
     summon_arrow: (stack, ctx) => {
         let args = new Args(stack, 2)
         let pos = args.vec3(0)
-        ActionJS.helpers.assertVecInRange(ctx, pos)
+        ctx.assertVecInRange(pos)
         let speed = args.vec3(1)
         /**@type {Internal.SpectralArrow}*/
         let arrow = new SpectralArrow(ctx.world, ctx.caster)
@@ -242,7 +236,7 @@ global.PatternOperateMap = {
     place_mageblock: (stack, ctx) => {
         let args = new Args(stack, 1)
         let pos = args.vec3(0)
-        ActionJS.helpers.assertVecInRange(ctx, pos)
+        ctx.assertVecInRange(pos)
         ctx.world.setBlock(
             BlockPos.containing(pos),
             // Blocks.BUDDING_AMETHYST.defaultBlockState(),
@@ -296,7 +290,7 @@ global.PatternOperateMap = {
     },
     mind_patterns: (stack, ctx) => {
         let patterns = IXplatAbstractions.INSTANCE.getPatternsSavedInUi(ctx.caster)
-        stack.push(ListIota(patterns.map(x => PatternIota(x.pattern))))
+        stack.push(ListIota(TreeList.from(patterns.map(x => PatternIota(x.pattern)))))
     },
     'mind_patterns/clear': (s, ctx) => {
         // 自动重开画布
@@ -342,7 +336,7 @@ global.PatternOperateMap = {
             // stack.push(ListIota(signal.code)) // kjs wtf?
             let tmp = []
             for (let i of signal.code) tmp.push(i)
-            stack.push(ListIota(tmp))
+            stack.push(ListIota(TreeList.from(tmp)))
         }
     },
     nested_modify: (stack, ctx) => {
@@ -359,7 +353,7 @@ global.PatternOperateMap = {
         stack.push(IotaType.deserialize(list_nbt, ctx.world))
     },
     size_holder: stack => {
-        let holder = ListIota([DoubleIota(114514)])
+        let holder = ListIota(TreeList.from([DoubleIota(114514)]))
         global.setField(holder, 'size', Integer('-114514'))
         stack.push(holder)
     },
