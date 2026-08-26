@@ -68,25 +68,6 @@ global.PatternOperateMap = {
         stack.push(BooleanIota(String(ctx.world.dimension) == 'minecraft:the_nether'))
     },
     // 世界交互相关
-    charge_media: (s, ctx) => {
-        let stack = ctx.caster.getItemInHand(ctx.castingHand)
-        let item = stack.item
-        if (item.setMedia && item.getMaxMedia) {
-            item.setMedia(stack, item.getMaxMedia(stack))
-        }
-    },
-    'charge_media/wisp': (s, ctx) => {
-        let wisp = ctx.wisp
-        if (wisp) {
-            wisp.media = 1145140000
-        }
-    },
-    'charge_media/circle': (s, ctx) => {
-        let circle = ctx.impetus
-        if (circle) {
-            circle.media = 1145140000
-        }
-    },
     punch_entity: (stack, ctx) => {
         let args = new Args(stack, 2)
         let victim = args.entity(0)
@@ -271,27 +252,6 @@ global.PatternOperateMap = {
     refresh_depth: (s, ctx, img) => {
         return { opsConsumed: -114514 }
     },
-    'mind_stack/push': (stack, ctx) => {
-        let args = new Args(stack, 1)
-        let img = IXplatAbstractions.INSTANCE.getStaffcastVM(ctx.caster, ctx.castingHand).image
-        img.stack.add(args.get(0))
-        IXplatAbstractions.INSTANCE.setStaffcastImage(ctx.caster, img)
-    },
-    'mind_stack/pop': (stack, ctx) => {
-        let img = IXplatAbstractions.INSTANCE.getStaffcastVM(ctx.caster, ctx.castingHand).image
-        let removeIdx = img.stack.length - 1
-        if (removeIdx < 0) throw MishapNotEnoughArgs(1, 0)
-        stack.push(img.stack.remove(img.stack.length - 1))
-        IXplatAbstractions.INSTANCE.setStaffcastImage(ctx.caster, img)
-    },
-    'mind_stack/size': (stack, ctx) => {
-        let img = IXplatAbstractions.INSTANCE.getStaffcastVM(ctx.caster, ctx.castingHand).image
-        stack.push(DoubleIota(img.stack.length))
-    },
-    mind_patterns: (stack, ctx) => {
-        let patterns = IXplatAbstractions.INSTANCE.getPatternsSavedInUi(ctx.caster)
-        stack.push(ListIota(TreeList.from(patterns.map(x => PatternIota(x.pattern)))))
-    },
     'mind_patterns/clear': (s, ctx) => {
         // 自动重开画布
         let itemStack = ctx.caster.getItemInHand(ctx.castingHand)
@@ -303,54 +263,6 @@ global.PatternOperateMap = {
             IXplatAbstractions.INSTANCE.setPatterns(ctx.caster, [])
             if (item) item.use(ctx.world, ctx.caster, ctx.castingHand)
         })
-    },
-    'mind_env/schedule': (stack, ctx) => {
-        let args = new Args(stack, 2)
-        let code = args.list(0)
-        let timeout = args.double(1)
-        let executor = () => {
-            let harness = CastingVM.empty(ctx)
-            harness.queueExecuteAndWrapIotas(code, ctx.caster.level)
-        }
-        if (timeout <= 0) {
-            executor()
-            return
-        }
-
-        let key = ctx.impetus || ctx.caster
-        let oldSignal = global.ScheduleSignals.get(key)
-        if (oldSignal) oldSignal.cancel = true
-        let mySignal = { cancel: false, code: code }
-        global.ScheduleSignals.put(key, mySignal)
-
-        ctx.caster.server.scheduleInTicks(timeout, () => {
-            if (mySignal.cancel) return
-            executor()
-        })
-    },
-    'mind_env/running_code': (stack, ctx) => {
-        let key = ctx.impetus || ctx.caster
-        let signal = global.ScheduleSignals.get(key)
-        if (!signal || signal.cancel) stack.push(NullIota())
-        else {
-            // stack.push(ListIota(signal.code)) // kjs wtf?
-            let tmp = []
-            for (let i of signal.code) tmp.push(i)
-            stack.push(ListIota(TreeList.from(tmp)))
-        }
-    },
-    nested_modify: (stack, ctx) => {
-        let args = new Args(stack, 3)
-        let list_nbt = IotaType.serialize(args.get(0))
-        let idx_list = args.list(1).list
-        let n = idx_list.length
-        let setter = list_nbt
-        for (let i = 0; i < n; i++) {
-            let idx = Math.round(idx_list[i].double)
-            if (i === n - 1) setter['hexcasting:data'][idx] = IotaType.serialize(args.get(2))
-            else setter = setter['hexcasting:data'][idx]
-        }
-        stack.push(IotaType.deserialize(list_nbt, ctx.world))
     },
     size_holder: stack => {
         let holder = ListIota(TreeList.from([DoubleIota(114514)]))
