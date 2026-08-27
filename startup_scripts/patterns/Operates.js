@@ -23,7 +23,7 @@ global.PatternOperateMap = {
                     targets.push(Vec3Iota(b.pos))
                 },
             )
-        stack.push(ListIota(TreeList.from(targets)))
+        return [targets]
     },
     zone_block_entity: (stack, ctx) => {
         let args = new Args(stack, 2)
