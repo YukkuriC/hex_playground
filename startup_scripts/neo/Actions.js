@@ -2,8 +2,7 @@
     let { ActionJS, ActionRegistryJS } = HexJS
 
     let testNester = ActionRegistryJS.of(HexPattern.fromAnglesUnchecked('assed', 'EAST')).setOperate((env, img, cont) => {
-        // env.castingEntity.tell(`${testNester}\n${env}\n${img}\n${cont}`)
-        env.castingEntity.tell('hello hexjs')
-        return [DoubleIota(114), [[[[[]]]]], DoubleIota(514)]
+        let player = env.castingEntity
+        return [114, [null, [player, [player.position(), [cont, [testNester.prototype, [true]]]]]]]
     })
 })()
