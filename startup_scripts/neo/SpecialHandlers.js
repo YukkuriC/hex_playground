@@ -14,4 +14,15 @@
             'test',
         )
     })
+
+    // runs after all normal & great pattern actions consumed
+    let fallbackMatcher = new SpecialHandler('hexjsneo:fallback', (pat, env) => {
+        let { MAP_NORMAL, MAP_GREAT } = HexJS.ActionRegistry.Companion
+        let sig = pat.anglesSignature()
+        if (MAP_NORMAL.containsKey(sig)) {
+            let reg = MAP_NORMAL.get(sig)
+            return SpecialHandler.create(reg.action, String(reg.id))
+        }
+        // TODO great pattern hot match
+    })
 })()
