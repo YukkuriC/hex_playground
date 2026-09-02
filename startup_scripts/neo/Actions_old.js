@@ -27,7 +27,7 @@
         // utils
         HexPattern,
         HexDir,
-        OperatorSideEffect$Particles,
+        OperatorSideEffect,
         ParticleSpray,
         TreeList,
     } = HexJS.APIFlat
@@ -114,7 +114,7 @@
         let player = ctx.castingEntity
 
         let damage_for_fx = Math.max(10, Math.min(100, damage))
-        let sideEffects = [new OperatorSideEffect$Particles(ParticleSpray.burst(victim.position(), damage_for_fx / 20, damage_for_fx * 2))]
+        let sideEffects = [new OperatorSideEffect.Particles(ParticleSpray.burst(victim.position(), damage_for_fx / 20, damage_for_fx * 2))]
 
         if (victim.attack) {
             let src = player.damageSources().playerAttack(player)
