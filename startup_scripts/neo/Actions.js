@@ -1,5 +1,11 @@
 ;(() => {
     let { ActionJS, ActionRegistryJS, Args } = HexJS
+    let {
+        //
+        HexPattern,
+        OperatorSideEffect,
+        ParticleSpray,
+    } = HexJS.APIFlat
 
     // example for editing stack & building spell action
     // from https://github.com/FallingColors/HexMod/blob/main/Common/src/main/java/at/petrak/hexcasting/api/casting/castables/SpellAction.kt

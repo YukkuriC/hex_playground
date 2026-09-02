@@ -48,24 +48,6 @@
             _('forge.cap', ['HexCapabilities', 'adimpl.CapStaticMediaHolder']),
             'xplat.IXplatAbstractions',
             'common.lib.hex.HexEvalSounds',
-            _('api', [
-                _('casting', [
-                    'castables.Action',
-                    'ActionRegistryEntry',
-                    'ParticleSpray',
-                    _('eval', [
-                        'CastingEnvironmentComponent',
-                        'OperationResult',
-                        'vm.CastingVM',
-                        'vm.CastingImage',
-                        _('sideeffects', ['EvalSound', 'OperatorSideEffect']),
-                    ]),
-                    _('iota', ['IotaType', 'NullIota', 'BooleanIota', 'Vec3Iota', 'ListIota', 'DoubleIota', 'PatternIota']),
-                    _('mishaps', ['Mishap', 'MishapNotEnoughArgs', 'MishapInvalidIota', 'MishapAlreadyBrainswept', 'MishapBadLocation']),
-                    _('math', ['HexDir', 'HexPattern']),
-                ]),
-                'utils.TreeList',
-            ]),
         ]),
     ]
     for (let root of roots) root.build()

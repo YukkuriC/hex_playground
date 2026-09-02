@@ -1,9 +1,47 @@
-global.ScheduleSignals = new WeakHashMap()
+/**
+ * Changes:
+ * create obj = register, no more registry phase
+ * TODO:
+ * great tag dump
+ * Patchouli dump
+ */
+;(() => {
+    let {
+        // one per line
+        ActionJS,
+        ActionRegistryJS,
+        Args,
+        CastingEnvironmentComponentJS: CastEnvJS,
+    } = HexJS
+    let {
+        // ALL used API in a flat map
+        // iota
+        BooleanIota,
+        ListIota,
+        Vec3Iota,
+        DoubleIota,
 
-let { Args } = HexJS
-global.PatternOperateMap = {
+        // mishap
+        MishapAlreadyBrainswept,
+
+        // utils
+        HexPattern,
+        HexDir,
+        OperatorSideEffect$Particles,
+        ParticleSpray,
+        TreeList,
+    } = HexJS.APIFlat
+    function registerPatternWrap(seq, dir, id, isGreat) {
+        isGreat = !!isGreat
+        let resourceKey = 'yc:' + id
+        let pattern = HexPattern.fromAnglesUnchecked(seq, dir)
+        let obj = ActionRegistryJS.of(pattern, resourceKey, isGreat)
+        // pipe operate method later
+        return obj
+    }
+
     // 查询相关
-    floodfill: (stack, ctx) => {
+    registerPatternWrap('aaqawawaeadaadadadaadadadaada', HexDir.EAST, 'floodfill', 1).setOperateMutableStack((stack, ctx) => {
         let pos = new Args(stack, 1).vec3(0)
         ctx.assertVecInRange(pos)
 
@@ -24,8 +62,8 @@ global.PatternOperateMap = {
                 },
             )
         return [targets]
-    },
-    zone_block_entity: (stack, ctx) => {
+    })
+    registerPatternWrap('qqqqqwdeddwqeeeeede', HexDir.SOUTH_EAST, 'zone_block_entity').setOperateMutableStack((stack, ctx) => {
         let args = new Args(stack, 2)
         let pos = args.vec3(0)
         ctx.assertVecInRange(pos)
@@ -36,7 +74,6 @@ global.PatternOperateMap = {
         distSq *= distSq
         let chunkX = x >> 4,
             chunkY = z >> 4
-        /**@type {Internal.ServerLevel}*/
         let level = ctx.world
         let targets = []
         for (let cx = chunkX - 1; cx <= chunkX + 1; cx++) {
@@ -45,30 +82,31 @@ global.PatternOperateMap = {
                 for (let bpos of chunk.getBlockEntitiesPos()) {
                     if (!ctx.isVecInRange(bpos)) continue
                     let dsq = Math.pow(x - bpos.x, 2) + Math.pow(y - bpos.y, 2) + Math.pow(z - bpos.z, 2)
-                    if (dsq <= distSq) targets.push(Vec3Iota(bpos))
+                    if (dsq <= distSq) targets.push(new Vec3Iota(bpos))
                 }
             }
         }
-        let ret = ListIota(TreeList.from(targets))
+        let ret = new ListIota(TreeList.from(targets))
         global.setField(ret, 'size', Integer('0'))
         stack.push(ret)
-    },
-    // fallbacks
-    check_ambit: (stack, ctx) => {
+    })
+
+    registerPatternWrap('wawaw', HexDir.EAST, 'check_ambit').setOperateMutableStack((stack, ctx) => {
         let args = new Args(stack, 1)
         let pos = args.vec3(0)
         stack.push(
-            BooleanIota(
+            new BooleanIota(
                 // ctx.isVecInRange(pos) && ctx.isVecInWorld(pos)
                 ctx.isVecInAmbit(pos),
             ),
         )
-    },
-    in_nether: (stack, ctx) => {
-        stack.push(BooleanIota(String(ctx.world.dimension) == 'minecraft:the_nether'))
-    },
+    })
+    registerPatternWrap('eaqawqadaqdeewewewe', HexDir.EAST, 'in_nether').setOperate(ctx => {
+        return [new BooleanIota(String(ctx.world.dimension) == 'minecraft:the_nether')]
+    })
+
     // 世界交互相关
-    punch_entity: (stack, ctx) => {
+    registerPatternWrap('aaddwdwdqdwd', HexDir.NORTH_WEST, 'punch_entity').setOperateMutableStack((stack, ctx) => {
         let args = new Args(stack, 2)
         let victim = args.entity(0)
         ctx.assertEntityInRange(victim)
@@ -76,7 +114,7 @@ global.PatternOperateMap = {
         let player = ctx.castingEntity
 
         let damage_for_fx = Math.max(10, Math.min(100, damage))
-        let sideEffects = [OperatorSideEffect.Particles(ParticleSpray.burst(victim.position(), damage_for_fx / 20, damage_for_fx * 2))]
+        let sideEffects = [new OperatorSideEffect$Particles(ParticleSpray.burst(victim.position(), damage_for_fx / 20, damage_for_fx * 2))]
 
         if (victim.attack) {
             let src = player.damageSources().playerAttack(player)
@@ -84,13 +122,17 @@ global.PatternOperateMap = {
         }
 
         return sideEffects
-    },
-    brain_merge: (stack, ctx) => {
+    })
+    registerPatternWrap(
+        'wqqwqwqaeqeeedqqeaqadedaqaedeqqeqedeqeaqeqaqedeadeaqwqwqaeda',
+        HexDir.EAST,
+        'brain_merge',
+        1,
+    ).setOperateMutableStack((stack, ctx) => {
         let args = new Args(stack, 2)
-        /**@type {Internal.AbstractVillager}*/
+        // TODO
         let victim = args.brainmerge_target(0)
         ctx.assertEntityInRange(victim)
-        /**@type {Internal.Villager}*/
         let inject = args.villager(1)
         // 异常处理
         for (let target of [victim, inject]) if (IXplatAbstractions.INSTANCE.isBrainswept(target)) throw MishapAlreadyBrainswept(target)
@@ -143,8 +185,8 @@ global.PatternOperateMap = {
         }
 
         return sideEffects
-    },
-    crystalize: (s, ctx) => {
+    })
+    registerPatternWrap('qwewewewewewdqeeeeedwwwawwqwwqwwwdedwwwqwwqwwwded', HexDir.EAST, 'crystalize', 1).setOperate(ctx => {
         let crystalSteps = [
             [Item.of('budding_amethyst'), 100],
             [Item.of('hexcasting:charged_amethyst'), 10],
@@ -153,7 +195,6 @@ global.PatternOperateMap = {
         ]
         let sideEffects = []
 
-        /**@type {Internal.Player}*/
         let player = ctx.castingEntity
         let level = player.level
         let origin = player.eyePosition
@@ -192,18 +233,17 @@ global.PatternOperateMap = {
                 }
             }
             // fx
-            sideEffects.push(OperatorSideEffect.Particles(ParticleSpray.burst(targetPos, 5, 100)))
+            sideEffects.push(new OperatorSideEffect$Particles(ParticleSpray.burst(targetPos, 5, 100)))
         }
 
         return sideEffects
-    },
-    summon_arrow: (stack, ctx) => {
+    })
+    registerPatternWrap('qaeaqewqded', HexDir.NORTH_WEST, 'summon_arrow').setOperateMutableStack((stack, ctx) => {
         let args = new Args(stack, 2)
         let pos = args.vec3(0)
         ctx.assertVecInRange(pos)
         let speed = args.vec3(1)
-        /**@type {Internal.SpectralArrow}*/
-        let arrow = new SpectralArrow(ctx.world, ctx.castingEntity)
+        let arrow = new SpectralArrow(ctx.world, ctx.castingEntity, 'bedrock', null)
         arrow.mergeNbt({
             life: 1150,
             damage: 5,
@@ -213,8 +253,8 @@ global.PatternOperateMap = {
         arrow.setPos(pos)
         arrow.setMotion(speed.x(), speed.y(), speed.z())
         arrow.spawn()
-    },
-    place_mageblock: (stack, ctx) => {
+    })
+    registerPatternWrap('eeeeedewdqeeeeedewd', HexDir.WEST, 'place_mageblock').setOperateMutableStack((stack, ctx) => {
         let args = new Args(stack, 1)
         let pos = args.vec3(0)
         ctx.assertVecInRange(pos)
@@ -224,35 +264,22 @@ global.PatternOperateMap = {
             Java.loadClass('com.hollingsworth.arsnouveau.setup.registry.BlockRegistry').MAGE_BLOCK.get().defaultBlockState(),
             2,
         )
-    },
-    look_at: (stack, ctx) => {
+    })
+    registerPatternWrap('awqqqwaqqwa', HexDir.SOUTH_WEST, 'look_at').setOperateMutableStack((stack, ctx) => {
         let args = new Args(stack, 2)
-        /**@type {Internal.Entity}*/
         let entity = args.entity(0)
         let pos = args.vec3(1)
         entity.lookAt('eyes', pos)
-    },
-    i_see_all: (stack, ctx) => {
-        let locals = global.PatternOperateMap.i_see_all // func as obj
-        if (!locals.protoComp) {
-            let key = new JavaAdapter(CastingEnvironmentComponent.Key, {})
-            locals.protoComp = {
-                onIsVecInRange(vec, current) {
-                    return true
-                },
-                getKey() {
-                    return key
-                },
-            }
-        }
-        ctx.addExtension(new JavaAdapter(CastingEnvironmentComponent.IsVecInRange, locals.protoComp))
-    },
+    })
+    registerPatternWrap('wqwqwqwawewewewewewdwqqaeaaeq', HexDir.WEST, 'i_see_all', 1).setOperate(ctx => {
+        ctx.addExtension(new CastEnvJS.IsVecInRange('i_see_all', () => true))
+    })
 
     // 代码执行相关
-    refresh_depth: (s, ctx, img) => {
-        return { opsConsumed: -114514 }
-    },
-    'mind_patterns/clear': (s, ctx) => {
+    registerPatternWrap('wewewewewewweeqeeqeeqeeqeeqee', HexDir.WEST, 'refresh_depth', 1).setOperate((ctx, img) => {
+        img.opsConsumed = -114514
+    })
+    registerPatternWrap('waawweeeeewdewqa', HexDir.SOUTH_WEST, 'mind_patterns/clear').setOperate(ctx => {
         // 自动重开画布
         let itemStack = ctx.castingEntity.getItemInHand(ctx.castingHand)
         let item = itemStack?.item
@@ -263,10 +290,10 @@ global.PatternOperateMap = {
             IXplatAbstractions.INSTANCE.setPatterns(ctx.castingEntity, [])
             if (item) item.use(ctx.world, ctx.castingEntity, ctx.castingHand)
         })
-    },
-    size_holder: stack => {
-        let holder = ListIota(TreeList.from([DoubleIota(114514)]))
+    })
+    registerPatternWrap('sdsdsdsdsds', HexDir.WEST, 'size_holder').setOperate(() => {
+        let holder = new ListIota(TreeList.from([DoubleIota(114514)]))
         global.setField(holder, 'size', Integer('-114514'))
-        stack.push(holder)
-    },
-}
+        return [holder]
+    })
+})()
