@@ -1,3 +1,8 @@
+# probejs
+.github/agents/
+.probe/
+.vscode/probejs.code-snippets
+
 # hexdoc
 _site/
 _checkout/
