@@ -24,14 +24,14 @@
      */
     let refreshPersonalMana = player => {
         let map = getTrainingMap(player)
-        if (map.max) player.modifyAttribute(HexOPAttributes.PERSONAL_MEDIA_MAX, KEY_TRAINING, map.max, 'addition')
-        if (map.regen) player.modifyAttribute(HexOPAttributes.PERSONAL_MEDIA_REGEN, KEY_TRAINING, map.regen, 'addition')
+        if (map.max) player.modifyAttribute(HexOPAttributes.PERSONAL_MEDIA_MAX, KEY_TRAINING, map.getDouble('max'), 'add_value')
+        if (map.regen) player.modifyAttribute(HexOPAttributes.PERSONAL_MEDIA_REGEN, KEY_TRAINING, map.getDouble('regen'), 'add_value')
     }
 
     let modifyTraining = (player, max, regen) => {
         let map = getTrainingMap(player)
-        if (max) map.max = (map.max || 0) + max
-        if (regen) map.regen = (map.regen || 0) + regen
+        if (max) map.max = map.getDouble('max') + max
+        if (regen) map.regen = map.getDouble('regen') + regen
         refreshPersonalMana(player)
     }
 
