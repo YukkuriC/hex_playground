@@ -1,5 +1,5 @@
 ;(() => {
-    let { ActionJS, ActionRegistryJS, Args } = HexJS
+    let { ActionJS, ActionRegistryJS, Args, IotaJS } = HexJS
     let {
         //
         HexPattern,
@@ -47,4 +47,17 @@
         let player = env.castingEntity
         return [114, [null, [player, [player.position(), [cont, [testNester.prototype, [true]]]]]]]
     })
+
+    // using custom iota types
+    let potionIotaCreater = ActionRegistryJS.of('yc:give_me_potion', HexPattern.fromAnglesUnchecked('deesaaqws', 'EAST')).setOperate(
+        env => {
+            let { PotionIota } = this
+            return [
+                new IotaJS({ id: 'instant_health', amp: 6 }, PotionIota),
+                new IotaJS({ id: 'instant_damage', amp: 12 }, PotionIota),
+                new IotaJS({ id: 'resistance', amp: 4 }, PotionIota),
+                new IotaJS({ id: 'bad_omen' }, PotionIota),
+            ]
+        },
+    )
 })()

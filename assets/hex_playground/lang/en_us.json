@@ -41,5 +41,8 @@
 	"hexcasting.action.yc:i_see_all": "All-Seeing",
 	"book.descrip.yc:i_see_all": "$(b)ALL WILL SEE/$$(br)Unlocks casting range for whole dimension",
 	"hexcasting.action.yc:look_at": "Neck-Breaking Spell",
-	"book.descrip.yc:look_at": "(Not really breaking one's neck) Forces input entity to look at input position"
+	"book.descrip.yc:look_at": "(Not really breaking one's neck) Forces input entity to look at input position",
+	// neo
+	"hexcasting.tooltip.yc:potion": "<%s>",
+	"foo": "bar"
 }
