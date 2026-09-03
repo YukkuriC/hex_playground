@@ -51,15 +51,7 @@ ServerEvents.recipes(e => {
         return item
     })
     // pair-clear items with content
-    for (let target_out of [
-        //
-        'hexcasting:focus',
-        'hexcasting:cypher',
-        'hexcasting:ancient_cypher',
-        'hexcasting:trinket',
-        'hexcasting:artifact',
-        'hexgloop:gloopifact',
-    ]) {
+    for (let target_out of global.CastingItems) {
         let target = target_out
         if (Item.of(target).empty) continue
         e.shapeless(Item.of(target, 2), [target, target])
