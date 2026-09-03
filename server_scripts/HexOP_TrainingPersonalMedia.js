@@ -8,10 +8,10 @@
     let KEY_TRAINING = 'hexop_training'
 
     /**
-     * @param {Internal.ServerPlayer} player
-     * @returns {{max?:number; regen?:number}}
+     * @param {Internal.$ServerPlayer} player
+     * @returns {Internal.$CompoundTag}
      */
-    let getTrainingMap = (/**@type {Internal.ServerPlayer}*/ player) => {
+    let getTrainingMap = (player) => {
         let pdata = player.getPersistentData()
         if (!pdata.training_media?.put) {
             pdata.training_media = {}
@@ -20,7 +20,7 @@
     }
 
     /**
-     * @param {Internal.ServerPlayer} player
+     * @param {Internal.$ServerPlayer} player
      */
     let refreshPersonalMana = player => {
         let map = getTrainingMap(player)
