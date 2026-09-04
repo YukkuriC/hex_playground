@@ -42,8 +42,8 @@
     }
 
     // 查询相关
-    registerPatternWrap('aaqawawaeadaadadadaadadadaada', HexDir.EAST, 'floodfill', 1).setOperateMutableStack((stack, ctx) => {
-        let pos = new Args(stack, 1).vec3(0)
+    registerPatternWrap('aaqawawaeadaadadadaadadadaada', HexDir.EAST, 'floodfill', 1).setOperateArgsSplit(1, (args, ctx) => {
+        let pos = args.vec3(0)
         ctx.assertVecInRange(pos)
 
         let startBlock = ctx.world.getBlock(pos)
@@ -64,8 +64,7 @@
             )
         return [targets]
     })
-    registerPatternWrap('qqqqqwdeddwqeeeeede', HexDir.SOUTH_EAST, 'zone_block_entity').setOperateMutableStack((stack, ctx) => {
-        let args = new Args(stack, 2)
+    registerPatternWrap('qqqqqwdeddwqeeeeede', HexDir.SOUTH_EAST, 'zone_block_entity').setOperateArgsSplit(2, (args, ctx) => {
         let pos = args.vec3(0)
         ctx.assertVecInRange(pos)
         let x = pos.x(),
@@ -89,26 +88,19 @@
         }
         let ret = new ListIota(TreeList.from(targets))
         global.setField(ret, 'size', Integer('0'))
-        stack.push(ret)
+        return [ret]
     })
 
-    registerPatternWrap('wawaw', HexDir.EAST, 'check_ambit').setOperateMutableStack((stack, ctx) => {
-        let args = new Args(stack, 1)
+    registerPatternWrap('wawaw', HexDir.EAST, 'check_ambit').setOperateArgsSplit(1, (args, ctx) => {
         let pos = args.vec3(0)
-        stack.push(
-            new BooleanIota(
-                // ctx.isVecInRange(pos) && ctx.isVecInWorld(pos)
-                ctx.isVecInAmbit(pos),
-            ),
-        )
+        return [ctx.isVecInAmbit(pos)]
     })
     registerPatternWrap('eaqawqadaqdeewewewe', HexDir.EAST, 'in_nether').setOperate(ctx => {
         return [new BooleanIota(String(ctx.world.dimension) == 'minecraft:the_nether')]
     })
 
     // 世界交互相关
-    registerPatternWrap('aaddwdwdqdwd', HexDir.NORTH_WEST, 'punch_entity').setOperateMutableStack((stack, ctx) => {
-        let args = new Args(stack, 2)
+    registerPatternWrap('aaddwdwdqdwd', HexDir.NORTH_WEST, 'punch_entity').setOperateArgsSplit(2, (args, ctx) => {
         let victim = args.entity(0)
         ctx.assertEntityInRange(victim)
         let damage = args.double(1)
@@ -124,13 +116,8 @@
 
         return sideEffects
     })
-    registerPatternWrap(
-        'wqqwqwqaeqeeedqqeaqadedaqaedeqqeqedeqeaqeqaqedeadeaqwqwqaeda',
-        HexDir.EAST,
-        'brain_merge',
-        1,
-    ).setOperateMutableStack((stack, ctx) => {
-        let args = new Args(stack, 2)
+    let brainMerge = registerPatternWrap('wqqwqwqaeqeeedqqeaqadedaqaedeqqeqedeqeaqeqaqedeadeaqwqwqaeda', HexDir.EAST, 'brain_merge', 1) // pls don't change formatting layer
+    brainMerge.setOperateArgsSplit(2, (args, ctx) => {
         // TODO
         let victim = args.human_like(0)
         ctx.assertEntityInRange(victim)
@@ -239,8 +226,7 @@
 
         return sideEffects
     })
-    registerPatternWrap('qaeaqewqded', HexDir.NORTH_WEST, 'summon_arrow').setOperateMutableStack((stack, ctx) => {
-        let args = new Args(stack, 2)
+    registerPatternWrap('qaeaqewqded', HexDir.NORTH_WEST, 'summon_arrow').setOperateArgsSplit(2, (args, ctx) => {
         let pos = args.vec3(0)
         ctx.assertVecInRange(pos)
         let speed = args.vec3(1)
@@ -255,8 +241,7 @@
         arrow.setMotion(speed.x(), speed.y(), speed.z())
         arrow.spawn()
     })
-    registerPatternWrap('eeeeedewdqeeeeedewd', HexDir.WEST, 'place_mageblock').setOperateMutableStack((stack, ctx) => {
-        let args = new Args(stack, 1)
+    registerPatternWrap('eeeeedewdqeeeeedewd', HexDir.WEST, 'place_mageblock').setOperateArgsSplit(1, (args, ctx) => {
         let pos = args.vec3(0)
         ctx.assertVecInRange(pos)
         ctx.world.setBlock(
@@ -266,8 +251,7 @@
             2,
         )
     })
-    registerPatternWrap('awqqqwaqqwa', HexDir.SOUTH_WEST, 'look_at').setOperateMutableStack((stack, ctx) => {
-        let args = new Args(stack, 2)
+    registerPatternWrap('awqqqwaqqwa', HexDir.SOUTH_WEST, 'look_at').setOperateArgsSplit(2, (args, ctx) => {
         let entity = args.entity(0)
         let pos = args.vec3(1)
         entity.lookAt('eyes', pos)
