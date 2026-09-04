@@ -30,6 +30,7 @@
         OperatorSideEffect,
         ParticleSpray,
         TreeList,
+        IXplatAbstractions,
     } = HexJS.APIFlat
     function registerPatternWrap(seq, dir, id, isGreat) {
         isGreat = !!isGreat
@@ -131,7 +132,7 @@
     ).setOperateMutableStack((stack, ctx) => {
         let args = new Args(stack, 2)
         // TODO
-        let victim = args.brainmerge_target(0)
+        let victim = args.human_like(0)
         ctx.assertEntityInRange(victim)
         let inject = args.villager(1)
         // 异常处理

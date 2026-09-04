@@ -5,6 +5,7 @@
         HexPattern,
         OperatorSideEffect,
         ParticleSpray,
+        HexEvalSounds,
     } = HexJS.APIFlat
 
     // example for editing stack & building spell action
