@@ -14,7 +14,7 @@
     this.MishapSus = MishapSus
 
     // a familiar action throwing this new mishap
-    let actionSus = ActionRegistry.of(HexPattern.fromAnglesUnchecked('dewdeqwwedaqedwadweqewwd', 'west'), 'yc:sus', true).setOperate(() =>
+    let actionSus = ActionRegistry.of(HexPattern.fromAngleString('dewdeqwwedaqedwadweqewwd', 'west', false), 'yc:sus', true).setOperate(() =>
         MishapSus.create(),
     )
 })()

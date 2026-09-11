@@ -35,7 +35,7 @@
     function registerPatternWrap(seq, dir, id, isGreat) {
         isGreat = !!isGreat
         let resourceKey = 'yc:' + id
-        let pattern = HexPattern.fromAnglesUnchecked(seq, dir)
+        let pattern = HexPattern.fromAngleString(seq, dir, false)
         let obj = ActionRegistryJS.of(pattern, resourceKey, isGreat)
         // pipe operate method later
         return obj

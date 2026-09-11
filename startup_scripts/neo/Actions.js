@@ -11,7 +11,7 @@
     // example for editing stack & building spell action
     // from https://github.com/FallingColors/HexMod/blob/main/Common/src/main/java/at/petrak/hexcasting/api/casting/castables/SpellAction.kt
     let spellAlternative = ActionRegistryJS.of(
-        HexPattern.fromAnglesUnchecked('assassass', 'WEST'),
+        HexPattern.fromAngleString('assassass', 'WEST', false),
         'hexjsneo:spell_action_alternative',
     ).setOperateMutableStack((stack, env) => {
         let takeANum = new Args(stack, 1).double(0)
@@ -43,14 +43,14 @@
         return ret
     })
 
-    // if ID not provided, it will be assigned as `hexjsneo:${pattern.anglesSignature()}`
-    let testNester = ActionRegistryJS.of(HexPattern.fromAnglesUnchecked('assed', 'EAST')).setOperate((env, img, cont) => {
+    // if ID not provided, it will be assigned as `hexjsneo:${pattern.signature.toAnglesString()}`
+    let testNester = ActionRegistryJS.of(HexPattern.fromAngleString('assed', 'EAST', false)).setOperate((env, img, cont) => {
         let player = env.castingEntity
         return [114, [null, [player, [player.position(), [cont, [testNester.prototype, [true]]]]]]]
     })
 
     // using custom iota types
-    let potionIotaCreater = ActionRegistryJS.of('yc:give_me_potion', HexPattern.fromAnglesUnchecked('deesaaqws', 'EAST')).setOperate(
+    let potionIotaCreater = ActionRegistryJS.of('yc:give_me_potion', HexPattern.fromAngleString('deesaaqws', 'EAST', false)).setOperate(
         env => {
             let { PotionIota } = this
             return [
