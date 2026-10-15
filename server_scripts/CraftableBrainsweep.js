@@ -26,9 +26,15 @@ ServerEvents.recipes(e => {
             let poi = POI.getOrThrow(ResourceKey.create(POIKey, profession))
             blockProfMarker = poi.matchingStates().iterator().next().block.id
         } else {
-            if (entityRaw.get('type').asString == 'villager') blockProfMarker = 'hay_block'
-            // TODO entities other than allay
-            else blockProfMarker = 'jukebox'
+            let type = entityRaw.get('type').asString
+            if (type == 'villager') blockProfMarker = 'hay_block'
+            else if (type == 'entity_type') {
+                let entityType = entityRaw.get('entityType').asString
+                entityType = entityType.split(':').pop()
+                // TODO entities other than allay
+                if (entityType != 'allay') return
+                blockProfMarker = 'jukebox'
+            } else return
         }
         let blockIn = raw.get('blockIn').get('block').asString
         let blockOut = raw.get('result').get('Name').asString
