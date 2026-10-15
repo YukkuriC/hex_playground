@@ -9,7 +9,7 @@ global.CastingItems = [
 ]
 
 ItemEvents.modification(e => {
-    for (let target of global.ReadonlyCastingItems) {
+    for (let target of global.CastingItems) {
         if (Platform.isLoaded(target.split(':')[0]))
             e.modify(target, i => {
                 i.maxStackSize = 64
