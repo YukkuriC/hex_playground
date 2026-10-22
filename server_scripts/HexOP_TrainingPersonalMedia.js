@@ -1,10 +1,12 @@
 // requires: hexoverpowered
 {
-    let RATIO_REGEN_TO_MAX = 0
+    let RATIO_REGEN_TO_MAX = 2e-2
     let RATIO_OVER_REGEN_TO_MAX = 0 // disabled passive exponential gen
     let RATIO_CAST_TO_MAX = 0
     let RATIO_CAST_TO_REGEN = 2e-3
     let RATIO_HURT_TO_MAX = 1000
+    let REGEN_CAP = 4e8
+    let MAX_CAP = 4e9
     let KEY_TRAINING = 'hexop_training'
 
     /**
@@ -30,8 +32,10 @@
 
     let modifyTraining = (player, max, regen) => {
         let map = getTrainingMap(player)
-        if (max) map.max = map.getDouble('max') + max
-        if (regen) map.regen = map.getDouble('regen') + regen
+        let curMax = map.getDouble('max')
+        let curRegen = map.getDouble('regen')
+        map.max = Math.min(curMax + max * Math.max(0, 1 - curMax / MAX_CAP), MAX_CAP)
+        map.regen = Math.min(curRegen + regen * Math.max(0, 1 - curRegen / REGEN_CAP), REGEN_CAP)
         refreshPersonalMana(player)
     }
 
