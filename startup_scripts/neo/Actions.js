@@ -11,7 +11,8 @@
     // example for editing stack & building spell action
     // from https://github.com/FallingColors/HexMod/blob/main/Common/src/main/java/at/petrak/hexcasting/api/casting/castables/SpellAction.kt
     let spellAlternative = ActionRegistryJS.of(
-        HexPattern.fromAngleString('assassass', 'WEST', false),
+        // shortcut for pattern constructor
+        'WEST,assassass',
         'hexjsneo:spell_action_alternative',
     ).setOperateMutableStack((stack, env) => {
         let takeANum = new Args(stack, 1).double(0)
