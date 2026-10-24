@@ -27,6 +27,7 @@ ServerEvents.recipes(e => {
             blockProfMarker = poi.matchingStates().iterator().next().block.id
         } else {
             let type = entityRaw.get('type').asString
+            type = type.split(':').pop()
             if (type == 'villager') blockProfMarker = 'hay_block'
             else if (type == 'entity_type') {
                 let entityType = entityRaw.get('entityType').asString
