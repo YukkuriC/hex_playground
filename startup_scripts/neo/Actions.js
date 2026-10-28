@@ -45,7 +45,7 @@
     })
 
     // if ID not provided, it will be assigned as `hexjsneo:${pattern.signature.toAnglesString()}`
-    let testNester = ActionRegistryJS.of(HexPattern.fromAngleString('assed', 'EAST', false)).setOperate((env, img, cont) => {
+    let testNester = ActionRegistryJS.of('EAST,assed').setOperate((env, img, cont) => {
         let player = env.castingEntity
         return [114, [null, [player, [player.position(), [cont, [testNester.prototype, [true]]]]]]]
     })
