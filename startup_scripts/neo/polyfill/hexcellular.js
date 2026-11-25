@@ -6,7 +6,7 @@
 
 ;(() => {
     if (Platform.isLoaded('hexcellular')) return
-    let { IotaJS, ActionRegistryEntryJS, ActionRegistryJS } = HexJS
+    let { IotaJS, ActionRegistryJS } = HexJS
     let {
         TreeList,
         NullIota,
