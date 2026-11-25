@@ -181,7 +181,7 @@
                 HexEvalSounds.SPELL.get(),
             ]
         })
-        create_property.action.mediaCost = MediaConstants.CRYSTAL_UNIT * 5
+        create_property.mediaCost = MediaConstants.CRYSTAL_UNIT * 5
 
         // observe_property: "aawd", SOUTH_WEST
         ActionRegistryJS.of('SOUTH_WEST,aawd', 'hexcellular:observe_property').setOperateArgsSplit(1, (args, env) => {
@@ -201,7 +201,7 @@
             if (mishap) throw mishap
             getGlobalStorage(env)[name] = iota2nbt(iota)
         })
-        set_property.action.mediaCost = MediaConstants.DUST_UNIT / 10
+        set_property.mediaCost = MediaConstants.DUST_UNIT / 10
 
         // readonly_property: "aawa", SOUTH_WEST
         ActionRegistryJS.of('SOUTH_WEST,aawa', 'hexcellular:readonly_property').setOperateArgsSplit(1, (args, env) => {
