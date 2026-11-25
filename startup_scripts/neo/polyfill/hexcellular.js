@@ -148,7 +148,7 @@
                 // add to cont
                 if (image.opsConsumed > env.maxOpCount) return [new MishapEvalTooMuch()]
                 let newCont = cont.pushFrame(FrameFinishEval.INSTANCE).pushFrame(new FrameEvaluate(spell, true))
-                return [newCont, image.withUsedOp(), HexEvalSounds.NOTHING.get()]
+                return [newCont, HexEvalSounds.NOTHING.get()]
             })
         })
         .setDisplay(iota => {
